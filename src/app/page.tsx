@@ -35,7 +35,7 @@ export default function Home() {
 
   /* ── App shell: sidebar + content ── */
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#f9fafb" }}>
+    <div className="app-shell" style={{ display: "flex", minHeight: "100vh", background: "#f8f6f2" }}>
       <Sidebar
         currentPage={currentPage as NavPage}
         onNavigate={handleNavigate}
@@ -43,10 +43,11 @@ export default function Home() {
       />
       <main
         style={{
-          marginLeft: "240px",
+          marginLeft: "248px",
           flex: 1,
           minHeight: "100vh",
           overflowX: "hidden",
+          background: "#f8f6f2",
         }}
       >
         {currentPage === "dashboard" && <DashboardPage user={activeUser} />}

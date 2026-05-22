@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { Package, AlertTriangle, Ban } from "lucide-react";
 
 const inventoryItems = [
@@ -12,49 +13,67 @@ const inventoryItems = [
   { item: "Nachos", branch: "Fahaheel", category: "Snack", stock: 0, unit: "kg", min: 5, status: "Warning" },
 ];
 
-const statusStyle: Record<string, { bg: string; color: string }> = {
-  OK: { bg: "#dcfce7", color: "#4ade80" },
-  Low: { bg: "#fef3c7", color: "#f59e0b" },
-  Warning: { bg: "#fee2e2", color: "#f87171" },
+const statusConfig: Record<string, { bg: string; color: string; border: string; glow: string }> = {
+  OK: { bg: "rgba(16, 185, 129, 0.1)", color: "#10b981", border: "rgba(16, 185, 129, 0.2)", glow: "#10b981" },
+  Low: { bg: "rgba(245, 158, 11, 0.1)", color: "#f59e0b", border: "rgba(245, 158, 11, 0.2)", glow: "#f59e0b" },
+  Warning: { bg: "rgba(239, 68, 68, 0.1)", color: "#ef4444", border: "rgba(239, 68, 68, 0.2)", glow: "#ef4444" },
 };
 
 function StatusBadge({ status }: { status: string }) {
-  const s = statusStyle[status] || statusStyle.OK;
+  const cfg = statusConfig[status] || statusConfig.OK;
   return (
     <span
       style={{
-        background: s.bg,
-        color: s.color,
+        background: cfg.bg,
+        color: cfg.color,
+        border: `1px solid ${cfg.border}`,
         fontSize: "11px",
-        fontWeight: "700",
+        fontWeight: "800",
         padding: "4px 10px",
-        borderRadius: "999px",
+        borderRadius: "8px",
         textTransform: "uppercase",
-        letterSpacing: "0.3px",
+        letterSpacing: "0.4px",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "6px",
       }}
     >
+      <span
+        style={{
+          width: "6px",
+          height: "6px",
+          borderRadius: "50%",
+          background: cfg.glow,
+          boxShadow: `0 0 8px ${cfg.glow}`,
+        }}
+      />
       {status}
     </span>
   );
 }
 
 export default function InventoryPage() {
+  const [selectedFilter, setSelectedFilter] = useState("All");
+
+  const filteredItems = inventoryItems.filter((item) => {
+    return selectedFilter === "All" || item.category === selectedFilter;
+  });
+
   return (
-    <div style={{ padding: "32px", minHeight: "100vh", background: "#f9fafb" }}>
+    <div style={{ padding: "32px", minHeight: "100vh", background: "#f8f6f2", display: "flex", flexDirection: "column" }}>
       {/* Header */}
-      <div style={{ marginBottom: "26px" }}>
-        <h1
-          style={{
-            color: "#111827",
-            fontSize: "24px",
+      <div style={{ marginBottom: "28px" }}>
+        <h1 style={{ color: "var(--text)",
+            fontFamily: "var(--font-display)",
+            fontSize: "28px",
             fontWeight: "800",
-            letterSpacing: "-0.5px",
+            letterSpacing: "-0.6px",
           }}
         >
-          Inventory
+          Inventory System
         </h1>
-        <p style={{ color: "#6b7280", fontSize: "14px", marginTop: "3px" }}>
-          Stock levels across all branches
+        <p style={{ color: "var(--muted)", fontSize: "14px", marginTop: "4px", fontWeight: "500" }}>
+          Real-time stock ledger and levels across all branches
         </p>
       </div>
 
@@ -63,34 +82,45 @@ export default function InventoryPage() {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "12px",
+          gap: "16px",
           marginBottom: "24px",
         }}
       >
         {[
-          { label: "Total SKUs", value: "48", icon: <Package size={24} color="#f59e0b" />, sub: "Across 5 branches" },
-          { label: "Low Stock Items", value: "5", icon: <AlertTriangle size={24} color="#f59e0b" />, sub: "Needs reorder" },
-          { label: "Out of Stock", value: "1", icon: <Ban size={24} color="#ef4444" />, sub: "Nachos · Fahaheel" },
+          { label: "Total SKUs", value: "48", icon: <Package size={20} color="#f59e0b" />, sub: "Across 5 branches", bg: "rgba(245, 158, 11, 0.08)" },
+          { label: "Low Stock Items", value: "5", icon: <AlertTriangle size={20} color="#eab308" />, sub: "Needs replenishment", bg: "rgba(234, 179, 8, 0.08)" },
+          { label: "Out of Stock", value: "1", icon: <Ban size={20} color="#ef4444" />, sub: "Nachos · Fahaheel", bg: "rgba(239, 68, 68, 0.08)" },
         ].map((s, i) => (
           <div
             key={i}
             style={{
               background: "#ffffff",
-              border: "1px solid #e5e7eb",
-              borderRadius: "12px",
-              padding: "18px 20px",
+              border: "1px solid var(--border)",
+              borderRadius: "16px",
+              padding: "20px 22px",
               display: "flex",
               alignItems: "center",
-              gap: "14px",
+              gap: "16px",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.borderColor = "rgba(245, 158, 11, 0.25)";
+              e.currentTarget.style.background = "var(--surface-hover)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.06)";
+              e.currentTarget.style.background = "var(--surface)";
             }}
           >
             <span
               style={{
-                fontSize: "24px",
-                background: "#fef3c7",
-                borderRadius: "10px",
-                width: "46px",
-                height: "46px",
+                background: s.bg,
+                border: `1px solid ${s.icon.props.color}22`,
+                borderRadius: "12px",
+                width: "44px",
+                height: "44px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -102,18 +132,18 @@ export default function InventoryPage() {
             <div>
               <div
                 style={{
-                  color: "#6b7280",
+                  color: "var(--muted)",
                   fontSize: "11px",
                   fontWeight: "700",
                   textTransform: "uppercase",
-                  letterSpacing: "0.5px",
-                  marginBottom: "2px",
+                  letterSpacing: "0.8px",
+                  marginBottom: "4px",
                 }}
               >
                 {s.label}
               </div>
-              <div style={{ color: "#111827", fontSize: "24px", fontWeight: "800" }}>{s.value}</div>
-              <div style={{ color: "#6b7280", fontSize: "11px", marginTop: "1px" }}>{s.sub}</div>
+              <div style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "24px", fontWeight: "800" }}>{s.value}</div>
+              <div style={{ color: "var(--muted)", fontSize: "11px", marginTop: "2px", fontWeight: "500" }}>{s.sub}</div>
             </div>
           </div>
         ))}
@@ -123,116 +153,152 @@ export default function InventoryPage() {
       <div
         style={{
           background: "#ffffff",
-          border: "1px solid #e5e7eb",
-          borderRadius: "14px",
+          border: "1px solid var(--border)",
+          borderRadius: "16px",
           overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         {/* Table toolbar */}
         <div
           style={{
-            padding: "18px 24px",
-            borderBottom: "1px solid #e5e7eb",
+            padding: "20px 24px",
+            borderBottom: "1px solid var(--border)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
           }}
         >
-          <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>Stock Ledger</h2>
-          <div style={{ display: "flex", gap: "7px" }}>
-            {["All", "Ingredient", "Packaging", "Beverage", "Snack"].map((f, i) => (
-              <button
-                key={f}
-                style={{
-                  padding: "5px 12px",
-                  background: i === 0 ? "#f59e0b" : "#fef3c7",
-                  border: "1px solid " + (i === 0 ? "#f59e0b" : "#e5e7eb"),
-                  borderRadius: "6px",
-                  color: i === 0 ? "#ffffff" : "#6b7280",
-                  fontSize: "12px",
-                  fontWeight: i === 0 ? "700" : "400",
-                  cursor: "pointer",
-                }}
-              >
-                {f}
-              </button>
-            ))}
+          <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700" }}>Stock Ledger</h2>
+          <div style={{ display: "flex", gap: "6px" }}>
+            {["All", "Ingredient", "Packaging", "Beverage", "Snack"].map((f) => {
+              const isSelected = selectedFilter === f;
+              return (
+                <button
+                  key={f}
+                  onClick={() => setSelectedFilter(f)}
+                  style={{
+                    padding: "6px 14px",
+                    background: isSelected ? "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)" : "rgba(28, 25, 23, 0.03)",
+                    border: isSelected ? "none" : "1px solid var(--border-subtle)",
+                    borderRadius: "8px",
+                    color: isSelected ? "#ffffff" : "var(--muted)",
+                    fontSize: "12px",
+                    fontWeight: "700",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                    boxShadow: isSelected ? "0 4px 12px rgba(245, 158, 11, 0.25)" : "none",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.background = "rgba(28, 25, 23, 0.06)";
+                      e.currentTarget.style.color = "#ffffff";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.background = "rgba(28, 25, 23, 0.03)";
+                      e.currentTarget.style.color = "var(--muted)";
+                    }
+                  }}
+                >
+                  {f}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr style={{ background: "#f3f4f6" }}>
-              {["Item Name", "Branch", "Category", "Current Stock", "Min Level", "Status"].map(
-                (h) => (
-                  <th
-                    key={h}
-                    style={{
-                      textAlign: "left",
-                      color: "#6b7280",
-                      fontSize: "11px",
-                      fontWeight: "700",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.5px",
-                      padding: "12px 22px",
-                    }}
-                  >
-                    {h}
-                  </th>
-                )
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {inventoryItems.map((row, i) => (
-              <tr key={i} style={{ borderTop: "1px solid #e5e7eb" }}>
-                <td
-                  style={{
-                    padding: "14px 22px",
-                    color: "#111827",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                  }}
-                >
-                  {row.item}
-                </td>
-                <td style={{ padding: "14px 22px", color: "#6b7280", fontSize: "13px" }}>
-                  {row.branch}
-                </td>
-                <td style={{ padding: "14px 22px" }}>
-                  <span
-                    style={{
-                      background: "#fef3c7",
-                      color: "#6b7280",
-                      fontSize: "11px",
-                      fontWeight: "500",
-                      padding: "3px 8px",
-                      borderRadius: "4px",
-                    }}
-                  >
-                    {row.category}
-                  </span>
-                </td>
-                <td
-                  style={{
-                    padding: "14px 22px",
-                    color: row.stock === 0 ? "#f87171" : "#111827",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                  }}
-                >
-                  {row.stock} {row.unit}
-                </td>
-                <td style={{ padding: "14px 22px", color: "#6b7280", fontSize: "13px" }}>
-                  {row.min} {row.unit}
-                </td>
-                <td style={{ padding: "14px 22px" }}>
-                  <StatusBadge status={row.status} />
-                </td>
+        <div style={{ overflowX: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ background: "var(--surface-muted)" }}>
+                {["Item Name", "Branch", "Category", "Current Stock", "Min Level", "Status"].map(
+                  (h) => (
+                    <th
+                      key={h}
+                      style={{
+                        textAlign: "left",
+                        color: "var(--muted)",
+                        fontSize: "11px",
+                        fontWeight: "700",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.8px",
+                        padding: "14px 24px",
+                        borderBottom: "1px solid var(--border)",
+                      }}
+                    >
+                      {h}
+                    </th>
+                  )
+                )}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredItems.map((row, i) => (
+                <tr
+                  key={i}
+                  style={{
+                    borderBottom: i < filteredItems.length - 1 ? "1px solid var(--border-subtle)" : "none",
+                    transition: "all 0.15s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "rgba(28, 25, 23, 0.03)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "transparent";
+                  }}
+                >
+                  <td
+                    style={{
+                      padding: "16px 24px",
+                      color: "#ffffff",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {row.item}
+                  </td>
+                  <td style={{ padding: "16px 24px", color: "var(--muted)", fontSize: "13px", fontWeight: "500" }}>
+                    {row.branch}
+                  </td>
+                  <td style={{ padding: "16px 24px" }}>
+                    <span
+                      style={{
+                        background: "rgba(28, 25, 23, 0.04)",
+                        border: "1px solid var(--border-subtle)",
+                        color: "var(--muted)",
+                        fontSize: "11px",
+                        fontWeight: "600",
+                        padding: "3px 8px",
+                        borderRadius: "6px",
+                      }}
+                    >
+                      {row.category}
+                    </span>
+                  </td>
+                  <td
+                    style={{
+                      padding: "16px 24px",
+                      color: row.stock === 0 ? "#ef4444" : "#ffffff",
+                      fontSize: "14px",
+                      fontWeight: "700",
+                    }}
+                  >
+                    {row.stock} <span style={{ color: "var(--muted)", fontSize: "12px", fontWeight: "500" }}>{row.unit}</span>
+                  </td>
+                  <td style={{ padding: "16px 24px", color: "var(--muted)", fontSize: "13px", fontWeight: "500" }}>
+                    {row.min} <span style={{ color: "var(--muted)", fontSize: "11px" }}>{row.unit}</span>
+                  </td>
+                  <td style={{ padding: "16px 24px" }}>
+                    <StatusBadge status={row.status} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

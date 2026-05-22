@@ -53,31 +53,46 @@ const branches = [
   },
 ];
 
-const stockCfg: Record<string, { bg: string; color: string }> = {
-  OK: { bg: "#dcfce7", color: "#4ade80" },
-  Low: { bg: "#fef3c7", color: "#f59e0b" },
-  Warning: { bg: "#fee2e2", color: "#f87171" },
+const stockConfig: Record<string, { bg: string; color: string; border: string; glow: string }> = {
+  OK: { bg: "rgba(16, 185, 129, 0.1)", color: "#10b981", border: "rgba(16, 185, 129, 0.2)", glow: "#10b981" },
+  Low: { bg: "rgba(245, 158, 11, 0.1)", color: "#f59e0b", border: "rgba(245, 158, 11, 0.2)", glow: "#f59e0b" },
+  Warning: { bg: "rgba(239, 68, 68, 0.1)", color: "#ef4444", border: "rgba(239, 68, 68, 0.2)", glow: "#ef4444" },
 };
 
 const accentColors: Record<string, string> = {
-  OK: "#4ade80",
+  OK: "#10b981",
   Low: "#f59e0b",
-  Warning: "#f87171",
+  Warning: "#ef4444",
 };
 
 function StockBadge({ status }: { status: string }) {
-  const s = stockCfg[status] || stockCfg.OK;
+  const cfg = stockConfig[status] || stockConfig.OK;
   return (
     <span
       style={{
-        background: s.bg,
-        color: s.color,
+        background: cfg.bg,
+        color: cfg.color,
+        border: `1px solid ${cfg.border}`,
         fontSize: "11px",
-        fontWeight: "700",
+        fontWeight: "800",
         padding: "3px 9px",
-        borderRadius: "999px",
+        borderRadius: "6px",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "5px",
+        letterSpacing: "0.2px",
+        textTransform: "uppercase",
       }}
     >
+      <span
+        style={{
+          width: "5px",
+          height: "5px",
+          borderRadius: "50%",
+          background: cfg.glow,
+          boxShadow: `0 0 6px ${cfg.glow}`,
+        }}
+      />
       {status}
     </span>
   );
@@ -88,21 +103,20 @@ export default function BranchesPage() {
   const totalOrders = branches.reduce((s, b) => s + b.orders, 0);
 
   return (
-    <div style={{ padding: "32px", minHeight: "100vh", background: "#f9fafb" }}>
+    <div style={{ padding: "32px", minHeight: "100vh", background: "#f8f6f2", display: "flex", flexDirection: "column" }}>
       {/* Header */}
-      <div style={{ marginBottom: "26px" }}>
-        <h1
-          style={{
-            color: "#111827",
-            fontSize: "24px",
+      <div style={{ marginBottom: "28px" }}>
+        <h1 style={{ color: "var(--text)",
+            fontFamily: "var(--font-display)",
+            fontSize: "28px",
             fontWeight: "800",
-            letterSpacing: "-0.5px",
+            letterSpacing: "-0.6px",
           }}
         >
-          Branches
+          Branch Management
         </h1>
-        <p style={{ color: "#6b7280", fontSize: "14px", marginTop: "3px" }}>
-          Overview of all 5 Popcorn Place Kuwait locations
+        <p style={{ color: "var(--muted)", fontSize: "14px", marginTop: "4px", fontWeight: "500" }}>
+          Performance analytics and status overview of all 5 Popcorn Place Kuwait locations
         </p>
       </div>
 
@@ -111,44 +125,58 @@ export default function BranchesPage() {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "12px",
+          gap: "16px",
           marginBottom: "28px",
         }}
       >
         {[
-          { label: "Total Branches", value: "5 / 5", icon: "🏪", sub: "All operational" },
+          { label: "Total Branches", value: "5 / 5 Active", icon: "🏪", sub: "All operational", accent: "#3b82f6" },
           {
             label: "Combined Revenue",
-            value: `KD ${totalSales.toLocaleString()}`,
+            value: `KD ${totalSales.toFixed(3)}`,
             icon: "💰",
-            sub: "Today",
+            sub: "Today global aggregate",
+            accent: "#f59e0b",
           },
           {
             label: "Combined Orders",
-            value: totalOrders.toLocaleString(),
+            value: totalOrders.toString(),
             icon: "📦",
-            sub: "Today",
+            sub: "Today global sales count",
+            accent: "#10b981",
           },
         ].map((s, i) => (
           <div
             key={i}
             style={{
               background: "#ffffff",
-              border: "1px solid #e5e7eb",
-              borderRadius: "14px",
-              padding: "20px",
+              border: "1px solid var(--border)",
+              borderRadius: "16px",
+              padding: "20px 22px",
               display: "flex",
               alignItems: "center",
               gap: "16px",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.borderColor = "rgba(245, 158, 11, 0.25)";
+              e.currentTarget.style.background = "var(--surface-hover)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.06)";
+              e.currentTarget.style.background = "var(--surface)";
             }}
           >
             <span
               style={{
-                fontSize: "26px",
-                background: "#fef3c7",
+                fontSize: "24px",
+                background: "rgba(28, 25, 23, 0.03)",
+                border: "1px solid var(--border-subtle)",
                 borderRadius: "12px",
-                width: "50px",
-                height: "50px",
+                width: "48px",
+                height: "48px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -160,20 +188,20 @@ export default function BranchesPage() {
             <div>
               <div
                 style={{
-                  color: "#6b7280",
+                  color: "var(--muted)",
                   fontSize: "11px",
                   fontWeight: "700",
                   textTransform: "uppercase",
-                  letterSpacing: "0.5px",
-                  marginBottom: "3px",
+                  letterSpacing: "0.8px",
+                  marginBottom: "4px",
                 }}
               >
                 {s.label}
               </div>
-              <div style={{ color: "#111827", fontSize: "22px", fontWeight: "800", letterSpacing: "-0.3px" }}>
+              <div style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: "800", letterSpacing: "-0.3px" }}>
                 {s.value}
               </div>
-              <div style={{ color: "#6b7280", fontSize: "11px", marginTop: "1px" }}>{s.sub}</div>
+              <div style={{ color: "var(--muted)", fontSize: "11px", marginTop: "2px", fontWeight: "500" }}>{s.sub}</div>
             </div>
           </div>
         ))}
@@ -192,11 +220,24 @@ export default function BranchesPage() {
             key={i}
             style={{
               background: "#ffffff",
-              border: "1px solid #e5e7eb",
+              border: "1px solid var(--border)",
               borderRadius: "16px",
-              padding: "22px",
+              padding: "24px",
               position: "relative",
               overflow: "hidden",
+              transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-4px)";
+              e.currentTarget.style.borderColor = "rgba(245, 158, 11, 0.3)";
+              e.currentTarget.style.boxShadow = "0 8px 24px rgba(245, 158, 11, 0.12)";
+              e.currentTarget.style.background = "var(--surface-hover)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.06)";
+              e.currentTarget.style.boxShadow = "none";
+              e.currentTarget.style.background = "var(--surface)";
             }}
           >
             {/* Top accent bar */}
@@ -218,21 +259,22 @@ export default function BranchesPage() {
                 display: "flex",
                 alignItems: "flex-start",
                 justifyContent: "space-between",
-                marginBottom: "18px",
+                marginBottom: "20px",
                 marginTop: "4px",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
                 <div
                   style={{
-                    width: "46px",
-                    height: "46px",
-                    background: "#fef3c7",
+                    width: "48px",
+                    height: "48px",
+                    background: "rgba(28, 25, 23, 0.03)",
+                    border: "1px solid var(--border-subtle)",
                     borderRadius: "12px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontSize: "22px",
+                    fontSize: "20px",
                     flexShrink: 0,
                   }}
                 >
@@ -241,31 +283,33 @@ export default function BranchesPage() {
                 <div>
                   <div
                     style={{
-                      color: "#111827",
-                      fontSize: "16px",
+                      color: "var(--text)",
+                      fontFamily: "var(--font-display)",
+                      fontSize: "17px",
                       fontWeight: "700",
                       letterSpacing: "-0.3px",
                     }}
                   >
                     {branch.name}
                   </div>
-                  <div style={{ color: "#6b7280", fontSize: "12px", marginTop: "1px" }}>
-                    {branch.city} · {branch.manager}
+                  <div style={{ color: "var(--muted)", fontSize: "12px", marginTop: "3px", fontWeight: "500" }}>
+                    {branch.city} · <span style={{ color: "var(--text)", fontWeight: "600" }}>{branch.manager}</span>
                   </div>
                 </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                 <span
                   style={{
                     display: "inline-block",
-                    width: "7px",
-                    height: "7px",
+                    width: "6px",
+                    height: "6px",
                     borderRadius: "50%",
-                    background: "#4ade80",
+                    background: "#10b981",
+                    boxShadow: "0 0 8px #10b981",
                   }}
                 />
-                <span style={{ color: "#4ade80", fontSize: "12px", fontWeight: "500" }}>
-                  Open
+                <span style={{ color: "#10b981", fontSize: "12px", fontWeight: "700", letterSpacing: "0.2px" }}>
+                  OPEN
                 </span>
               </div>
             </div>
@@ -275,48 +319,14 @@ export default function BranchesPage() {
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "10px",
-                marginBottom: "16px",
+                gap: "12px",
+                marginBottom: "20px",
               }}
             >
-              <div style={{ background: "#fef3c7", borderRadius: "9px", padding: "12px 13px" }}>
+              <div style={{ background: "rgba(28, 25, 23, 0.03)", border: "1px solid var(--border-subtle)", borderRadius: "10px", padding: "12px" }}>
                 <div
                   style={{
-                    color: "#6b7280",
-                    fontSize: "10px",
-                    fontWeight: "700",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.4px",
-                    marginBottom: "4px",
-                  }}
-                >
-                  Sales
-                </div>
-                <div style={{ color: "#f59e0b", fontSize: "16px", fontWeight: "800" }}>
-                  KD {branch.sales}
-                </div>
-              </div>
-              <div style={{ background: "#fef3c7", borderRadius: "9px", padding: "12px 13px" }}>
-                <div
-                  style={{
-                    color: "#6b7280",
-                    fontSize: "10px",
-                    fontWeight: "700",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.4px",
-                    marginBottom: "4px",
-                  }}
-                >
-                  Orders
-                </div>
-                <div style={{ color: "#111827", fontSize: "16px", fontWeight: "800" }}>
-                  {branch.orders}
-                </div>
-              </div>
-              <div style={{ background: "#fef3c7", borderRadius: "9px", padding: "12px 13px" }}>
-                <div
-                  style={{
-                    color: "#6b7280",
+                    color: "var(--muted)",
                     fontSize: "10px",
                     fontWeight: "700",
                     textTransform: "uppercase",
@@ -324,9 +334,45 @@ export default function BranchesPage() {
                     marginBottom: "6px",
                   }}
                 >
-                  Stock
+                  Sales
                 </div>
-                <StockBadge status={branch.stock} />
+                <div style={{ color: "#f59e0b", fontFamily: "var(--font-display)", fontSize: "16px", fontWeight: "800" }}>
+                  KD {branch.sales.toFixed(3)}
+                </div>
+              </div>
+              <div style={{ background: "rgba(28, 25, 23, 0.03)", border: "1px solid var(--border-subtle)", borderRadius: "10px", padding: "12px" }}>
+                <div
+                  style={{
+                    color: "var(--muted)",
+                    fontSize: "10px",
+                    fontWeight: "700",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.4px",
+                    marginBottom: "6px",
+                  }}
+                >
+                  Orders
+                </div>
+                <div style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "16px", fontWeight: "800" }}>
+                  {branch.orders}
+                </div>
+              </div>
+              <div style={{ background: "rgba(28, 25, 23, 0.03)", border: "1px solid var(--border-subtle)", borderRadius: "10px", padding: "12px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <div
+                  style={{
+                    color: "var(--muted)",
+                    fontSize: "10px",
+                    fontWeight: "700",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.4px",
+                    marginBottom: "6px",
+                  }}
+                >
+                  Stock Status
+                </div>
+                <div style={{ display: "flex" }}>
+                  <StockBadge status={branch.stock} />
+                </div>
               </div>
             </div>
 
@@ -336,24 +382,34 @@ export default function BranchesPage() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
+                paddingTop: "4px",
               }}
             >
-              <span style={{ color: "#6b7280", fontSize: "12px" }}>
+              <span style={{ color: "var(--muted)", fontSize: "12px", fontWeight: "500" }}>
                 {branch.items} active SKUs
               </span>
               <button
                 style={{
-                  background: "transparent",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "7px",
+                  background: "rgba(28, 25, 23, 0.03)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "8px",
                   color: "#f59e0b",
                   fontSize: "12px",
-                  fontWeight: "600",
-                  padding: "5px 13px",
+                  fontWeight: "700",
+                  padding: "6px 14px",
                   cursor: "pointer",
+                  transition: "all 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(245, 158, 11, 0.1)";
+                  e.currentTarget.style.borderColor = "rgba(245, 158, 11, 0.25)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(28, 25, 23, 0.03)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.06)";
                 }}
               >
-                View Details →
+                View Live feed →
               </button>
             </div>
           </div>

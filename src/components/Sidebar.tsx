@@ -16,8 +16,6 @@ interface SidebarProps {
   user: any;
 }
 
-/* ── Inline SVG icons ── */
-
 const navItems: { id: NavPage; label: string; Icon: React.ElementType; badge?: string }[] = [
   { id: "dashboard", label: "Dashboard", Icon: LayoutDashboard },
   { id: "pos", label: "Point of Sale", Icon: Monitor, badge: "LIVE" },
@@ -30,23 +28,26 @@ const navItems: { id: NavPage; label: string; Icon: React.ElementType; badge?: s
 export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps) {
   const role = user?.role || "SUPER ADMIN";
 
-  const allowedNavItems = navItems.filter(item => {
+  const allowedNavItems = navItems.filter((item) => {
     if (role === "SUPER ADMIN") return true;
     if (role === "HEAD OFFICE ADMIN") return item.id !== "pos";
     if (role === "BRANCH MANAGER") return item.id !== "branches";
     if (role === "BRANCH STAFF") return item.id === "pos";
-    if (role === "COMMISSARY MANAGER") return item.id === "inventory" || item.id === "stock-transfer" || item.id === "reports";
+    if (role === "COMMISSARY MANAGER")
+      return item.id === "inventory" || item.id === "stock-transfer" || item.id === "reports";
     return true;
   });
+
   return (
     <aside
       style={{
         background: "#ffffff",
-        width: "240px",
+        width: "248px",
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        borderRight: "1px solid #e5e7eb",
+        borderRight: "1px solid var(--border)",
+        boxShadow: "var(--shadow-sm)",
         position: "fixed",
         top: 0,
         left: 0,
@@ -54,58 +55,91 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
         zIndex: 50,
       }}
     >
-      {/* ── Logo ── */}
-      <div style={{ padding: "24px 20px 18px", borderBottom: "1px solid #e5e7eb" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "11px" }}>
+      <div style={{ padding: "22px 20px 18px", borderBottom: "1px solid var(--border)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <div
             style={{
-              background: "#f59e0b",
-              borderRadius: "10px",
-              width: "40px",
-              height: "40px",
+              background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+              borderRadius: "12px",
+              width: "42px",
+              height: "42px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: "21px",
               flexShrink: 0,
+              boxShadow: "0 4px 12px rgba(217, 119, 6, 0.25)",
             }}
           >
-            <Popcorn size={21} />
+            <Popcorn size={22} color="#ffffff" />
           </div>
           <div>
-            <div style={{ color: "#f59e0b", fontWeight: "800", fontSize: "15px", letterSpacing: "-0.3px", lineHeight: 1.2 }}>
+            <div
+              style={{
+                color: "var(--text)",
+                fontFamily: "var(--font-display)",
+                fontWeight: "800",
+                fontSize: "15px",
+                letterSpacing: "-0.3px",
+                lineHeight: 1.2,
+              }}
+            >
               Popcorn Place KW
             </div>
-            <div style={{ color: "#6b7280", fontSize: "11px", fontWeight: "500", marginTop: "1px" }}>
+            <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "600", marginTop: "2px" }}>
               POS System
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Active Branch ── */}
       <div style={{ padding: "14px 14px 6px" }}>
         <div
           style={{
-            background: "#f3f4f6",
-            borderRadius: "8px",
+            background: "var(--surface-muted)",
+            borderRadius: "10px",
             padding: "10px 13px",
-            border: "1px solid #e5e7eb",
+            border: "1px solid var(--border-subtle)",
           }}
         >
-          <div style={{ color: "#6b7280", fontSize: "10px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "2px" }}>
+          <div
+            style={{
+              color: "var(--muted)",
+              fontSize: "9px",
+              fontWeight: "700",
+              textTransform: "uppercase",
+              letterSpacing: "0.8px",
+              marginBottom: "3px",
+            }}
+          >
             Location
           </div>
-          <div style={{ color: "#111827", fontSize: "13px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div
+            style={{
+              color: "var(--text)",
+              fontSize: "13px",
+              fontWeight: "600",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             {user?.location || "Head Office"}
-            <span style={{ color: "#6b7280", fontSize: "11px" }}>▾</span>
+            <span style={{ color: "var(--amber-light)", fontSize: "11px" }}>▾</span>
           </div>
         </div>
       </div>
 
-      {/* ── Nav ── */}
-      <nav style={{ padding: "10px 10px", flex: 1, overflowY: "auto" }}>
-        <div style={{ color: "#6b7280", fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.8px", padding: "4px 8px 8px" }}>
+      <nav style={{ padding: "10px 12px", flex: 1, overflowY: "auto" }}>
+        <div
+          style={{
+            color: "var(--muted)",
+            fontSize: "10px",
+            fontWeight: "700",
+            textTransform: "uppercase",
+            letterSpacing: "0.8px",
+            padding: "4px 8px 8px",
+          }}
+        >
           Navigation
         </div>
         {allowedNavItems.map(({ id, label, Icon, badge }) => {
@@ -119,33 +153,49 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
                 display: "flex",
                 alignItems: "center",
                 gap: "10px",
-                padding: "9px 11px",
-                borderRadius: "8px",
-                marginBottom: "2px",
+                padding: "10px 12px",
+                borderRadius: "10px",
+                marginBottom: "4px",
                 border: "none",
                 cursor: "pointer",
-                background: isActive ? "#f59e0b" : "transparent",
-                color: isActive ? "#ffffff" : "#6b7280",
-                fontWeight: isActive ? "600" : "400",
+                background: isActive
+                  ? "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
+                  : "transparent",
+                color: isActive ? "#ffffff" : "var(--muted)",
+                fontWeight: isActive ? "600" : "500",
                 fontSize: "13.5px",
                 textAlign: "left",
-                transition: "all 0.12s ease",
+                transition: "all 0.2s ease",
+                boxShadow: isActive ? "0 4px 12px rgba(217, 119, 6, 0.22)" : "none",
+              }}
+              onMouseEnter={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.background = "var(--surface-muted)";
+                  e.currentTarget.style.color = "var(--text)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.color = "var(--muted)";
+                }
               }}
             >
-              <span style={{ opacity: isActive ? 1 : 0.7, flexShrink: 0 }}>
-                <Icon size={17} />
+              <span style={{ opacity: isActive ? 1 : 0.85, flexShrink: 0 }}>
+                <Icon size={17} color={isActive ? "#ffffff" : "var(--muted)"} />
               </span>
               <span style={{ flex: 1 }}>{label}</span>
               {badge && (
                 <span
                   style={{
-                    background: isActive ? "#ffffff" : "#f59e0b",
-                    color: isActive ? "#f59e0b" : "#ffffff",
+                    background: isActive ? "rgba(255,255,255,0.25)" : "rgba(245, 158, 11, 0.12)",
+                    color: isActive ? "#ffffff" : "var(--amber)",
                     fontSize: "9px",
                     fontWeight: "800",
-                    padding: "2px 5px",
-                    borderRadius: "4px",
-                    letterSpacing: "0.3px",
+                    padding: "2px 6px",
+                    borderRadius: "5px",
+                    letterSpacing: "0.5px",
+                    border: isActive ? "none" : "1px solid rgba(245, 158, 11, 0.25)",
                   }}
                 >
                   {badge}
@@ -156,38 +206,49 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
         })}
       </nav>
 
-      {/* ── Footer ── */}
-      <div style={{ padding: "12px 14px", borderTop: "1px solid #e5e7eb" }}>
-        {/* User */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+      <div
+        style={{
+          padding: "14px 16px",
+          borderTop: "1px solid var(--border)",
+          background: "var(--surface-muted)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
           <div
             style={{
-              width: "34px",
-              height: "34px",
-              borderRadius: "8px",
-              background: user?.color || "#e5e7eb",
-              border: "1px solid #e5e7eb",
+              width: "36px",
+              height: "36px",
+              borderRadius: "10px",
+              background: user?.color || "#d97706",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: user?.color ? "#ffffff" : "#f59e0b",
+              color: "#ffffff",
               fontWeight: "800",
-              fontSize: "14px",
+              fontSize: "13px",
               flexShrink: 0,
             }}
           >
             {user?.initials || "SA"}
           </div>
           <div style={{ minWidth: 0, overflow: "hidden" }}>
-            <div style={{ color: "#111827", fontSize: "13px", fontWeight: "600", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden" }}>
+            <div
+              style={{
+                color: "var(--text)",
+                fontSize: "13px",
+                fontWeight: "700",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+              }}
+            >
               {user?.name || "Super Admin"}
             </div>
-            <div style={{ color: "#6b7280", fontSize: "10px", fontWeight: "600", letterSpacing: "0.2px" }}>
+            <div style={{ color: "var(--muted)", fontSize: "10px", fontWeight: "600" }}>
               {user?.role || "SUPER ADMIN"}
             </div>
           </div>
         </div>
-        {/* Sign out */}
         <button
           onClick={() => onNavigate("login")}
           style={{
@@ -195,14 +256,25 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
             display: "flex",
             alignItems: "center",
             gap: "8px",
-            padding: "8px 10px",
-            borderRadius: "7px",
-            border: "1px solid #e5e7eb",
+            padding: "9px 10px",
+            borderRadius: "8px",
+            border: "1px solid var(--border)",
             cursor: "pointer",
-            background: "transparent",
-            color: "#6b7280",
+            background: "#ffffff",
+            color: "var(--muted)",
             fontSize: "13px",
-            fontWeight: "500",
+            fontWeight: "600",
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#fef2f2";
+            e.currentTarget.style.borderColor = "#fecaca";
+            e.currentTarget.style.color = "#dc2626";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "var(--surface)";
+            e.currentTarget.style.borderColor = "var(--border)";
+            e.currentTarget.style.color = "var(--muted)";
           }}
         >
           <LogOut size={16} />

@@ -1,5 +1,5 @@
 "use client";
-import { CircleDollarSign, Package, AlertTriangle, Store, FileText, Percent, ArrowRightLeft, CreditCard } from "lucide-react";
+import { CircleDollarSign, Package, AlertTriangle, FileText, ArrowRightLeft, CreditCard, Percent } from "lucide-react";
 
 import {
   BarChart,
@@ -62,14 +62,15 @@ const ChartTooltip = ({ active, payload, label }: any) => {
     return (
       <div
         style={{
-          background: "#ffffff",
-          border: "1px solid #e5e7eb",
+          background: "var(--surface-muted)",
+          border: "1px solid var(--border)",
           borderRadius: "8px",
           padding: "10px 14px",
+          boxShadow: "var(--shadow-md)",
         }}
       >
-        <div style={{ color: "#6b7280", fontSize: "12px", marginBottom: "3px" }}>{label}</div>
-        <div style={{ color: "#f59e0b", fontSize: "17px", fontWeight: "700" }}>
+        <div style={{ color: "var(--muted)", fontSize: "12px", marginBottom: "3px", fontWeight: "600" }}>{label}</div>
+        <div style={{ color: "#f59e0b", fontFamily: "var(--font-display)", fontSize: "16px", fontWeight: "800" }}>
           KD {payload[0].value.toFixed(3)}
         </div>
       </div>
@@ -94,16 +95,16 @@ export default function DashboardPage({ user }: { user?: any }) {
   // Define Metrics based on Role
   const metrics = isBranch
     ? [
-        { label: "Today's Sales", value: "KD 196.000", sub: "+5.2% vs yesterday", up: true, icon: <CircleDollarSign size={19} />, color: "#f59e0b" },
-        { label: "Today's Orders", value: "42", sub: "+2.1% vs yesterday", up: true, icon: <Package size={19} />, color: "#60a5fa" },
-        { label: "Stock Alerts", value: displayedAlerts.length.toString(), sub: "Requires attention", up: false, icon: <AlertTriangle size={19} />, color: "#f87171" },
-        { label: "Cash in Drawer", value: "KD 85.500", sub: "Expected cash", up: true, icon: <CreditCard size={19} />, color: "#4ade80" },
+        { label: "Today's Sales", value: "KD 196.000", sub: "+5.2% vs yesterday", up: true, icon: <CircleDollarSign size={19} />, color: "#f59e0b", bg: "rgba(245, 158, 11, 0.08)" },
+        { label: "Today's Orders", value: "42", sub: "+2.1% vs yesterday", up: true, icon: <Package size={19} />, color: "#3b82f6", bg: "rgba(59, 130, 246, 0.08)" },
+        { label: "Stock Alerts", value: displayedAlerts.length.toString(), sub: "Requires attention", up: false, icon: <AlertTriangle size={19} />, color: "#ef4444", bg: "rgba(239, 68, 68, 0.08)" },
+        { label: "Cash in Drawer", value: "KD 85.500", sub: "Expected cash", up: true, icon: <CreditCard size={19} />, color: "#10b981", bg: "rgba(16, 185, 129, 0.08)" },
       ]
     : [
-        { label: "Global Sales", value: "KD 2,840", sub: "+12.4% vs yesterday", up: true, icon: <CircleDollarSign size={19} />, color: "#f59e0b" },
-        { label: "Global Orders", value: "138", sub: "+8.2% vs yesterday", up: true, icon: <Package size={19} />, color: "#60a5fa" },
-        { label: "HO Stock Alerts", value: "4", sub: "Global shortages", up: false, icon: <AlertTriangle size={19} />, color: "#f87171" },
-        { label: "Overall COGS %", value: "32.5%", sub: "Healthy margin", up: true, icon: <Percent size={19} />, color: "#4ade80" },
+        { label: "Global Sales", value: "KD 2,840.000", sub: "+12.4% vs yesterday", up: true, icon: <CircleDollarSign size={19} />, color: "#f59e0b", bg: "rgba(245, 158, 11, 0.08)" },
+        { label: "Global Orders", value: "138", sub: "+8.2% vs yesterday", up: true, icon: <Package size={19} />, color: "#3b82f6", bg: "rgba(59, 130, 246, 0.08)" },
+        { label: "HO Stock Alerts", value: "4", sub: "Global shortages", up: false, icon: <AlertTriangle size={19} />, color: "#ef4444", bg: "rgba(239, 68, 68, 0.08)" },
+        { label: "Overall COGS %", value: "32.5%", sub: "Healthy margin", up: true, icon: <Percent size={19} />, color: "#10b981", bg: "rgba(16, 185, 129, 0.08)" },
       ];
 
   const chartData = isBranch ? branchWeeklyData : weeklyData;
@@ -111,22 +112,37 @@ export default function DashboardPage({ user }: { user?: any }) {
   const chartSubtitle = isBranch ? "Revenue for this location · This week" : "Revenue across all branches · This week";
 
   return (
-    <div style={{ padding: "32px", minHeight: "100vh", background: "#f9fafb" }}>
+    <div style={{ padding: "32px", minHeight: "100vh", background: "#f8f6f2", display: "flex", flexDirection: "column" }}>
       {/* Header */}
-      <div style={{ marginBottom: "28px" }}>
-        <h1
+      <div style={{ marginBottom: "28px", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+        <div>
+          <h1 style={{ color: "var(--text)",
+              fontFamily: "var(--font-display)",
+              fontSize: "28px",
+              fontWeight: "800",
+              letterSpacing: "-0.6px",
+            }}
+          >
+            {isBranch ? `${branchShortName} Branch Dashboard` : "Head Office Dashboard"}
+          </h1>
+          <p style={{ color: "var(--muted)", fontSize: "14px", marginTop: "4px", fontWeight: "500" }}>
+            Welcome back, <span style={{ color: "var(--text)", fontWeight: "700" }}>{user?.name || "Yousef Al-Anjari"}</span> · Thursday, 22 May 2026
+          </p>
+        </div>
+        <div
           style={{
-            color: "#111827",
-            fontSize: "24px",
-            fontWeight: "800",
-            letterSpacing: "-0.5px",
+            background: "rgba(28, 25, 23, 0.04)",
+            border: "1px solid var(--border)",
+            borderRadius: "10px",
+            padding: "8px 16px",
+            color: "#f59e0b",
+            fontSize: "12px",
+            fontWeight: "700",
+            letterSpacing: "0.5px",
           }}
         >
-          {isBranch ? `${branchShortName} Dashboard` : "Head Office Dashboard"}
-        </h1>
-        <p style={{ color: "#6b7280", fontSize: "14px", marginTop: "3px" }}>
-          Welcome back, {user?.name || "Yousef Al-Anjari"} · Thursday, 22 May 2026
-        </p>
+          {locationName.toUpperCase()}
+        </div>
       </div>
 
       {/* Metric Cards */}
@@ -134,7 +150,7 @@ export default function DashboardPage({ user }: { user?: any }) {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "14px",
+          gap: "16px",
           marginBottom: "24px",
         }}
       >
@@ -143,17 +159,28 @@ export default function DashboardPage({ user }: { user?: any }) {
             key={i}
             style={{
               background: "#ffffff",
-              border: "1px solid #e5e7eb",
-              borderRadius: "14px",
-              padding: "22px",
+              border: "1px solid var(--border)",
+              borderRadius: "16px",
+              padding: "20px 22px",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.borderColor = "rgba(245, 158, 11, 0.25)";
+              e.currentTarget.style.background = "var(--surface-hover)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.06)";
+              e.currentTarget.style.background = "var(--surface)";
             }}
           >
             <div
               style={{
                 display: "flex",
-                alignItems: "flex-start",
+                alignItems: "center",
                 justifyContent: "space-between",
-                marginBottom: "12px",
+                marginBottom: "14px",
               }}
             >
               <div
@@ -161,23 +188,23 @@ export default function DashboardPage({ user }: { user?: any }) {
                   fontSize: "11px",
                   fontWeight: "700",
                   textTransform: "uppercase",
-                  letterSpacing: "0.6px",
-                  color: "#6b7280",
+                  letterSpacing: "0.8px",
+                  color: "var(--muted)",
                 }}
               >
                 {m.label}
               </div>
               <div
                 style={{
-                  background: "#fef3c7",
-                  borderRadius: "8px",
-                  width: "38px",
-                  height: "38px",
+                  background: m.bg,
+                  borderRadius: "10px",
+                  width: "36px",
+                  height: "36px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: "19px",
                   color: m.color,
+                  border: `1px solid ${m.color}22`,
                 }}
               >
                 {m.icon}
@@ -185,7 +212,8 @@ export default function DashboardPage({ user }: { user?: any }) {
             </div>
             <div
               style={{
-                color: "#111827",
+                color: "var(--text)",
+                fontFamily: "var(--font-display)",
                 fontSize: "26px",
                 fontWeight: "800",
                 letterSpacing: "-0.5px",
@@ -197,10 +225,20 @@ export default function DashboardPage({ user }: { user?: any }) {
             <div
               style={{
                 fontSize: "12px",
-                fontWeight: "500",
-                color: m.up ? "#4ade80" : "#f87171",
+                fontWeight: "600",
+                color: m.up ? "#10b981" : "#ef4444",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
               }}
             >
+              <span style={{
+                display: "inline-block",
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                background: m.up ? "#10b981" : "#ef4444"
+              }}/>
               {m.sub}
             </div>
           </div>
@@ -211,7 +249,7 @@ export default function DashboardPage({ user }: { user?: any }) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 320px",
+          gridTemplateColumns: "1fr 340px",
           gap: "16px",
           marginBottom: "24px",
         }}
@@ -220,9 +258,9 @@ export default function DashboardPage({ user }: { user?: any }) {
         <div
           style={{
             background: "#ffffff",
-            border: "1px solid #e5e7eb",
-            borderRadius: "14px",
-            padding: "26px",
+            border: "1px solid var(--border)",
+            borderRadius: "16px",
+            padding: "24px 26px",
           }}
         >
           <div
@@ -230,47 +268,54 @@ export default function DashboardPage({ user }: { user?: any }) {
               display: "flex",
               alignItems: "flex-start",
               justifyContent: "space-between",
-              marginBottom: "22px",
+              marginBottom: "24px",
             }}
           >
             <div>
-              <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>
+              <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700" }}>
                 {chartTitle}
               </h2>
-              <p style={{ color: "#6b7280", fontSize: "13px", marginTop: "2px" }}>
+              <p style={{ color: "var(--muted)", fontSize: "13px", marginTop: "3px", fontWeight: "500" }}>
                 {chartSubtitle}
               </p>
             </div>
             <div
               style={{
-                background: "#fef3c7",
-                border: "1px solid #e5e7eb",
-                borderRadius: "6px",
-                padding: "5px 11px",
+                background: "rgba(28, 25, 23, 0.03)",
+                border: "1px solid var(--border)",
+                borderRadius: "8px",
+                padding: "6px 12px",
                 fontSize: "11px",
-                fontWeight: "600",
-                color: "#6b7280",
+                fontWeight: "700",
+                color: "var(--muted)",
+                letterSpacing: "0.2px",
               }}
             >
-              May 2026
+              MAY 2026
             </div>
           </div>
           <ResponsiveContainer width="100%" height={210}>
-            <BarChart data={chartData} barSize={34} margin={{ top: 0, right: 0, left: -10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+            <BarChart data={chartData} barSize={34} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="salesGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#f59e0b" />
+                  <stop offset="100%" stopColor="#d97706" />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(28, 25, 23, 0.04)" vertical={false} />
               <XAxis
                 dataKey="day"
-                tick={{ fill: "#6b7280", fontSize: 12, fontFamily: "DM Sans" }}
+                tick={{ fill: "var(--muted)", fontSize: 11, fontWeight: "600" }}
                 axisLine={false}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fill: "#6b7280", fontSize: 11, fontFamily: "DM Sans" }}
+                tick={{ fill: "var(--muted)", fontSize: 11, fontWeight: "600" }}
                 axisLine={false}
                 tickLine={false}
               />
-              <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(245, 158, 11, 0.05)" }} />
-              <Bar dataKey="sales" fill="#f59e0b" radius={[6, 6, 0, 0]} />
+              <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(28, 25, 23, 0.03)" }} />
+              <Bar dataKey="sales" fill="url(#salesGrad)" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -279,9 +324,9 @@ export default function DashboardPage({ user }: { user?: any }) {
         <div
           style={{
             background: "#ffffff",
-            border: "1px solid #e5e7eb",
-            borderRadius: "14px",
-            padding: "22px",
+            border: "1px solid var(--border)",
+            borderRadius: "16px",
+            padding: "24px",
           }}
         >
           <div
@@ -289,70 +334,76 @@ export default function DashboardPage({ user }: { user?: any }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              marginBottom: "16px",
+              marginBottom: "20px",
             }}
           >
-            <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>
+            <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700" }}>
               Stock Alerts
             </h2>
             <span
               style={{
-                background: "#fee2e2",
-                color: "#f87171",
+                background: "rgba(239, 68, 68, 0.12)",
+                color: "#ef4444",
+                border: "1px solid rgba(239, 68, 68, 0.2)",
                 fontSize: "11px",
-                fontWeight: "700",
-                padding: "3px 9px",
+                fontWeight: "800",
+                padding: "3px 10px",
                 borderRadius: "999px",
+                letterSpacing: "0.2px",
               }}
             >
-              {displayedAlerts.length} active
+              {displayedAlerts.length} ACTIVE
             </span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            {displayedAlerts.map((a, i) => (
-              <div
-                key={i}
-                style={{
-                  background: "#fef3c7",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "9px",
-                  padding: "12px 13px",
-                }}
-              >
+            {displayedAlerts.map((a, i) => {
+              const isCritical = a.level === "critical";
+              return (
                 <div
+                  key={i}
                   style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    justifyContent: "space-between",
+                    background: "rgba(28, 25, 23, 0.03)",
+                    border: "1px solid var(--border-subtle)",
+                    borderRadius: "12px",
+                    padding: "14px 16px",
                   }}
                 >
-                  <div>
-                    <div
-                      style={{ color: "#111827", fontSize: "13px", fontWeight: "600" }}
-                    >
-                      {a.item}
-                    </div>
-                    <div style={{ color: "#6b7280", fontSize: "11px", marginTop: "2px" }}>
-                      {!isBranch && a.branch}
-                      {isBranch && "Current Branch"}
-                    </div>
-                  </div>
-                  <span
+                  <div
                     style={{
-                      background: a.level === "critical" ? "#fee2e2" : "#fef3c7",
-                      color: a.level === "critical" ? "#f87171" : "#f59e0b",
-                      fontSize: "11px",
-                      fontWeight: "700",
-                      padding: "3px 8px",
-                      borderRadius: "5px",
-                      whiteSpace: "nowrap",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
                     }}
                   >
-                    {a.stock}
-                  </span>
+                    <div>
+                      <div
+                        style={{ color: "var(--text)", fontSize: "14px", fontWeight: "700" }}
+                      >
+                        {a.item}
+                      </div>
+                      <div style={{ color: "var(--muted)", fontSize: "11px", marginTop: "3px", fontWeight: "500" }}>
+                        {!isBranch && a.branch}
+                        {isBranch && "Current Branch"}
+                      </div>
+                    </div>
+                    <span
+                      style={{
+                        background: isCritical ? "rgba(239, 68, 68, 0.1)" : "rgba(245, 158, 11, 0.1)",
+                        color: isCritical ? "#ef4444" : "#f59e0b",
+                        border: isCritical ? "1px solid rgba(239, 68, 68, 0.2)" : "1px solid rgba(245, 158, 11, 0.2)",
+                        fontSize: "11px",
+                        fontWeight: "800",
+                        padding: "3px 9px",
+                        borderRadius: "6px",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {a.stock}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -363,96 +414,116 @@ export default function DashboardPage({ user }: { user?: any }) {
           display: "grid",
           gridTemplateColumns: isBranch ? "1fr 1fr" : "2fr 1fr",
           gap: "16px",
+          flex: 1,
         }}
       >
         {/* Top Items Table */}
         <div
           style={{
             background: "#ffffff",
-            border: "1px solid #e5e7eb",
-            borderRadius: "14px",
+            border: "1px solid var(--border)",
+            borderRadius: "16px",
             overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          <div style={{ padding: "22px 24px", borderBottom: "1px solid #e5e7eb" }}>
-            <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>
+          <div style={{ padding: "24px 26px", borderBottom: "1px solid var(--border)" }}>
+            <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700" }}>
               {isBranch ? "Branch Top Items" : "Global Top Selling Items"}
             </h2>
-            <p style={{ color: "#6b7280", fontSize: "13px", marginTop: "2px" }}>
+            <p style={{ color: "var(--muted)", fontSize: "13px", marginTop: "3px", fontWeight: "500" }}>
               Best performers this week
             </p>
           </div>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ background: "#f3f4f6" }}>
-                {["Rank", "Item Name", "Category", "Orders"].map((h) => (
-                  <th
-                    key={h}
-                    style={{
-                      textAlign: "left",
-                      color: "#6b7280",
-                      fontSize: "11px",
-                      fontWeight: "700",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.5px",
-                      padding: "11px 22px",
-                    }}
-                  >
-                    {h}
-                  </th>
-                ))}
-                {!isBranch && (
-                  <th
-                    style={{
-                      textAlign: "left",
-                      color: "#6b7280",
-                      fontSize: "11px",
-                      fontWeight: "700",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.5px",
-                      padding: "11px 22px",
-                    }}
-                  >
-                    Revenue
-                  </th>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {topItems.map((item, i) => (
-                <tr key={i} style={{ borderTop: "1px solid #e5e7eb" }}>
-                  <td style={{ padding: "14px 22px", color: "#6b7280", fontSize: "13px", fontWeight: "700" }}>
-                    #{i + 1}
-                  </td>
-                  <td style={{ padding: "14px 22px", color: "#111827", fontSize: "14px", fontWeight: "500" }}>
-                    {item.name}
-                  </td>
-                  <td style={{ padding: "14px 22px" }}>
-                    <span
+          <div style={{ overflowX: "auto", flex: 1 }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ background: "var(--surface-muted)" }}>
+                  {["Rank", "Item Name", "Category", "Orders"].map((h) => (
+                    <th
+                      key={h}
                       style={{
-                        background: "#fef3c7",
-                        color: "#f59e0b",
+                        textAlign: "left",
+                        color: "var(--muted)",
                         fontSize: "11px",
-                        fontWeight: "600",
-                        padding: "3px 9px",
-                        borderRadius: "4px",
+                        fontWeight: "700",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.8px",
+                        padding: "14px 24px",
+                        borderBottom: "1px solid var(--border)",
                       }}
                     >
-                      {item.category}
-                    </span>
-                  </td>
-                  <td style={{ padding: "14px 22px", color: "#111827", fontSize: "14px" }}>
-                    {isBranch ? Math.floor(item.orders / 5) : item.orders}
-                  </td>
+                      {h}
+                    </th>
+                  ))}
                   {!isBranch && (
-                    <td style={{ padding: "14px 22px", color: "#f59e0b", fontSize: "14px", fontWeight: "700" }}>
-                      KD {item.revenue.toFixed(3)}
-                    </td>
+                    <th
+                      style={{
+                        textAlign: "left",
+                        color: "var(--muted)",
+                        fontSize: "11px",
+                        fontWeight: "700",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.8px",
+                        padding: "14px 24px",
+                        borderBottom: "1px solid var(--border)",
+                      }}
+                    >
+                      Revenue
+                    </th>
                   )}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {topItems.map((item, i) => (
+                  <tr
+                    key={i}
+                    style={{
+                      borderBottom: i < topItems.length - 1 ? "1px solid var(--border-subtle)" : "none",
+                      transition: "all 0.15s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "rgba(28, 25, 23, 0.03)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "transparent";
+                    }}
+                  >
+                    <td style={{ padding: "16px 24px", color: "var(--muted)", fontSize: "13px", fontWeight: "700" }}>
+                      #{i + 1}
+                    </td>
+                    <td style={{ padding: "16px 24px", color: "var(--text)", fontSize: "14px", fontWeight: "600" }}>
+                      {item.name}
+                    </td>
+                    <td style={{ padding: "16px 24px" }}>
+                      <span
+                        style={{
+                          background: "rgba(245, 158, 11, 0.1)",
+                          color: "#f59e0b",
+                          border: "1px solid rgba(245, 158, 11, 0.2)",
+                          fontSize: "11px",
+                          fontWeight: "700",
+                          padding: "3px 9px",
+                          borderRadius: "6px",
+                        }}
+                      >
+                        {item.category}
+                      </span>
+                    </td>
+                    <td style={{ padding: "16px 24px", color: "var(--text)", fontSize: "14px", fontWeight: "500" }}>
+                      {isBranch ? Math.floor(item.orders / 5) : item.orders}
+                    </td>
+                    {!isBranch && (
+                      <td style={{ padding: "16px 24px", color: "#f59e0b", fontFamily: "var(--font-display)", fontSize: "14px", fontWeight: "800" }}>
+                        KD {item.revenue.toFixed(3)}
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Dynamic Panel 2: Purchase Orders (HO) OR Stock Transfers (Branch) */}
@@ -460,27 +531,46 @@ export default function DashboardPage({ user }: { user?: any }) {
           <div
             style={{
               background: "#ffffff",
-              border: "1px solid #e5e7eb",
-              borderRadius: "14px",
+              border: "1px solid var(--border)",
+              borderRadius: "16px",
               overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            <div style={{ padding: "22px 24px", borderBottom: "1px solid #e5e7eb", display: "flex", justifyContent: "space-between" }}>
+            <div style={{ padding: "24px 26px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
-                <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>Purchase Orders</h2>
-                <p style={{ color: "#6b7280", fontSize: "13px", marginTop: "2px" }}>Supplier procurement</p>
+                <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700" }}>Purchase Orders</h2>
+                <p style={{ color: "var(--muted)", fontSize: "13px", marginTop: "3px", fontWeight: "500" }}>Supplier procurement</p>
               </div>
               <FileText size={20} color="#f59e0b" />
             </div>
-            <div style={{ padding: "16px" }}>
+            <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: "12px" }}>
               {purchaseOrders.map((po, i) => (
-                <div key={i} style={{ marginBottom: "12px", padding: "12px", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                    <span style={{ fontWeight: "700", color: "#111827", fontSize: "14px" }}>{po.id}</span>
-                    <span style={{ color: po.status === "Delivered" ? "#4ade80" : "#f59e0b", fontWeight: "600", fontSize: "12px" }}>{po.status}</span>
+                <div
+                  key={i}
+                  style={{
+                    padding: "16px",
+                    background: "rgba(28, 25, 23, 0.03)",
+                    border: "1px solid var(--border-subtle)",
+                    borderRadius: "12px",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                    <span style={{ fontWeight: "700", color: "var(--text)", fontSize: "14px" }}>{po.id}</span>
+                    <span style={{
+                      color: po.status === "Delivered" ? "#10b981" : "#f59e0b",
+                      fontWeight: "800",
+                      fontSize: "11px",
+                      letterSpacing: "0.2px",
+                      background: po.status === "Delivered" ? "rgba(16, 185, 129, 0.1)" : "rgba(245, 158, 11, 0.1)",
+                      border: po.status === "Delivered" ? "1px solid rgba(16, 185, 129, 0.2)" : "1px solid rgba(245, 158, 11, 0.2)",
+                      padding: "2px 8px",
+                      borderRadius: "5px"
+                    }}>{po.status.toUpperCase()}</span>
                   </div>
-                  <div style={{ color: "#6b7280", fontSize: "12px", marginBottom: "4px" }}>{po.supplier}</div>
-                  <div style={{ color: "#111827", fontSize: "14px", fontWeight: "700" }}>KD {po.amount.toFixed(3)}</div>
+                  <div style={{ color: "var(--muted)", fontSize: "12px", marginBottom: "8px", fontWeight: "500" }}>{po.supplier}</div>
+                  <div style={{ color: "#f59e0b", fontFamily: "var(--font-display)", fontSize: "15px", fontWeight: "800" }}>KD {po.amount.toFixed(3)}</div>
                 </div>
               ))}
             </div>
@@ -489,29 +579,48 @@ export default function DashboardPage({ user }: { user?: any }) {
           <div
             style={{
               background: "#ffffff",
-              border: "1px solid #e5e7eb",
-              borderRadius: "14px",
+              border: "1px solid var(--border)",
+              borderRadius: "16px",
               overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            <div style={{ padding: "22px 24px", borderBottom: "1px solid #e5e7eb", display: "flex", justifyContent: "space-between" }}>
+            <div style={{ padding: "24px 26px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
-                <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>Stock Transfers</h2>
-                <p style={{ color: "#6b7280", fontSize: "13px", marginTop: "2px" }}>Recent STNs for this branch</p>
+                <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700" }}>Stock Transfers</h2>
+                <p style={{ color: "var(--muted)", fontSize: "13px", marginTop: "3px", fontWeight: "500" }}>Recent STNs for this branch</p>
               </div>
               <ArrowRightLeft size={20} color="#f59e0b" />
             </div>
-            <div style={{ padding: "16px" }}>
+            <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: "12px" }}>
               {recentTransfers.map((stn, i) => (
-                <div key={i} style={{ marginBottom: "12px", padding: "12px", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                    <span style={{ fontWeight: "700", color: "#111827", fontSize: "14px" }}>{stn.id}</span>
-                    <span style={{ color: stn.status === "Delivered" ? "#4ade80" : "#60a5fa", fontWeight: "600", fontSize: "12px", background: stn.status === "Delivered" ? "#dcfce7" : "#dbeafe", padding: "2px 8px", borderRadius: "4px" }}>
-                      {stn.status}
+                <div
+                  key={i}
+                  style={{
+                    padding: "16px",
+                    background: "rgba(28, 25, 23, 0.03)",
+                    border: "1px solid var(--border-subtle)",
+                    borderRadius: "12px",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                    <span style={{ fontWeight: "700", color: "var(--text)", fontSize: "14px" }}>{stn.id}</span>
+                    <span style={{
+                      color: stn.status === "Delivered" ? "#10b981" : "#3b82f6",
+                      fontWeight: "800",
+                      fontSize: "11px",
+                      letterSpacing: "0.2px",
+                      background: stn.status === "Delivered" ? "rgba(16, 185, 129, 0.1)" : "rgba(59, 130, 246, 0.1)",
+                      border: stn.status === "Delivered" ? "1px solid rgba(16, 185, 129, 0.2)" : "1px solid rgba(59, 130, 246, 0.2)",
+                      padding: "2px 8px",
+                      borderRadius: "5px"
+                    }}>
+                      {stn.status.toUpperCase()}
                     </span>
                   </div>
-                  <div style={{ color: "#6b7280", fontSize: "12px", marginBottom: "4px" }}>From: {stn.from}</div>
-                  <div style={{ color: "#111827", fontSize: "13px", fontWeight: "600" }}>{stn.item}</div>
+                  <div style={{ color: "var(--muted)", fontSize: "12px", marginBottom: "6px", fontWeight: "500" }}>From: {stn.from}</div>
+                  <div style={{ color: "var(--text)", fontSize: "13px", fontWeight: "700" }}>{stn.item}</div>
                 </div>
               ))}
             </div>

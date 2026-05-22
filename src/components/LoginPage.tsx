@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-import { Popcorn, Copy, LogIn, Sparkles } from "lucide-react";
+import { Popcorn, Copy, LogIn, Sparkles, Check } from "lucide-react";
+import { colors, shadows } from "@/lib/theme";
 
 interface LoginPageProps {
   onLogin: (role?: string) => void;
@@ -17,7 +18,7 @@ export const demoAccounts = [
     location: "Head Office",
     description: "Unrestricted access to every branch, module and setting.",
     tab: "head-office" as TabFilter,
-    color: "#1e3a5f",
+    color: "#d97706",
   },
   {
     initials: "AM",
@@ -27,7 +28,7 @@ export const demoAccounts = [
     location: "Head Office",
     description: "Multi-branch reports, transfers, supplier ledger.",
     tab: "head-office" as TabFilter,
-    color: "#1e3a5f",
+    color: "#b45309",
   },
   {
     initials: "YA",
@@ -124,6 +125,7 @@ function Avatar({ initials, color }: { initials: string; color: string }) {
         fontSize: "14px",
         flexShrink: 0,
         letterSpacing: "0.5px",
+        boxShadow: "0 2px 8px rgba(28, 25, 23, 0.12)",
       }}
     >
       {initials}
@@ -135,14 +137,15 @@ function RoleBadge({ role }: { role: string }) {
   return (
     <span
       style={{
-        background: "#f3f4f6",
-        color: "#6b7280",
+        background: "rgba(28, 25, 23, 0.05)",
+        color: "var(--muted)",
         fontSize: "10px",
         fontWeight: "700",
         padding: "2px 7px",
-        borderRadius: "4px",
+        borderRadius: "5px",
         letterSpacing: "0.4px",
-        textTransform: "uppercase" as const,
+        textTransform: "uppercase",
+        border: "1px solid var(--border-subtle)",
       }}
     >
       {role}
@@ -167,9 +170,10 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
 
   return (
     <div
+      className="login-page"
       style={{
         minHeight: "100vh",
-        background: "#f9fafb",
+        background: colors.bg,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -177,35 +181,36 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
         paddingTop: "48px",
         paddingBottom: "48px",
         position: "relative",
-        overflow: "hidden",
+        overflowX: "hidden",
       }}
     >
-      {/* Ambient glows */}
       <div
         style={{
           position: "absolute",
           top: "-15%",
-          right: "-10%",
-          width: "700px",
-          height: "700px",
-          background: "radial-gradient(circle, rgba(245, 158, 11, 0.07) 0%, transparent 65%)",
+          right: "-5%",
+          width: "600px",
+          height: "600px",
+          background: "radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, transparent 65%)",
           pointerEvents: "none",
+          zIndex: 0,
         }}
       />
       <div
         style={{
           position: "absolute",
           bottom: "-20%",
-          left: "-8%",
-          width: "550px",
-          height: "550px",
-          background: "radial-gradient(circle, rgba(245, 158, 11, 0.04) 0%, transparent 65%)",
+          left: "-10%",
+          width: "500px",
+          height: "500px",
+          background: "radial-gradient(circle, rgba(217, 119, 6, 0.08) 0%, transparent 65%)",
           pointerEvents: "none",
+          zIndex: 0,
         }}
       />
 
       {/* Logo block */}
-      <div style={{ textAlign: "center", marginBottom: "32px" }}>
+      <div style={{ textAlign: "center", marginBottom: "32px", zIndex: 10 }}>
         <div
           style={{
             display: "inline-flex",
@@ -213,19 +218,20 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             justifyContent: "center",
             width: "64px",
             height: "64px",
-            background: "#ffffff",
-            border: "1.5px solid #e5e7eb",
+            background: colors.surface,
+            border: `1px solid ${colors.border}`,
             borderRadius: "18px",
             marginBottom: "16px",
-            boxShadow: "0 0 40px rgba(245, 158, 11, 0.12)",
+            boxShadow: shadows.md,
           }}
         >
-          <Popcorn size={30} color="#f59e0b" />
+          <Popcorn size={32} color="#f59e0b" />
         </div>
         <h1
           style={{
-            color: "#111827",
-            fontSize: "26px",
+            color: colors.text,
+            fontFamily: "var(--font-display)",
+            fontSize: "28px",
             fontWeight: "800",
             letterSpacing: "-0.6px",
             marginBottom: "4px",
@@ -233,54 +239,56 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
         >
           Popcorn Place Kuwait
         </h1>
-        <p style={{ color: "#6b7280", fontSize: "14px", fontWeight: "500" }}>
+        <p style={{ color: colors.muted, fontSize: "14px", fontWeight: "600", letterSpacing: "0.2px" }}>
           Multi-Branch POS System
         </p>
       </div>
 
       {/* Login form card */}
       <div
+        className="panel-card"
         style={{
-          width: "100%",
+          width: "90%",
           maxWidth: "400px",
-          background: "#ffffff",
-          border: "1px solid #e5e7eb",
-          borderRadius: "18px",
+          borderRadius: "20px",
           padding: "28px 28px 24px",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
+          boxShadow: shadows.lg,
           marginBottom: "32px",
+          zIndex: 10,
+          background: colors.surface,
         }}
       >
-        <h2 style={{ color: "#111827", fontSize: "17px", fontWeight: "700", marginBottom: "4px" }}>
+        <h2 style={{ color: colors.text, fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700", marginBottom: "4px" }}>
           Welcome back
         </h2>
-        <p style={{ color: "#6b7280", fontSize: "13px", marginBottom: "22px" }}>
+        <p style={{ color: colors.muted, fontSize: "13px", marginBottom: "22px", fontWeight: "500" }}>
           Sign in to access your POS dashboard
         </p>
 
-        <div style={{ marginBottom: "14px" }}>
+        <div style={{ marginBottom: "16px" }}>
           <label
             style={{
               display: "block",
-              color: "#6b7280",
-              fontSize: "11px",
+              color: colors.muted,
+              fontSize: "10px",
               fontWeight: "700",
               textTransform: "uppercase",
-              letterSpacing: "0.6px",
-              marginBottom: "7px",
+              letterSpacing: "0.8px",
+              marginBottom: "8px",
             }}
           >
             Role
           </label>
           <select
+            className="input-field"
             defaultValue="Branch Manager"
             style={{
               width: "100%",
-              padding: "10px 13px",
-              background: "#fef3c7",
-              border: "1px solid #e5e7eb",
-              borderRadius: "9px",
-              color: "#111827",
+              padding: "11px 14px",
+              background: colors.surfaceMuted,
+              border: `1px solid ${colors.border}`,
+              borderRadius: "10px",
+              color: colors.text,
               fontSize: "14px",
               outline: "none",
               cursor: "pointer",
@@ -295,30 +303,31 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           </select>
         </div>
 
-        <div style={{ marginBottom: "14px" }}>
+        <div style={{ marginBottom: "16px" }}>
           <label
             style={{
               display: "block",
-              color: "#6b7280",
-              fontSize: "11px",
+              color: colors.muted,
+              fontSize: "10px",
               fontWeight: "700",
               textTransform: "uppercase",
-              letterSpacing: "0.6px",
-              marginBottom: "7px",
+              letterSpacing: "0.8px",
+              marginBottom: "8px",
             }}
           >
             Username
           </label>
           <input
+            className="input-field"
             type="text"
             defaultValue="yousef.anjari"
             style={{
               width: "100%",
-              padding: "10px 13px",
-              background: "#fef3c7",
-              border: "1px solid #e5e7eb",
-              borderRadius: "9px",
-              color: "#111827",
+              padding: "11px 14px",
+              background: colors.surfaceMuted,
+              border: `1px solid ${colors.border}`,
+              borderRadius: "10px",
+              color: colors.text,
               fontSize: "14px",
               outline: "none",
               boxSizing: "border-box",
@@ -326,30 +335,31 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           />
         </div>
 
-        <div style={{ marginBottom: "22px" }}>
+        <div style={{ marginBottom: "24px" }}>
           <label
             style={{
               display: "block",
-              color: "#6b7280",
-              fontSize: "11px",
+              color: colors.muted,
+              fontSize: "10px",
               fontWeight: "700",
               textTransform: "uppercase",
-              letterSpacing: "0.6px",
-              marginBottom: "7px",
+              letterSpacing: "0.8px",
+              marginBottom: "8px",
             }}
           >
             Password
           </label>
           <input
+            className="input-field"
             type="password"
             defaultValue="password"
             style={{
               width: "100%",
-              padding: "10px 13px",
-              background: "#fef3c7",
-              border: "1px solid #e5e7eb",
-              borderRadius: "9px",
-              color: "#111827",
+              padding: "11px 14px",
+              background: colors.surfaceMuted,
+              border: `1px solid ${colors.border}`,
+              borderRadius: "10px",
+              color: colors.text,
               fontSize: "14px",
               outline: "none",
               boxSizing: "border-box",
@@ -360,10 +370,11 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
         <button
           id="login-btn"
           onClick={() => onLogin()}
+          className="glowing-btn-active"
           style={{
             width: "100%",
-            padding: "12px",
-            background: "#f59e0b",
+            padding: "13px",
+            background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
             border: "none",
             borderRadius: "10px",
             color: "#ffffff",
@@ -371,6 +382,16 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             fontWeight: "700",
             cursor: "pointer",
             letterSpacing: "-0.2px",
+            boxShadow: "0 4px 15px rgba(245, 158, 11, 0.35)",
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.01)";
+            e.currentTarget.style.filter = "brightness(1.1)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.filter = "none";
           }}
         >
           Sign In to Dashboard →
@@ -381,48 +402,49 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
       <div
         style={{
           width: "100%",
-          maxWidth: "840px",
+          maxWidth: "860px",
           padding: "0 20px",
           position: "relative",
+          zIndex: 10,
         }}
       >
         <div
+          className="panel-card"
           style={{
-            background: "#ffffff",
-            border: "1px solid #e5e7eb",
-            borderRadius: "20px",
+            borderRadius: "24px",
             padding: "26px 28px",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.05)",
+            boxShadow: shadows.lg,
+            background: colors.surface,
           }}
         >
           {/* Badge + headline */}
-          <div style={{ marginBottom: "16px" }}>
+          <div style={{ marginBottom: "20px" }}>
             <div
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "6px",
-                background: "#fef3c7",
-                border: "1px solid #fde68a",
+                background: "rgba(245, 158, 11, 0.12)",
+                border: "1px solid rgba(245, 158, 11, 0.25)",
                 borderRadius: "999px",
-                padding: "4px 12px",
-                marginBottom: "10px",
+                padding: "5px 14px",
+                marginBottom: "12px",
               }}
             >
               <Sparkles size={13} color="#f59e0b" />
               <span
                 style={{
-                  color: "#92400e",
-                  fontSize: "12px",
-                  fontWeight: "700",
-                  letterSpacing: "0.3px",
+                  color: "#f59e0b",
+                  fontSize: "11px",
+                  fontWeight: "800",
+                  letterSpacing: "0.5px",
                 }}
               >
                 TRY THE DEMO
               </span>
             </div>
-            <p style={{ color: "#374151", fontSize: "14px", fontWeight: "500", margin: 0 }}>
-              Pick a role to explore Popcorn Place Kuwait with realistic data — no setup needed.
+            <p style={{ color: colors.textSecondary, fontSize: "14px", fontWeight: "600", margin: 0 }}>
+              Pick a demo account below to explore different workspace perspectives with realistic data.
             </p>
           </div>
 
@@ -432,10 +454,11 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               display: "flex",
               gap: "6px",
               marginBottom: "20px",
-              background: "#f3f4f6",
-              borderRadius: "10px",
+              background: colors.surfaceMuted,
+              borderRadius: "12px",
               padding: "4px",
               width: "fit-content",
+              border: `1px solid ${colors.border}`,
             }}
           >
             {tabs.map((t) => (
@@ -444,24 +467,24 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                 onClick={() => setActiveTab(t.id)}
                 style={{
                   padding: "6px 14px",
-                  borderRadius: "7px",
+                  borderRadius: "8px",
                   border: "none",
                   cursor: "pointer",
                   fontSize: "13px",
                   fontWeight: activeTab === t.id ? "700" : "500",
-                  background: activeTab === t.id ? "#1e3a5f" : "transparent",
-                  color: activeTab === t.id ? "#ffffff" : "#6b7280",
+                  background: activeTab === t.id ? "#f59e0b" : "transparent",
+                  color: activeTab === t.id ? colors.white : colors.muted,
                   transition: "all 0.15s ease",
                   display: "flex",
                   alignItems: "center",
-                  gap: "5px",
+                  gap: "6px",
                 }}
               >
                 {t.label}
                 <span
                   style={{
-                    background: activeTab === t.id ? "rgba(255,255,255,0.2)" : "#e5e7eb",
-                    color: activeTab === t.id ? "#ffffff" : "#6b7280",
+                    background: activeTab === t.id ? "rgba(255,255,255,0.25)" : "rgba(28, 25, 23, 0.05)",
+                    color: activeTab === t.id ? colors.white : colors.muted,
                     fontSize: "11px",
                     fontWeight: "700",
                     padding: "1px 6px",
@@ -486,29 +509,32 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               <div
                 key={i}
                 style={{
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "12px",
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: "14px",
                   padding: "16px 18px",
-                  background: "#fafafa",
-                  transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+                  background: colors.surface,
+                  boxShadow: shadows.sm,
+                  transition: "all 0.2s ease",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "#f59e0b";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(245,158,11,0.1)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(245, 158, 11, 0.35)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 16px rgba(245, 158, 11, 0.12)";
+                  (e.currentTarget as HTMLElement).style.background = colors.surfaceHover;
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "#e5e7eb";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                  (e.currentTarget as HTMLElement).style.borderColor = colors.border;
+                  (e.currentTarget as HTMLElement).style.boxShadow = shadows.sm;
+                  (e.currentTarget as HTMLElement).style.background = colors.surface;
                 }}
               >
                 {/* Card top */}
-                <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "10px" }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "12px" }}>
                   <Avatar initials={acc.initials} color={acc.color} />
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" as const }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
                       <span
                         style={{
-                          color: "#111827",
+                          color: colors.text,
                           fontSize: "14px",
                           fontWeight: "700",
                           letterSpacing: "-0.2px",
@@ -518,11 +544,11 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                       </span>
                       <RoleBadge role={acc.role} />
                     </div>
-                    <div style={{ color: "#9ca3af", fontSize: "12px", marginTop: "2px" }}>
+                    <div style={{ color: "var(--muted)", fontSize: "12px", marginTop: "2px", fontWeight: "500" }}>
                       {acc.email}
                     </div>
-                    <div style={{ color: "#6b7280", fontSize: "12px", marginTop: "3px" }}>
-                      <span style={{ color: "#111827", fontWeight: "500" }}>{acc.location}</span>
+                    <div style={{ color: "var(--muted)", fontSize: "12px", marginTop: "4px", lineHeight: "1.4" }}>
+                      <span style={{ color: "#f59e0b", fontWeight: "600" }}>{acc.location}</span>
                       {" · "}
                       {acc.description}
                     </div>
@@ -539,17 +565,29 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                       alignItems: "center",
                       gap: "5px",
                       padding: "6px 13px",
-                      borderRadius: "7px",
-                      border: "1px solid #e5e7eb",
-                      background: "#ffffff",
-                      color: copiedEmail === acc.email ? "#10b981" : "#6b7280",
+                      borderRadius: "8px",
+                      border: "1px solid var(--border)",
+                      background: "rgba(28, 25, 23, 0.03)",
+                      color: copiedEmail === acc.email ? "#10b981" : "var(--muted)",
                       fontSize: "12px",
                       fontWeight: "600",
                       cursor: "pointer",
-                      transition: "color 0.15s",
+                      transition: "all 0.2s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (copiedEmail !== acc.email) {
+                        e.currentTarget.style.background = "rgba(28, 25, 23, 0.06)";
+                        e.currentTarget.style.color = "#ffffff";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (copiedEmail !== acc.email) {
+                        e.currentTarget.style.background = "rgba(28, 25, 23, 0.03)";
+                        e.currentTarget.style.color = "var(--muted)";
+                      }
                     }}
                   >
-                    <Copy size={13} />
+                    {copiedEmail === acc.email ? <Check size={13} /> : <Copy size={13} />}
                     {copiedEmail === acc.email ? "Copied!" : "Copy"}
                   </button>
                   <button
@@ -560,13 +598,20 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                       alignItems: "center",
                       gap: "5px",
                       padding: "6px 14px",
-                      borderRadius: "7px",
+                      borderRadius: "8px",
                       border: "none",
-                      background: "#1e3a5f",
+                      background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
                       color: "#ffffff",
                       fontSize: "12px",
                       fontWeight: "700",
                       cursor: "pointer",
+                      boxShadow: "0 2px 8px rgba(245, 158, 11, 0.2)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.filter = "brightness(1.1)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.filter = "none";
                     }}
                   >
                     <LogIn size={13} />
@@ -578,7 +623,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           </div>
         </div>
 
-        <p style={{ textAlign: "center", color: "#9ca3af", fontSize: "12px", marginTop: "20px" }}>
+        <p style={{ textAlign: "center", color: colors.muted, fontSize: "12px", marginTop: "20px", fontWeight: "600" }}>
           Popcorn Place Kuwait · POS v2.0 · Multi-Branch Edition
         </p>
       </div>
