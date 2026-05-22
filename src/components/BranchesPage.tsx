@@ -1,0 +1,370 @@
+"use client";
+
+const branches = [
+  {
+    name: "Andheri East",
+    manager: "Raj Kumar",
+    city: "Mumbai",
+    sales: 24500,
+    orders: 342,
+    stock: "OK",
+    items: 45,
+    rank: 1,
+  },
+  {
+    name: "Bandra West",
+    manager: "Priya Shah",
+    city: "Mumbai",
+    sales: 19800,
+    orders: 287,
+    stock: "Low",
+    items: 38,
+    rank: 2,
+  },
+  {
+    name: "Dadar",
+    manager: "Amit Patil",
+    city: "Mumbai",
+    sales: 16200,
+    orders: 231,
+    stock: "OK",
+    items: 42,
+    rank: 3,
+  },
+  {
+    name: "Thane",
+    manager: "Sunita Rao",
+    city: "Thane",
+    sales: 13700,
+    orders: 195,
+    stock: "Warning",
+    items: 36,
+    rank: 4,
+  },
+  {
+    name: "Juhu",
+    manager: "Kiran Mehta",
+    city: "Mumbai",
+    sales: 10000,
+    orders: 193,
+    stock: "OK",
+    items: 40,
+    rank: 5,
+  },
+];
+
+const stockCfg: Record<string, { bg: string; color: string }> = {
+  OK: { bg: "#0d2218", color: "#4ade80" },
+  Low: { bg: "#2a1d00", color: "#FAC775" },
+  Warning: { bg: "#2d0f0f", color: "#f87171" },
+};
+
+const accentColors: Record<string, string> = {
+  OK: "#4ade80",
+  Low: "#FAC775",
+  Warning: "#f87171",
+};
+
+function StockBadge({ status }: { status: string }) {
+  const s = stockCfg[status] || stockCfg.OK;
+  return (
+    <span
+      style={{
+        background: s.bg,
+        color: s.color,
+        fontSize: "11px",
+        fontWeight: "700",
+        padding: "3px 9px",
+        borderRadius: "999px",
+      }}
+    >
+      {status}
+    </span>
+  );
+}
+
+export default function BranchesPage() {
+  const totalSales = branches.reduce((s, b) => s + b.sales, 0);
+  const totalOrders = branches.reduce((s, b) => s + b.orders, 0);
+
+  return (
+    <div style={{ padding: "32px", minHeight: "100vh", background: "#0f0e09" }}>
+      {/* Header */}
+      <div style={{ marginBottom: "26px" }}>
+        <h1
+          style={{
+            color: "#ede8db",
+            fontSize: "24px",
+            fontWeight: "800",
+            letterSpacing: "-0.5px",
+          }}
+        >
+          Branches
+        </h1>
+        <p style={{ color: "#5a4e3a", fontSize: "14px", marginTop: "3px" }}>
+          Overview of all 5 Popcorn Place locations
+        </p>
+      </div>
+
+      {/* Summary bar */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "12px",
+          marginBottom: "28px",
+        }}
+      >
+        {[
+          { label: "Total Branches", value: "5 / 5", icon: "🏪", sub: "All operational" },
+          {
+            label: "Combined Revenue",
+            value: `Rs ${(totalSales / 1000).toFixed(1)}k`,
+            icon: "💰",
+            sub: "Today",
+          },
+          {
+            label: "Combined Orders",
+            value: totalOrders.toLocaleString(),
+            icon: "📦",
+            sub: "Today",
+          },
+        ].map((s, i) => (
+          <div
+            key={i}
+            style={{
+              background: "#1c1a10",
+              border: "1px solid #2e2918",
+              borderRadius: "14px",
+              padding: "20px",
+              display: "flex",
+              alignItems: "center",
+              gap: "16px",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "26px",
+                background: "#251c0d",
+                borderRadius: "12px",
+                width: "50px",
+                height: "50px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              {s.icon}
+            </span>
+            <div>
+              <div
+                style={{
+                  color: "#5a4e3a",
+                  fontSize: "11px",
+                  fontWeight: "700",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
+                  marginBottom: "3px",
+                }}
+              >
+                {s.label}
+              </div>
+              <div style={{ color: "#ede8db", fontSize: "22px", fontWeight: "800", letterSpacing: "-0.3px" }}>
+                {s.value}
+              </div>
+              <div style={{ color: "#5a4e3a", fontSize: "11px", marginTop: "1px" }}>{s.sub}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Branch Cards — auto-fill 2-column grid */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: "16px",
+        }}
+      >
+        {branches.map((branch, i) => (
+          <div
+            key={i}
+            style={{
+              background: "#1c1a10",
+              border: "1px solid #2e2918",
+              borderRadius: "16px",
+              padding: "22px",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            {/* Top accent bar */}
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: "3px",
+                background: accentColors[branch.stock],
+                borderRadius: "16px 16px 0 0",
+              }}
+            />
+
+            {/* Branch header */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+                marginBottom: "18px",
+                marginTop: "4px",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <div
+                  style={{
+                    width: "46px",
+                    height: "46px",
+                    background: "#251c0d",
+                    borderRadius: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "22px",
+                    flexShrink: 0,
+                  }}
+                >
+                  🏪
+                </div>
+                <div>
+                  <div
+                    style={{
+                      color: "#ede8db",
+                      fontSize: "16px",
+                      fontWeight: "700",
+                      letterSpacing: "-0.3px",
+                    }}
+                  >
+                    {branch.name}
+                  </div>
+                  <div style={{ color: "#5a4e3a", fontSize: "12px", marginTop: "1px" }}>
+                    {branch.city} · {branch.manager}
+                  </div>
+                </div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "7px",
+                    height: "7px",
+                    borderRadius: "50%",
+                    background: "#4ade80",
+                  }}
+                />
+                <span style={{ color: "#4ade80", fontSize: "12px", fontWeight: "500" }}>
+                  Open
+                </span>
+              </div>
+            </div>
+
+            {/* Stat boxes */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "10px",
+                marginBottom: "16px",
+              }}
+            >
+              <div
+                style={{ background: "#251c0d", borderRadius: "9px", padding: "12px 13px" }}
+              >
+                <div
+                  style={{
+                    color: "#5a4e3a",
+                    fontSize: "10px",
+                    fontWeight: "700",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.4px",
+                    marginBottom: "4px",
+                  }}
+                >
+                  Sales
+                </div>
+                <div style={{ color: "#FAC775", fontSize: "16px", fontWeight: "800" }}>
+                  Rs {(branch.sales / 1000).toFixed(1)}k
+                </div>
+              </div>
+              <div
+                style={{ background: "#251c0d", borderRadius: "9px", padding: "12px 13px" }}
+              >
+                <div
+                  style={{
+                    color: "#5a4e3a",
+                    fontSize: "10px",
+                    fontWeight: "700",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.4px",
+                    marginBottom: "4px",
+                  }}
+                >
+                  Orders
+                </div>
+                <div style={{ color: "#ede8db", fontSize: "16px", fontWeight: "800" }}>
+                  {branch.orders}
+                </div>
+              </div>
+              <div
+                style={{ background: "#251c0d", borderRadius: "9px", padding: "12px 13px" }}
+              >
+                <div
+                  style={{
+                    color: "#5a4e3a",
+                    fontSize: "10px",
+                    fontWeight: "700",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.4px",
+                    marginBottom: "6px",
+                  }}
+                >
+                  Stock
+                </div>
+                <StockBadge status={branch.stock} />
+              </div>
+            </div>
+
+            {/* Footer row */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ color: "#5a4e3a", fontSize: "12px" }}>
+                {branch.items} active SKUs
+              </span>
+              <button
+                style={{
+                  background: "transparent",
+                  border: "1px solid #3d3118",
+                  borderRadius: "7px",
+                  color: "#FAC775",
+                  fontSize: "12px",
+                  fontWeight: "600",
+                  padding: "5px 13px",
+                  cursor: "pointer",
+                }}
+              >
+                View Details →
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
