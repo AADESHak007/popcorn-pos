@@ -1,4 +1,5 @@
 "use client";
+import { CircleDollarSign, Package, BarChart3, Trophy } from "lucide-react";
 
 import {
   BarChart,
@@ -29,7 +30,7 @@ const categoryData = [
   { name: "Combos", value: 8 },
 ];
 
-const PIE_COLORS = ["#FAC775", "#f97316", "#a3e635", "#60a5fa"];
+const PIE_COLORS = ["#f59e0b", "#f97316", "#a3e635", "#60a5fa"];
 
 const dailySales = [
   { date: "22 May", orders: 198, revenue: 13200, avg: "66.7" },
@@ -42,10 +43,10 @@ const dailySales = [
 ];
 
 const reportMetrics = [
-  { label: "Total Revenue", value: "Rs 84,200", icon: "💰", amber: false },
-  { label: "Total Orders", value: "1,248", icon: "📦", amber: false },
-  { label: "Avg Order Value", value: "Rs 67.5", icon: "📊", amber: false },
-  { label: "Best Branch", value: "Andheri E", icon: "🏆", amber: true },
+  { label: "Total Revenue", value: "Rs 84,200", icon: <CircleDollarSign size={22} color="#f59e0b" />, amber: false },
+  { label: "Total Orders", value: "1,248", icon: <Package size={22} color="#8b5cf6" />, amber: false },
+  { label: "Avg Order Value", value: "Rs 67.5", icon: <BarChart3 size={22} color="#3b82f6" />, amber: false },
+  { label: "Best Branch", value: "Andheri E", icon: <Trophy size={22} color="#f59e0b" />, amber: true },
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,14 +55,14 @@ const BranchTooltip = ({ active, payload, label }: any) => {
     return (
       <div
         style={{
-          background: "#1c1a10",
-          border: "1px solid #3d3118",
+          background: "#ffffff",
+          border: "1px solid #e5e7eb",
           borderRadius: "8px",
           padding: "10px 14px",
         }}
       >
-        <div style={{ color: "#8a7d69", fontSize: "12px", marginBottom: "3px" }}>{label}</div>
-        <div style={{ color: "#FAC775", fontSize: "17px", fontWeight: "700" }}>
+        <div style={{ color: "#6b7280", fontSize: "12px", marginBottom: "3px" }}>{label}</div>
+        <div style={{ color: "#f59e0b", fontSize: "17px", fontWeight: "700" }}>
           Rs {payload[0].value.toLocaleString()}
         </div>
       </div>
@@ -72,12 +73,12 @@ const BranchTooltip = ({ active, payload, label }: any) => {
 
 export default function ReportsPage() {
   return (
-    <div style={{ padding: "32px", minHeight: "100vh", background: "#0f0e09" }}>
+    <div style={{ padding: "32px", minHeight: "100vh", background: "#f9fafb" }}>
       {/* Header */}
       <div style={{ marginBottom: "26px" }}>
         <h1
           style={{
-            color: "#ede8db",
+            color: "#111827",
             fontSize: "24px",
             fontWeight: "800",
             letterSpacing: "-0.5px",
@@ -85,7 +86,7 @@ export default function ReportsPage() {
         >
           Reports
         </h1>
-        <p style={{ color: "#5a4e3a", fontSize: "14px", marginTop: "3px" }}>
+        <p style={{ color: "#6b7280", fontSize: "14px", marginTop: "3px" }}>
           Sales analytics across all branches · May 2026
         </p>
       </div>
@@ -103,8 +104,8 @@ export default function ReportsPage() {
           <div
             key={i}
             style={{
-              background: "#1c1a10",
-              border: "1px solid #2e2918",
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
               borderRadius: "14px",
               padding: "22px",
             }}
@@ -114,7 +115,7 @@ export default function ReportsPage() {
             </span>
             <div
               style={{
-                color: "#5a4e3a",
+                color: "#6b7280",
                 fontSize: "11px",
                 fontWeight: "700",
                 textTransform: "uppercase",
@@ -126,7 +127,7 @@ export default function ReportsPage() {
             </div>
             <div
               style={{
-                color: m.amber ? "#FAC775" : "#ede8db",
+                color: m.amber ? "#f59e0b" : "#111827",
                 fontSize: "22px",
                 fontWeight: "800",
                 letterSpacing: "-0.3px",
@@ -150,35 +151,35 @@ export default function ReportsPage() {
         {/* Branch bar chart */}
         <div
           style={{
-            background: "#1c1a10",
-            border: "1px solid #2e2918",
+            background: "#ffffff",
+            border: "1px solid #e5e7eb",
             borderRadius: "14px",
             padding: "26px",
           }}
         >
-          <h2 style={{ color: "#ede8db", fontSize: "16px", fontWeight: "700", marginBottom: "3px" }}>
+          <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700", marginBottom: "3px" }}>
             Branch-wise Revenue
           </h2>
-          <p style={{ color: "#5a4e3a", fontSize: "13px", marginBottom: "20px" }}>
+          <p style={{ color: "#6b7280", fontSize: "13px", marginBottom: "20px" }}>
             Total sales by branch this month
           </p>
           <ResponsiveContainer width="100%" height={210}>
             <BarChart data={branchData} barSize={38} margin={{ top: 0, right: 0, left: -10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#2e2918" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
               <XAxis
                 dataKey="branch"
-                tick={{ fill: "#5a4e3a", fontSize: 12, fontFamily: "DM Sans" }}
+                tick={{ fill: "#6b7280", fontSize: 12, fontFamily: "DM Sans" }}
                 axisLine={false}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fill: "#5a4e3a", fontSize: 11, fontFamily: "DM Sans" }}
+                tick={{ fill: "#6b7280", fontSize: 11, fontFamily: "DM Sans" }}
                 axisLine={false}
                 tickLine={false}
                 tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
               />
-              <Tooltip content={<BranchTooltip />} cursor={{ fill: "rgba(250,199,117,0.05)" }} />
-              <Bar dataKey="sales" fill="#FAC775" radius={[6, 6, 0, 0]} />
+              <Tooltip content={<BranchTooltip />} cursor={{ fill: "rgba(245, 158, 11, 0.05)" }} />
+              <Bar dataKey="sales" fill="#f59e0b" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -186,16 +187,16 @@ export default function ReportsPage() {
         {/* Category donut */}
         <div
           style={{
-            background: "#1c1a10",
-            border: "1px solid #2e2918",
+            background: "#ffffff",
+            border: "1px solid #e5e7eb",
             borderRadius: "14px",
             padding: "26px",
           }}
         >
-          <h2 style={{ color: "#ede8db", fontSize: "16px", fontWeight: "700", marginBottom: "3px" }}>
+          <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700", marginBottom: "3px" }}>
             Category Split
           </h2>
-          <p style={{ color: "#5a4e3a", fontSize: "13px", marginBottom: "6px" }}>
+          <p style={{ color: "#6b7280", fontSize: "13px", marginBottom: "6px" }}>
             Revenue share by category
           </p>
           <ResponsiveContainer width="100%" height={230}>
@@ -216,16 +217,16 @@ export default function ReportsPage() {
               <Tooltip
                 formatter={(value) => [`${value}%`, "Share"]}
                 contentStyle={{
-                  background: "#1c1a10",
-                  border: "1px solid #3d3118",
+                  background: "#ffffff",
+                  border: "1px solid #e5e7eb",
                   borderRadius: "8px",
-                  color: "#ede8db",
+                  color: "#111827",
                   fontFamily: "DM Sans",
                 }}
               />
               <Legend
                 formatter={(value) => (
-                  <span style={{ color: "#8a7d69", fontSize: "12px", fontFamily: "DM Sans" }}>
+                  <span style={{ color: "#6b7280", fontSize: "12px", fontFamily: "DM Sans" }}>
                     {value}
                   </span>
                 )}
@@ -238,29 +239,29 @@ export default function ReportsPage() {
       {/* Daily sales table */}
       <div
         style={{
-          background: "#1c1a10",
-          border: "1px solid #2e2918",
+          background: "#ffffff",
+          border: "1px solid #e5e7eb",
           borderRadius: "14px",
           overflow: "hidden",
         }}
       >
-        <div style={{ padding: "20px 24px", borderBottom: "1px solid #2e2918" }}>
-          <h2 style={{ color: "#ede8db", fontSize: "16px", fontWeight: "700" }}>
+        <div style={{ padding: "20px 24px", borderBottom: "1px solid #e5e7eb" }}>
+          <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>
             Daily Sales Breakdown
           </h2>
-          <p style={{ color: "#5a4e3a", fontSize: "13px", marginTop: "2px" }}>
+          <p style={{ color: "#6b7280", fontSize: "13px", marginTop: "2px" }}>
             Last 7 days performance across all branches
           </p>
         </div>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
-            <tr style={{ background: "#171510" }}>
+            <tr style={{ background: "#f3f4f6" }}>
               {["Date", "Orders", "Revenue", "Avg Order Value"].map((h) => (
                 <th
                   key={h}
                   style={{
                     textAlign: "left",
-                    color: "#5a4e3a",
+                    color: "#6b7280",
                     fontSize: "11px",
                     fontWeight: "700",
                     textTransform: "uppercase",
@@ -275,17 +276,17 @@ export default function ReportsPage() {
           </thead>
           <tbody>
             {dailySales.map((row, i) => (
-              <tr key={i} style={{ borderTop: "1px solid #2e2918" }}>
-                <td style={{ padding: "13px 22px", color: "#ede8db", fontSize: "14px", fontWeight: "500" }}>
+              <tr key={i} style={{ borderTop: "1px solid #e5e7eb" }}>
+                <td style={{ padding: "13px 22px", color: "#111827", fontSize: "14px", fontWeight: "500" }}>
                   {row.date}
                 </td>
-                <td style={{ padding: "13px 22px", color: "#ede8db", fontSize: "14px" }}>
+                <td style={{ padding: "13px 22px", color: "#111827", fontSize: "14px" }}>
                   {row.orders}
                 </td>
-                <td style={{ padding: "13px 22px", color: "#FAC775", fontSize: "14px", fontWeight: "700" }}>
+                <td style={{ padding: "13px 22px", color: "#f59e0b", fontSize: "14px", fontWeight: "700" }}>
                   Rs {row.revenue.toLocaleString()}
                 </td>
-                <td style={{ padding: "13px 22px", color: "#8a7d69", fontSize: "14px" }}>
+                <td style={{ padding: "13px 22px", color: "#6b7280", fontSize: "14px" }}>
                   Rs {row.avg}
                 </td>
               </tr>

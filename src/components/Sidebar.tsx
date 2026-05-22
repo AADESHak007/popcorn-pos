@@ -1,4 +1,5 @@
 "use client";
+import { LayoutDashboard, Monitor, Package, FileText, ArrowRightLeft, Building2, LogOut, Popcorn } from "lucide-react";
 
 export type NavPage =
   | "dashboard"
@@ -14,68 +15,26 @@ interface SidebarProps {
 }
 
 /* ── Inline SVG icons ── */
-const DashboardIcon = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" />
-    <rect x="14" y="14" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" />
-  </svg>
-);
-const POSIcon = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-  </svg>
-);
-const InventoryIcon = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-    <polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" />
-  </svg>
-);
-const ReportsIcon = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" />
-    <line x1="6" y1="20" x2="6" y2="14" /><line x1="2" y1="20" x2="22" y2="20" />
-  </svg>
-);
-const TransferIcon = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" />
-    <polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" />
-  </svg>
-);
-const BranchIcon = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-    <polyline points="9 22 9 12 15 12 15 22" />
-  </svg>
-);
-const LogoutIcon = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-    <polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" />
-  </svg>
-);
 
-const navItems: { id: NavPage; label: string; Icon: React.FC; badge?: string }[] = [
-  { id: "dashboard", label: "Dashboard", Icon: DashboardIcon },
-  { id: "pos", label: "Point of Sale", Icon: POSIcon, badge: "LIVE" },
-  { id: "inventory", label: "Inventory", Icon: InventoryIcon },
-  { id: "reports", label: "Reports", Icon: ReportsIcon },
-  { id: "stock-transfer", label: "Stock Transfer", Icon: TransferIcon },
-  { id: "branches", label: "Branches", Icon: BranchIcon },
+const navItems: { id: NavPage; label: string; Icon: React.ElementType; badge?: string }[] = [
+  { id: "dashboard", label: "Dashboard", Icon: LayoutDashboard },
+  { id: "pos", label: "Point of Sale", Icon: Monitor, badge: "LIVE" },
+  { id: "inventory", label: "Inventory", Icon: Package },
+  { id: "reports", label: "Reports", Icon: FileText },
+  { id: "stock-transfer", label: "Stock Transfer", Icon: ArrowRightLeft },
+  { id: "branches", label: "Branches", Icon: Building2 },
 ];
 
 export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
   return (
     <aside
       style={{
-        background: "#1a1208",
+        background: "#ffffff",
         width: "240px",
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        borderRight: "1px solid #2a2010",
+        borderRight: "1px solid #e5e7eb",
         position: "fixed",
         top: 0,
         left: 0,
@@ -84,11 +43,11 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
       }}
     >
       {/* ── Logo ── */}
-      <div style={{ padding: "24px 20px 18px", borderBottom: "1px solid #2a2010" }}>
+      <div style={{ padding: "24px 20px 18px", borderBottom: "1px solid #e5e7eb" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "11px" }}>
           <div
             style={{
-              background: "#FAC775",
+              background: "#f59e0b",
               borderRadius: "10px",
               width: "40px",
               height: "40px",
@@ -99,13 +58,13 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
               flexShrink: 0,
             }}
           >
-            🍿
+            <Popcorn size={21} />
           </div>
           <div>
-            <div style={{ color: "#FAC775", fontWeight: "800", fontSize: "15px", letterSpacing: "-0.3px", lineHeight: 1.2 }}>
+            <div style={{ color: "#f59e0b", fontWeight: "800", fontSize: "15px", letterSpacing: "-0.3px", lineHeight: 1.2 }}>
               Popcorn Place
             </div>
-            <div style={{ color: "#5a4e3a", fontSize: "11px", fontWeight: "500", marginTop: "1px" }}>
+            <div style={{ color: "#6b7280", fontSize: "11px", fontWeight: "500", marginTop: "1px" }}>
               POS System
             </div>
           </div>
@@ -116,25 +75,25 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
       <div style={{ padding: "14px 14px 6px" }}>
         <div
           style={{
-            background: "#221a0c",
+            background: "#f3f4f6",
             borderRadius: "8px",
             padding: "10px 13px",
-            border: "1px solid #3a2e16",
+            border: "1px solid #e5e7eb",
           }}
         >
-          <div style={{ color: "#5a4e3a", fontSize: "10px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "2px" }}>
+          <div style={{ color: "#6b7280", fontSize: "10px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "2px" }}>
             Active Branch
           </div>
-          <div style={{ color: "#ede8db", fontSize: "13px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ color: "#111827", fontSize: "13px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             Andheri East
-            <span style={{ color: "#5a4e3a", fontSize: "11px" }}>▾</span>
+            <span style={{ color: "#6b7280", fontSize: "11px" }}>▾</span>
           </div>
         </div>
       </div>
 
       {/* ── Nav ── */}
       <nav style={{ padding: "10px 10px", flex: 1, overflowY: "auto" }}>
-        <div style={{ color: "#4a3e2e", fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.8px", padding: "4px 8px 8px" }}>
+        <div style={{ color: "#6b7280", fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.8px", padding: "4px 8px 8px" }}>
           Navigation
         </div>
         {navItems.map(({ id, label, Icon, badge }) => {
@@ -153,8 +112,8 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
                 marginBottom: "2px",
                 border: "none",
                 cursor: "pointer",
-                background: isActive ? "#FAC775" : "transparent",
-                color: isActive ? "#1a1208" : "#8a7d69",
+                background: isActive ? "#f59e0b" : "transparent",
+                color: isActive ? "#ffffff" : "#6b7280",
                 fontWeight: isActive ? "600" : "400",
                 fontSize: "13.5px",
                 textAlign: "left",
@@ -162,14 +121,14 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
               }}
             >
               <span style={{ opacity: isActive ? 1 : 0.7, flexShrink: 0 }}>
-                <Icon />
+                <Icon size={17} />
               </span>
               <span style={{ flex: 1 }}>{label}</span>
               {badge && (
                 <span
                   style={{
-                    background: isActive ? "#1a1208" : "#FAC775",
-                    color: isActive ? "#FAC775" : "#1a1208",
+                    background: isActive ? "#ffffff" : "#f59e0b",
+                    color: isActive ? "#f59e0b" : "#ffffff",
                     fontSize: "9px",
                     fontWeight: "800",
                     padding: "2px 5px",
@@ -186,7 +145,7 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
       </nav>
 
       {/* ── Footer ── */}
-      <div style={{ padding: "12px 14px", borderTop: "1px solid #2a2010" }}>
+      <div style={{ padding: "12px 14px", borderTop: "1px solid #e5e7eb" }}>
         {/* User */}
         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
           <div
@@ -194,12 +153,12 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
               width: "34px",
               height: "34px",
               borderRadius: "8px",
-              background: "#2e2310",
-              border: "1px solid #3a2e16",
+              background: "#e5e7eb",
+              border: "1px solid #e5e7eb",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#FAC775",
+              color: "#f59e0b",
               fontWeight: "800",
               fontSize: "14px",
               flexShrink: 0,
@@ -208,8 +167,8 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
             R
           </div>
           <div style={{ minWidth: 0 }}>
-            <div style={{ color: "#ede8db", fontSize: "13px", fontWeight: "600" }}>Raj Kumar</div>
-            <div style={{ color: "#4a3e2e", fontSize: "11px" }}>Branch Manager</div>
+            <div style={{ color: "#111827", fontSize: "13px", fontWeight: "600" }}>Raj Kumar</div>
+            <div style={{ color: "#6b7280", fontSize: "11px" }}>Branch Manager</div>
           </div>
         </div>
         {/* Sign out */}
@@ -222,15 +181,15 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
             gap: "8px",
             padding: "8px 10px",
             borderRadius: "7px",
-            border: "1px solid #2a2010",
+            border: "1px solid #e5e7eb",
             cursor: "pointer",
             background: "transparent",
-            color: "#5a4e3a",
+            color: "#6b7280",
             fontSize: "13px",
             fontWeight: "500",
           }}
         >
-          <LogoutIcon />
+          <LogOut size={16} />
           Sign Out
         </button>
       </div>

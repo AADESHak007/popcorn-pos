@@ -1,18 +1,19 @@
 "use client";
+import { Popcorn, Flame, CupSoda, GlassWater, Droplet, Utensils, ShoppingBag, Search } from "lucide-react";
 
 const posItems = [
-  { id: 1, name: "Butter Popcorn", price: 50, emoji: "🍿", category: "Popcorn" },
-  { id: 2, name: "Caramel Crunch", price: 65, emoji: "🍯", category: "Popcorn" },
-  { id: 3, name: "Cheese Blast", price: 60, emoji: "🧀", category: "Popcorn" },
-  { id: 4, name: "Masala Magic", price: 55, emoji: "🌶️", category: "Popcorn" },
-  { id: 5, name: "Choco Drizzle", price: 75, emoji: "🍫", category: "Popcorn" },
-  { id: 6, name: "Caramel + Cheese", price: 70, emoji: "🍿", category: "Popcorn" },
-  { id: 7, name: "Cola Large", price: 50, emoji: "🥤", category: "Beverage" },
-  { id: 8, name: "Lemonade", price: 40, emoji: "🍋", category: "Beverage" },
-  { id: 9, name: "Mineral Water", price: 20, emoji: "💧", category: "Beverage" },
-  { id: 10, name: "Nachos Basket", price: 120, emoji: "🌮", category: "Snack" },
-  { id: 11, name: "Combo Bucket", price: 250, emoji: "🪣", category: "Combo" },
-  { id: 12, name: "Tangy Tomato", price: 55, emoji: "🍅", category: "Popcorn" },
+  { id: 1, name: "Butter Popcorn", price: 50, icon: <Popcorn size={30} color="#f59e0b" />, category: "Popcorn" },
+  { id: 2, name: "Caramel Crunch", price: 65, icon: <Popcorn size={30} color="#d97706" />, category: "Popcorn" },
+  { id: 3, name: "Cheese Blast", price: 60, icon: <Popcorn size={30} color="#eab308" />, category: "Popcorn" },
+  { id: 4, name: "Masala Magic", price: 55, icon: <Flame size={30} color="#ef4444" />, category: "Popcorn" },
+  { id: 5, name: "Choco Drizzle", price: 75, icon: <Popcorn size={30} color="#78350f" />, category: "Popcorn" },
+  { id: 6, name: "Caramel + Cheese", price: 70, icon: <Popcorn size={30} color="#f59e0b" />, category: "Popcorn" },
+  { id: 7, name: "Cola Large", price: 50, icon: <CupSoda size={30} color="#ef4444" />, category: "Beverage" },
+  { id: 8, name: "Lemonade", price: 40, icon: <GlassWater size={30} color="#eab308" />, category: "Beverage" },
+  { id: 9, name: "Mineral Water", price: 20, icon: <Droplet size={30} color="#3b82f6" />, category: "Beverage" },
+  { id: 10, name: "Nachos Basket", price: 120, icon: <Utensils size={30} color="#f59e0b" />, category: "Snack" },
+  { id: 11, name: "Combo Bucket", price: 250, icon: <ShoppingBag size={30} color="#f59e0b" />, category: "Combo" },
+  { id: 12, name: "Tangy Tomato", price: 55, icon: <Popcorn size={30} color="#dc2626" />, category: "Popcorn" },
 ];
 
 const cartItems = [
@@ -26,14 +27,14 @@ const cartTotal = cartSubtotal + gst; // 893
 
 export default function POSPage() {
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#0f0e09", overflow: "hidden" }}>
+    <div style={{ display: "flex", height: "100vh", background: "#f9fafb", overflow: "hidden" }}>
       {/* ── Item Grid ── */}
       <div style={{ flex: 1, overflowY: "auto", padding: "28px 28px 28px" }}>
         {/* Header */}
         <div style={{ marginBottom: "20px" }}>
           <h1
             style={{
-              color: "#ede8db",
+              color: "#111827",
               fontSize: "24px",
               fontWeight: "800",
               letterSpacing: "-0.5px",
@@ -41,7 +42,7 @@ export default function POSPage() {
           >
             Point of Sale
           </h1>
-          <p style={{ color: "#5a4e3a", fontSize: "14px", marginTop: "2px" }}>
+          <p style={{ color: "#6b7280", fontSize: "14px", marginTop: "2px" }}>
             Andheri East · Order #1042
           </p>
         </div>
@@ -55,10 +56,10 @@ export default function POSPage() {
             style={{
               width: "100%",
               padding: "10px 16px 10px 38px",
-              background: "#1c1a10",
-              border: "1px solid #2e2918",
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
               borderRadius: "9px",
-              color: "#ede8db",
+              color: "#111827",
               fontSize: "14px",
               outline: "none",
             }}
@@ -72,7 +73,7 @@ export default function POSPage() {
               fontSize: "15px",
             }}
           >
-            🔍
+            <Search size={15} />
           </span>
         </div>
 
@@ -83,10 +84,10 @@ export default function POSPage() {
               key={cat}
               style={{
                 padding: "5px 13px",
-                background: i === 0 ? "#FAC775" : "#1c1a10",
-                border: "1px solid " + (i === 0 ? "#FAC775" : "#2e2918"),
+                background: i === 0 ? "#f59e0b" : "#ffffff",
+                border: "1px solid " + (i === 0 ? "#f59e0b" : "#e5e7eb"),
                 borderRadius: "20px",
-                color: i === 0 ? "#1a1208" : "#8a7d69",
+                color: i === 0 ? "#ffffff" : "#6b7280",
                 fontSize: "12px",
                 fontWeight: i === 0 ? "700" : "400",
                 cursor: "pointer",
@@ -109,8 +110,8 @@ export default function POSPage() {
             <div
               key={item.id}
               style={{
-                background: "#1c1a10",
-                border: "1px solid #2e2918",
+                background: "#ffffff",
+                border: "1px solid #e5e7eb",
                 borderRadius: "12px",
                 padding: "18px",
                 cursor: "pointer",
@@ -118,11 +119,11 @@ export default function POSPage() {
               }}
             >
               <div style={{ fontSize: "30px", marginBottom: "10px", lineHeight: 1 }}>
-                {item.emoji}
+                {item.icon}
               </div>
               <div
                 style={{
-                  color: "#ede8db",
+                  color: "#111827",
                   fontSize: "13.5px",
                   fontWeight: "600",
                   marginBottom: "8px",
@@ -139,14 +140,14 @@ export default function POSPage() {
                 }}
               >
                 <span
-                  style={{ color: "#FAC775", fontWeight: "800", fontSize: "16px" }}
+                  style={{ color: "#f59e0b", fontWeight: "800", fontSize: "16px" }}
                 >
                   Rs {item.price}
                 </span>
                 <span
                   style={{
-                    background: "#251c0d",
-                    color: "#8a7d69",
+                    background: "#fef3c7",
+                    color: "#6b7280",
                     fontSize: "10px",
                     fontWeight: "600",
                     padding: "2px 7px",
@@ -165,8 +166,8 @@ export default function POSPage() {
       <div
         style={{
           width: "320px",
-          background: "#1c1a10",
-          borderLeft: "1px solid #2e2918",
+          background: "#ffffff",
+          borderLeft: "1px solid #e5e7eb",
           display: "flex",
           flexDirection: "column",
           flexShrink: 0,
@@ -176,7 +177,7 @@ export default function POSPage() {
         <div
           style={{
             padding: "22px 20px 18px",
-            borderBottom: "1px solid #2e2918",
+            borderBottom: "1px solid #e5e7eb",
           }}
         >
           <div
@@ -187,11 +188,11 @@ export default function POSPage() {
               marginBottom: "4px",
             }}
           >
-            <h2 style={{ color: "#ede8db", fontSize: "18px", fontWeight: "800" }}>Cart</h2>
+            <h2 style={{ color: "#111827", fontSize: "18px", fontWeight: "800" }}>Cart</h2>
             <span
               style={{
-                background: "#FAC775",
-                color: "#1a1208",
+                background: "#f59e0b",
+                color: "#ffffff",
                 fontSize: "11px",
                 fontWeight: "800",
                 padding: "3px 9px",
@@ -201,7 +202,7 @@ export default function POSPage() {
               2 items
             </span>
           </div>
-          <p style={{ color: "#5a4e3a", fontSize: "12px" }}>Order #1042 · Table 4</p>
+          <p style={{ color: "#6b7280", fontSize: "12px" }}>Order #1042 · Table 4</p>
         </div>
 
         {/* Cart items */}
@@ -210,8 +211,8 @@ export default function POSPage() {
             <div
               key={i}
               style={{
-                background: "#251c0d",
-                border: "1px solid #3d3118",
+                background: "#fef3c7",
+                border: "1px solid #e5e7eb",
                 borderRadius: "10px",
                 padding: "13px",
                 marginBottom: "9px",
@@ -225,10 +226,10 @@ export default function POSPage() {
                   marginBottom: "10px",
                 }}
               >
-                <div style={{ color: "#ede8db", fontSize: "13.5px", fontWeight: "600" }}>
+                <div style={{ color: "#111827", fontSize: "13.5px", fontWeight: "600" }}>
                   {item.name}
                 </div>
-                <div style={{ color: "#FAC775", fontSize: "14px", fontWeight: "800" }}>
+                <div style={{ color: "#f59e0b", fontSize: "14px", fontWeight: "800" }}>
                   Rs {item.price * item.qty}
                 </div>
               </div>
@@ -245,9 +246,9 @@ export default function POSPage() {
                       width: "27px",
                       height: "27px",
                       borderRadius: "6px",
-                      background: "#3d3118",
+                      background: "#e5e7eb",
                       border: "none",
-                      color: "#ede8db",
+                      color: "#111827",
                       cursor: "pointer",
                       fontSize: "17px",
                       display: "flex",
@@ -258,7 +259,7 @@ export default function POSPage() {
                     −
                   </button>
                   <span
-                    style={{ color: "#ede8db", fontWeight: "700", fontSize: "14px", minWidth: "14px", textAlign: "center" }}
+                    style={{ color: "#111827", fontWeight: "700", fontSize: "14px", minWidth: "14px", textAlign: "center" }}
                   >
                     {item.qty}
                   </span>
@@ -267,9 +268,9 @@ export default function POSPage() {
                       width: "27px",
                       height: "27px",
                       borderRadius: "6px",
-                      background: "#3d3118",
+                      background: "#e5e7eb",
                       border: "none",
-                      color: "#ede8db",
+                      color: "#111827",
                       cursor: "pointer",
                       fontSize: "17px",
                       display: "flex",
@@ -280,14 +281,14 @@ export default function POSPage() {
                     +
                   </button>
                 </div>
-                <span style={{ color: "#5a4e3a", fontSize: "11px" }}>@ Rs {item.price}</span>
+                <span style={{ color: "#6b7280", fontSize: "11px" }}>@ Rs {item.price}</span>
               </div>
             </div>
           ))}
         </div>
 
         {/* Totals + Payment */}
-        <div style={{ padding: "16px 18px 20px", borderTop: "1px solid #2e2918" }}>
+        <div style={{ padding: "16px 18px 20px", borderTop: "1px solid #e5e7eb" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
             {[
               { label: "Subtotal", value: `Rs ${cartSubtotal}`, highlight: false },
@@ -301,8 +302,8 @@ export default function POSPage() {
                   alignItems: "center",
                 }}
               >
-                <span style={{ color: "#8a7d69", fontSize: "13px" }}>{row.label}</span>
-                <span style={{ color: "#ede8db", fontSize: "13px" }}>{row.value}</span>
+                <span style={{ color: "#6b7280", fontSize: "13px" }}>{row.label}</span>
+                <span style={{ color: "#111827", fontSize: "13px" }}>{row.value}</span>
               </div>
             ))}
             <div
@@ -311,11 +312,11 @@ export default function POSPage() {
                 justifyContent: "space-between",
                 alignItems: "center",
                 paddingTop: "10px",
-                borderTop: "1px solid #2e2918",
+                borderTop: "1px solid #e5e7eb",
               }}
             >
-              <span style={{ color: "#ede8db", fontSize: "16px", fontWeight: "700" }}>Total</span>
-              <span style={{ color: "#FAC775", fontSize: "22px", fontWeight: "800" }}>
+              <span style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>Total</span>
+              <span style={{ color: "#f59e0b", fontSize: "22px", fontWeight: "800" }}>
                 Rs {cartTotal}
               </span>
             </div>
@@ -326,10 +327,10 @@ export default function POSPage() {
             style={{
               width: "100%",
               padding: "13px",
-              background: "#FAC775",
+              background: "#f59e0b",
               border: "none",
               borderRadius: "10px",
-              color: "#1a1208",
+              color: "#ffffff",
               fontSize: "15px",
               fontWeight: "800",
               cursor: "pointer",
@@ -345,10 +346,10 @@ export default function POSPage() {
                 key={m}
                 style={{
                   padding: "8px",
-                  background: "#251c0d",
-                  border: "1px solid #3d3118",
+                  background: "#fef3c7",
+                  border: "1px solid #e5e7eb",
                   borderRadius: "8px",
-                  color: "#8a7d69",
+                  color: "#6b7280",
                   fontSize: "12px",
                   fontWeight: "600",
                   cursor: "pointer",

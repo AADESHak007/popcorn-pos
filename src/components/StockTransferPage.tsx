@@ -40,14 +40,14 @@ const stnRecords = [
 ];
 
 const statusCfg: Record<string, { bg: string; color: string; dot: string }> = {
-  Delivered: { bg: "#0d2218", color: "#4ade80", dot: "#4ade80" },
-  "In Transit": { bg: "#0e1a30", color: "#60a5fa", dot: "#60a5fa" },
-  Pending: { bg: "#2a1d00", color: "#FAC775", dot: "#FAC775" },
-  Cancelled: { bg: "#2d0f0f", color: "#f87171", dot: "#f87171" },
+  Delivered: { bg: "#dcfce7", color: "#4ade80", dot: "#4ade80" },
+  "In Transit": { bg: "#dbeafe", color: "#60a5fa", dot: "#60a5fa" },
+  Pending: { bg: "#fef3c7", color: "#f59e0b", dot: "#f59e0b" },
+  Cancelled: { bg: "#fee2e2", color: "#f87171", dot: "#f87171" },
 };
 
 function StatusBadge({ status }: { status: string }) {
-  const s = statusCfg[status] || { bg: "#251c0d", color: "#8a7d69", dot: "#8a7d69" };
+  const s = statusCfg[status] || { bg: "#fef3c7", color: "#6b7280", dot: "#6b7280" };
   return (
     <span
       style={{
@@ -78,20 +78,20 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 const summaryStats = [
-  { label: "Delivered", value: 1, color: "#4ade80", bg: "#0d2218" },
-  { label: "In Transit", value: 1, color: "#60a5fa", bg: "#0e1a30" },
-  { label: "Pending", value: 1, color: "#FAC775", bg: "#2a1d00" },
-  { label: "Cancelled", value: 1, color: "#f87171", bg: "#2d0f0f" },
+  { label: "Delivered", value: 1, color: "#4ade80", bg: "#dcfce7" },
+  { label: "In Transit", value: 1, color: "#60a5fa", bg: "#dbeafe" },
+  { label: "Pending", value: 1, color: "#f59e0b", bg: "#fef3c7" },
+  { label: "Cancelled", value: 1, color: "#f87171", bg: "#fee2e2" },
 ];
 
 export default function StockTransferPage() {
   return (
-    <div style={{ padding: "32px", minHeight: "100vh", background: "#0f0e09" }}>
+    <div style={{ padding: "32px", minHeight: "100vh", background: "#f9fafb" }}>
       {/* Header */}
       <div style={{ marginBottom: "26px" }}>
         <h1
           style={{
-            color: "#ede8db",
+            color: "#111827",
             fontSize: "24px",
             fontWeight: "800",
             letterSpacing: "-0.5px",
@@ -99,7 +99,7 @@ export default function StockTransferPage() {
         >
           Stock Transfers
         </h1>
-        <p style={{ color: "#5a4e3a", fontSize: "14px", marginTop: "3px" }}>
+        <p style={{ color: "#6b7280", fontSize: "14px", marginTop: "3px" }}>
           Inter-branch stock transfer notes (STN)
         </p>
       </div>
@@ -117,8 +117,8 @@ export default function StockTransferPage() {
           <div
             key={i}
             style={{
-              background: "#1c1a10",
-              border: "1px solid #2e2918",
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
               borderRadius: "12px",
               padding: "18px 20px",
               display: "flex",
@@ -138,7 +138,7 @@ export default function StockTransferPage() {
             <div>
               <div
                 style={{
-                  color: "#5a4e3a",
+                  color: "#6b7280",
                   fontSize: "11px",
                   fontWeight: "700",
                   textTransform: "uppercase",
@@ -159,8 +159,8 @@ export default function StockTransferPage() {
       {/* STN Table */}
       <div
         style={{
-          background: "#1c1a10",
-          border: "1px solid #2e2918",
+          background: "#ffffff",
+          border: "1px solid #e5e7eb",
           borderRadius: "14px",
           overflow: "hidden",
         }}
@@ -168,21 +168,21 @@ export default function StockTransferPage() {
         <div
           style={{
             padding: "18px 24px",
-            borderBottom: "1px solid #2e2918",
+            borderBottom: "1px solid #e5e7eb",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
           }}
         >
-          <h2 style={{ color: "#ede8db", fontSize: "16px", fontWeight: "700" }}>
+          <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>
             Transfer Records
           </h2>
           <button
             style={{
-              background: "#FAC775",
+              background: "#f59e0b",
               border: "none",
               borderRadius: "8px",
-              color: "#1a1208",
+              color: "#ffffff",
               fontSize: "13px",
               fontWeight: "700",
               padding: "8px 16px",
@@ -194,14 +194,14 @@ export default function StockTransferPage() {
         </div>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
-            <tr style={{ background: "#171510" }}>
+            <tr style={{ background: "#f3f4f6" }}>
               {["STN ID", "From Branch", "To Branch", "Item", "Quantity", "Date", "Status"].map(
                 (h) => (
                   <th
                     key={h}
                     style={{
                       textAlign: "left",
-                      color: "#5a4e3a",
+                      color: "#6b7280",
                       fontSize: "11px",
                       fontWeight: "700",
                       textTransform: "uppercase",
@@ -217,11 +217,11 @@ export default function StockTransferPage() {
           </thead>
           <tbody>
             {stnRecords.map((rec, i) => (
-              <tr key={i} style={{ borderTop: "1px solid #2e2918" }}>
+              <tr key={i} style={{ borderTop: "1px solid #e5e7eb" }}>
                 <td
                   style={{
                     padding: "16px 20px",
-                    color: "#FAC775",
+                    color: "#f59e0b",
                     fontSize: "13px",
                     fontWeight: "700",
                     fontFamily: "monospace",
@@ -230,26 +230,26 @@ export default function StockTransferPage() {
                 >
                   {rec.id}
                 </td>
-                <td style={{ padding: "16px 20px", color: "#ede8db", fontSize: "13.5px" }}>
+                <td style={{ padding: "16px 20px", color: "#111827", fontSize: "13.5px" }}>
                   {rec.from}
                 </td>
-                <td style={{ padding: "16px 20px", color: "#ede8db", fontSize: "13.5px" }}>
+                <td style={{ padding: "16px 20px", color: "#111827", fontSize: "13.5px" }}>
                   {rec.to}
                 </td>
-                <td style={{ padding: "16px 20px", color: "#8a7d69", fontSize: "13.5px" }}>
+                <td style={{ padding: "16px 20px", color: "#6b7280", fontSize: "13.5px" }}>
                   {rec.item}
                 </td>
                 <td
                   style={{
                     padding: "16px 20px",
-                    color: "#ede8db",
+                    color: "#111827",
                     fontSize: "13.5px",
                     fontWeight: "500",
                   }}
                 >
                   {rec.qty}
                 </td>
-                <td style={{ padding: "16px 20px", color: "#5a4e3a", fontSize: "13px" }}>
+                <td style={{ padding: "16px 20px", color: "#6b7280", fontSize: "13px" }}>
                   {rec.date}
                 </td>
                 <td style={{ padding: "16px 20px" }}>

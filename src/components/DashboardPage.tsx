@@ -1,4 +1,5 @@
 "use client";
+import { CircleDollarSign, Package, AlertTriangle, Store } from "lucide-react";
 
 import {
   BarChart,
@@ -41,15 +42,15 @@ const metrics = [
     value: "Rs 84,200",
     sub: "+12.4% vs yesterday",
     up: true,
-    icon: "💰",
-    color: "#FAC775",
+    icon: <CircleDollarSign size={19} />,
+    color: "#f59e0b",
   },
   {
     label: "Total Orders",
     value: "138",
     sub: "+8.2% vs yesterday",
     up: true,
-    icon: "📦",
+    icon: <Package size={19} />,
     color: "#60a5fa",
   },
   {
@@ -57,7 +58,7 @@ const metrics = [
     value: "4",
     sub: "Needs attention",
     up: false,
-    icon: "⚠️",
+    icon: <AlertTriangle size={19} />,
     color: "#f87171",
   },
   {
@@ -65,7 +66,7 @@ const metrics = [
     value: "5/5",
     sub: "All operational",
     up: true,
-    icon: "🏪",
+    icon: <Store size={19} />,
     color: "#4ade80",
   },
 ];
@@ -76,14 +77,14 @@ const ChartTooltip = ({ active, payload, label }: any) => {
     return (
       <div
         style={{
-          background: "#1c1a10",
-          border: "1px solid #3d3118",
+          background: "#ffffff",
+          border: "1px solid #e5e7eb",
           borderRadius: "8px",
           padding: "10px 14px",
         }}
       >
-        <div style={{ color: "#8a7d69", fontSize: "12px", marginBottom: "3px" }}>{label}</div>
-        <div style={{ color: "#FAC775", fontSize: "17px", fontWeight: "700" }}>
+        <div style={{ color: "#6b7280", fontSize: "12px", marginBottom: "3px" }}>{label}</div>
+        <div style={{ color: "#f59e0b", fontSize: "17px", fontWeight: "700" }}>
           Rs {payload[0].value.toLocaleString()}
         </div>
       </div>
@@ -94,12 +95,12 @@ const ChartTooltip = ({ active, payload, label }: any) => {
 
 export default function DashboardPage() {
   return (
-    <div style={{ padding: "32px", minHeight: "100vh", background: "#0f0e09" }}>
+    <div style={{ padding: "32px", minHeight: "100vh", background: "#f9fafb" }}>
       {/* Header */}
       <div style={{ marginBottom: "28px" }}>
         <h1
           style={{
-            color: "#ede8db",
+            color: "#111827",
             fontSize: "24px",
             fontWeight: "800",
             letterSpacing: "-0.5px",
@@ -107,7 +108,7 @@ export default function DashboardPage() {
         >
           Dashboard
         </h1>
-        <p style={{ color: "#5a4e3a", fontSize: "14px", marginTop: "3px" }}>
+        <p style={{ color: "#6b7280", fontSize: "14px", marginTop: "3px" }}>
           Welcome back, Raj Kumar · Thursday, 22 May 2026
         </p>
       </div>
@@ -125,8 +126,8 @@ export default function DashboardPage() {
           <div
             key={i}
             style={{
-              background: "#1c1a10",
-              border: "1px solid #2e2918",
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
               borderRadius: "14px",
               padding: "22px",
             }}
@@ -145,14 +146,14 @@ export default function DashboardPage() {
                   fontWeight: "700",
                   textTransform: "uppercase",
                   letterSpacing: "0.6px",
-                  color: "#5a4e3a",
+                  color: "#6b7280",
                 }}
               >
                 {m.label}
               </div>
               <div
                 style={{
-                  background: "#251c0d",
+                  background: "#fef3c7",
                   borderRadius: "8px",
                   width: "38px",
                   height: "38px",
@@ -167,7 +168,7 @@ export default function DashboardPage() {
             </div>
             <div
               style={{
-                color: "#ede8db",
+                color: "#111827",
                 fontSize: "26px",
                 fontWeight: "800",
                 letterSpacing: "-0.5px",
@@ -201,8 +202,8 @@ export default function DashboardPage() {
         {/* Weekly Bar Chart */}
         <div
           style={{
-            background: "#1c1a10",
-            border: "1px solid #2e2918",
+            background: "#ffffff",
+            border: "1px solid #e5e7eb",
             borderRadius: "14px",
             padding: "26px",
           }}
@@ -216,22 +217,22 @@ export default function DashboardPage() {
             }}
           >
             <div>
-              <h2 style={{ color: "#ede8db", fontSize: "16px", fontWeight: "700" }}>
+              <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>
                 Weekly Sales
               </h2>
-              <p style={{ color: "#5a4e3a", fontSize: "13px", marginTop: "2px" }}>
+              <p style={{ color: "#6b7280", fontSize: "13px", marginTop: "2px" }}>
                 Revenue across all branches · This week
               </p>
             </div>
             <div
               style={{
-                background: "#251c0d",
-                border: "1px solid #3d3118",
+                background: "#fef3c7",
+                border: "1px solid #e5e7eb",
                 borderRadius: "6px",
                 padding: "5px 11px",
                 fontSize: "11px",
                 fontWeight: "600",
-                color: "#8a7d69",
+                color: "#6b7280",
               }}
             >
               May 2026
@@ -239,21 +240,21 @@ export default function DashboardPage() {
           </div>
           <ResponsiveContainer width="100%" height={210}>
             <BarChart data={weeklyData} barSize={34} margin={{ top: 0, right: 0, left: -10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#2e2918" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
               <XAxis
                 dataKey="day"
-                tick={{ fill: "#5a4e3a", fontSize: 12, fontFamily: "DM Sans" }}
+                tick={{ fill: "#6b7280", fontSize: 12, fontFamily: "DM Sans" }}
                 axisLine={false}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fill: "#5a4e3a", fontSize: 11, fontFamily: "DM Sans" }}
+                tick={{ fill: "#6b7280", fontSize: 11, fontFamily: "DM Sans" }}
                 axisLine={false}
                 tickLine={false}
                 tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
               />
-              <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(250,199,117,0.05)" }} />
-              <Bar dataKey="sales" fill="#FAC775" radius={[6, 6, 0, 0]} />
+              <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(245, 158, 11, 0.05)" }} />
+              <Bar dataKey="sales" fill="#f59e0b" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -261,8 +262,8 @@ export default function DashboardPage() {
         {/* Stock Alerts Panel */}
         <div
           style={{
-            background: "#1c1a10",
-            border: "1px solid #2e2918",
+            background: "#ffffff",
+            border: "1px solid #e5e7eb",
             borderRadius: "14px",
             padding: "22px",
           }}
@@ -275,12 +276,12 @@ export default function DashboardPage() {
               marginBottom: "16px",
             }}
           >
-            <h2 style={{ color: "#ede8db", fontSize: "16px", fontWeight: "700" }}>
+            <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>
               Stock Alerts
             </h2>
             <span
               style={{
-                background: "#2d0f0f",
+                background: "#fee2e2",
                 color: "#f87171",
                 fontSize: "11px",
                 fontWeight: "700",
@@ -296,8 +297,8 @@ export default function DashboardPage() {
               <div
                 key={i}
                 style={{
-                  background: "#251c0d",
-                  border: "1px solid #3d3118",
+                  background: "#fef3c7",
+                  border: "1px solid #e5e7eb",
                   borderRadius: "9px",
                   padding: "12px 13px",
                 }}
@@ -311,18 +312,18 @@ export default function DashboardPage() {
                 >
                   <div>
                     <div
-                      style={{ color: "#ede8db", fontSize: "13px", fontWeight: "600" }}
+                      style={{ color: "#111827", fontSize: "13px", fontWeight: "600" }}
                     >
                       {a.item}
                     </div>
-                    <div style={{ color: "#5a4e3a", fontSize: "11px", marginTop: "2px" }}>
+                    <div style={{ color: "#6b7280", fontSize: "11px", marginTop: "2px" }}>
                       {a.branch}
                     </div>
                   </div>
                   <span
                     style={{
-                      background: a.level === "critical" ? "#2d0f0f" : "#2a1d00",
-                      color: a.level === "critical" ? "#f87171" : "#FAC775",
+                      background: a.level === "critical" ? "#fee2e2" : "#fef3c7",
+                      color: a.level === "critical" ? "#f87171" : "#f59e0b",
                       fontSize: "11px",
                       fontWeight: "700",
                       padding: "3px 8px",
@@ -342,29 +343,29 @@ export default function DashboardPage() {
       {/* Top Items Table */}
       <div
         style={{
-          background: "#1c1a10",
-          border: "1px solid #2e2918",
+          background: "#ffffff",
+          border: "1px solid #e5e7eb",
           borderRadius: "14px",
           overflow: "hidden",
         }}
       >
-        <div style={{ padding: "22px 24px", borderBottom: "1px solid #2e2918" }}>
-          <h2 style={{ color: "#ede8db", fontSize: "16px", fontWeight: "700" }}>
+        <div style={{ padding: "22px 24px", borderBottom: "1px solid #e5e7eb" }}>
+          <h2 style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>
             Top Selling Items
           </h2>
-          <p style={{ color: "#5a4e3a", fontSize: "13px", marginTop: "2px" }}>
+          <p style={{ color: "#6b7280", fontSize: "13px", marginTop: "2px" }}>
             Best performers this week across all branches
           </p>
         </div>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
-            <tr style={{ background: "#171510" }}>
+            <tr style={{ background: "#f3f4f6" }}>
               {["Rank", "Item Name", "Category", "Orders", "Revenue"].map((h) => (
                 <th
                   key={h}
                   style={{
                     textAlign: "left",
-                    color: "#5a4e3a",
+                    color: "#6b7280",
                     fontSize: "11px",
                     fontWeight: "700",
                     textTransform: "uppercase",
@@ -379,18 +380,18 @@ export default function DashboardPage() {
           </thead>
           <tbody>
             {topItems.map((item, i) => (
-              <tr key={i} style={{ borderTop: "1px solid #2e2918" }}>
-                <td style={{ padding: "14px 22px", color: "#5a4e3a", fontSize: "13px", fontWeight: "700" }}>
+              <tr key={i} style={{ borderTop: "1px solid #e5e7eb" }}>
+                <td style={{ padding: "14px 22px", color: "#6b7280", fontSize: "13px", fontWeight: "700" }}>
                   #{i + 1}
                 </td>
-                <td style={{ padding: "14px 22px", color: "#ede8db", fontSize: "14px", fontWeight: "500" }}>
+                <td style={{ padding: "14px 22px", color: "#111827", fontSize: "14px", fontWeight: "500" }}>
                   {item.name}
                 </td>
                 <td style={{ padding: "14px 22px" }}>
                   <span
                     style={{
-                      background: "#251c0d",
-                      color: "#FAC775",
+                      background: "#fef3c7",
+                      color: "#f59e0b",
                       fontSize: "11px",
                       fontWeight: "600",
                       padding: "3px 9px",
@@ -400,10 +401,10 @@ export default function DashboardPage() {
                     {item.category}
                   </span>
                 </td>
-                <td style={{ padding: "14px 22px", color: "#ede8db", fontSize: "14px" }}>
+                <td style={{ padding: "14px 22px", color: "#111827", fontSize: "14px" }}>
                   {item.orders}
                 </td>
-                <td style={{ padding: "14px 22px", color: "#FAC775", fontSize: "14px", fontWeight: "700" }}>
+                <td style={{ padding: "14px 22px", color: "#f59e0b", fontSize: "14px", fontWeight: "700" }}>
                   Rs {item.revenue.toLocaleString()}
                 </td>
               </tr>

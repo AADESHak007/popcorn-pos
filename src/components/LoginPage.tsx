@@ -1,4 +1,5 @@
 "use client";
+import { Popcorn } from "lucide-react";
 
 interface LoginPageProps {
   onLogin: () => void;
@@ -9,7 +10,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
     <div
       style={{
         minHeight: "100vh",
-        background: "#0f0e09",
+        background: "#f9fafb",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -25,7 +26,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           right: "-10%",
           width: "700px",
           height: "700px",
-          background: "radial-gradient(circle, rgba(250,199,117,0.07) 0%, transparent 65%)",
+          background: "radial-gradient(circle, rgba(245, 158, 11, 0.07) 0%, transparent 65%)",
           pointerEvents: "none",
         }}
       />
@@ -36,7 +37,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           left: "-8%",
           width: "550px",
           height: "550px",
-          background: "radial-gradient(circle, rgba(250,199,117,0.04) 0%, transparent 65%)",
+          background: "radial-gradient(circle, rgba(245, 158, 11, 0.04) 0%, transparent 65%)",
           pointerEvents: "none",
         }}
       />
@@ -51,19 +52,19 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               justifyContent: "center",
               width: "72px",
               height: "72px",
-              background: "#1c1a10",
-              border: "1.5px solid #3d3118",
+              background: "#ffffff",
+              border: "1.5px solid #e5e7eb",
               borderRadius: "20px",
               fontSize: "34px",
               marginBottom: "18px",
-              boxShadow: "0 0 40px rgba(250,199,117,0.1)",
+              boxShadow: "0 0 40px rgba(245, 158, 11, 0.1)",
             }}
           >
-            🍿
+            <Popcorn size={34} />
           </div>
           <h1
             style={{
-              color: "#ede8db",
+              color: "#111827",
               fontSize: "28px",
               fontWeight: "800",
               letterSpacing: "-0.6px",
@@ -72,7 +73,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           >
             Popcorn Place
           </h1>
-          <p style={{ color: "#5a4e3a", fontSize: "14px", fontWeight: "500" }}>
+          <p style={{ color: "#6b7280", fontSize: "14px", fontWeight: "500" }}>
             Point of Sale System
           </p>
         </div>
@@ -80,17 +81,17 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
         {/* Form card */}
         <div
           style={{
-            background: "#1c1a10",
-            border: "1px solid #2e2918",
+            background: "#ffffff",
+            border: "1px solid #e5e7eb",
             borderRadius: "18px",
             padding: "32px",
             boxShadow: "0 24px 80px rgba(0,0,0,0.5)",
           }}
         >
-          <h2 style={{ color: "#ede8db", fontSize: "18px", fontWeight: "700", marginBottom: "4px" }}>
+          <h2 style={{ color: "#111827", fontSize: "18px", fontWeight: "700", marginBottom: "4px" }}>
             Welcome back
           </h2>
-          <p style={{ color: "#5a4e3a", fontSize: "13px", marginBottom: "28px" }}>
+          <p style={{ color: "#6b7280", fontSize: "13px", marginBottom: "28px" }}>
             Sign in to access your POS dashboard
           </p>
 
@@ -99,7 +100,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             <label
               style={{
                 display: "block",
-                color: "#8a7d69",
+                color: "#6b7280",
                 fontSize: "11px",
                 fontWeight: "700",
                 textTransform: "uppercase",
@@ -114,10 +115,10 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               style={{
                 width: "100%",
                 padding: "11px 14px",
-                background: "#251c0d",
-                border: "1px solid #3d3118",
+                background: "#fef3c7",
+                border: "1px solid #e5e7eb",
                 borderRadius: "9px",
-                color: "#ede8db",
+                color: "#111827",
                 fontSize: "14px",
                 outline: "none",
                 cursor: "pointer",
@@ -135,7 +136,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             <label
               style={{
                 display: "block",
-                color: "#8a7d69",
+                color: "#6b7280",
                 fontSize: "11px",
                 fontWeight: "700",
                 textTransform: "uppercase",
@@ -151,10 +152,10 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               style={{
                 width: "100%",
                 padding: "11px 14px",
-                background: "#251c0d",
-                border: "1px solid #3d3118",
+                background: "#fef3c7",
+                border: "1px solid #e5e7eb",
                 borderRadius: "9px",
-                color: "#ede8db",
+                color: "#111827",
                 fontSize: "14px",
                 outline: "none",
               }}
@@ -166,7 +167,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             <label
               style={{
                 display: "block",
-                color: "#8a7d69",
+                color: "#6b7280",
                 fontSize: "11px",
                 fontWeight: "700",
                 textTransform: "uppercase",
@@ -182,10 +183,10 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               style={{
                 width: "100%",
                 padding: "11px 14px",
-                background: "#251c0d",
-                border: "1px solid #3d3118",
+                background: "#fef3c7",
+                border: "1px solid #e5e7eb",
                 borderRadius: "9px",
-                color: "#ede8db",
+                color: "#111827",
                 fontSize: "14px",
                 outline: "none",
               }}
@@ -199,10 +200,10 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             style={{
               width: "100%",
               padding: "13px",
-              background: "#FAC775",
+              background: "#f59e0b",
               border: "none",
               borderRadius: "10px",
-              color: "#1a1208",
+              color: "#ffffff",
               fontSize: "15px",
               fontWeight: "700",
               cursor: "pointer",
@@ -213,7 +214,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           </button>
         </div>
 
-        <p style={{ textAlign: "center", color: "#3a3020", fontSize: "12px", marginTop: "24px" }}>
+        <p style={{ textAlign: "center", color: "#9ca3af", fontSize: "12px", marginTop: "24px" }}>
           Popcorn Place POS v2.0 · Multi-Branch Edition
         </p>
       </div>

@@ -28,7 +28,7 @@ export default function Home() {
 
   /* ── App shell: sidebar + content ── */
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#0f0e09" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: "#f9fafb" }}>
       <Sidebar
         currentPage={currentPage as NavPage}
         onNavigate={handleNavigate}

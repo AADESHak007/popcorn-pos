@@ -54,14 +54,14 @@ const branches = [
 ];
 
 const stockCfg: Record<string, { bg: string; color: string }> = {
-  OK: { bg: "#0d2218", color: "#4ade80" },
-  Low: { bg: "#2a1d00", color: "#FAC775" },
-  Warning: { bg: "#2d0f0f", color: "#f87171" },
+  OK: { bg: "#dcfce7", color: "#4ade80" },
+  Low: { bg: "#fef3c7", color: "#f59e0b" },
+  Warning: { bg: "#fee2e2", color: "#f87171" },
 };
 
 const accentColors: Record<string, string> = {
   OK: "#4ade80",
-  Low: "#FAC775",
+  Low: "#f59e0b",
   Warning: "#f87171",
 };
 
@@ -88,12 +88,12 @@ export default function BranchesPage() {
   const totalOrders = branches.reduce((s, b) => s + b.orders, 0);
 
   return (
-    <div style={{ padding: "32px", minHeight: "100vh", background: "#0f0e09" }}>
+    <div style={{ padding: "32px", minHeight: "100vh", background: "#f9fafb" }}>
       {/* Header */}
       <div style={{ marginBottom: "26px" }}>
         <h1
           style={{
-            color: "#ede8db",
+            color: "#111827",
             fontSize: "24px",
             fontWeight: "800",
             letterSpacing: "-0.5px",
@@ -101,7 +101,7 @@ export default function BranchesPage() {
         >
           Branches
         </h1>
-        <p style={{ color: "#5a4e3a", fontSize: "14px", marginTop: "3px" }}>
+        <p style={{ color: "#6b7280", fontSize: "14px", marginTop: "3px" }}>
           Overview of all 5 Popcorn Place locations
         </p>
       </div>
@@ -133,8 +133,8 @@ export default function BranchesPage() {
           <div
             key={i}
             style={{
-              background: "#1c1a10",
-              border: "1px solid #2e2918",
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
               borderRadius: "14px",
               padding: "20px",
               display: "flex",
@@ -145,7 +145,7 @@ export default function BranchesPage() {
             <span
               style={{
                 fontSize: "26px",
-                background: "#251c0d",
+                background: "#fef3c7",
                 borderRadius: "12px",
                 width: "50px",
                 height: "50px",
@@ -160,7 +160,7 @@ export default function BranchesPage() {
             <div>
               <div
                 style={{
-                  color: "#5a4e3a",
+                  color: "#6b7280",
                   fontSize: "11px",
                   fontWeight: "700",
                   textTransform: "uppercase",
@@ -170,10 +170,10 @@ export default function BranchesPage() {
               >
                 {s.label}
               </div>
-              <div style={{ color: "#ede8db", fontSize: "22px", fontWeight: "800", letterSpacing: "-0.3px" }}>
+              <div style={{ color: "#111827", fontSize: "22px", fontWeight: "800", letterSpacing: "-0.3px" }}>
                 {s.value}
               </div>
-              <div style={{ color: "#5a4e3a", fontSize: "11px", marginTop: "1px" }}>{s.sub}</div>
+              <div style={{ color: "#6b7280", fontSize: "11px", marginTop: "1px" }}>{s.sub}</div>
             </div>
           </div>
         ))}
@@ -191,8 +191,8 @@ export default function BranchesPage() {
           <div
             key={i}
             style={{
-              background: "#1c1a10",
-              border: "1px solid #2e2918",
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
               borderRadius: "16px",
               padding: "22px",
               position: "relative",
@@ -227,7 +227,7 @@ export default function BranchesPage() {
                   style={{
                     width: "46px",
                     height: "46px",
-                    background: "#251c0d",
+                    background: "#fef3c7",
                     borderRadius: "12px",
                     display: "flex",
                     alignItems: "center",
@@ -241,7 +241,7 @@ export default function BranchesPage() {
                 <div>
                   <div
                     style={{
-                      color: "#ede8db",
+                      color: "#111827",
                       fontSize: "16px",
                       fontWeight: "700",
                       letterSpacing: "-0.3px",
@@ -249,7 +249,7 @@ export default function BranchesPage() {
                   >
                     {branch.name}
                   </div>
-                  <div style={{ color: "#5a4e3a", fontSize: "12px", marginTop: "1px" }}>
+                  <div style={{ color: "#6b7280", fontSize: "12px", marginTop: "1px" }}>
                     {branch.city} · {branch.manager}
                   </div>
                 </div>
@@ -280,11 +280,11 @@ export default function BranchesPage() {
               }}
             >
               <div
-                style={{ background: "#251c0d", borderRadius: "9px", padding: "12px 13px" }}
+                style={{ background: "#fef3c7", borderRadius: "9px", padding: "12px 13px" }}
               >
                 <div
                   style={{
-                    color: "#5a4e3a",
+                    color: "#6b7280",
                     fontSize: "10px",
                     fontWeight: "700",
                     textTransform: "uppercase",
@@ -294,16 +294,16 @@ export default function BranchesPage() {
                 >
                   Sales
                 </div>
-                <div style={{ color: "#FAC775", fontSize: "16px", fontWeight: "800" }}>
+                <div style={{ color: "#f59e0b", fontSize: "16px", fontWeight: "800" }}>
                   Rs {(branch.sales / 1000).toFixed(1)}k
                 </div>
               </div>
               <div
-                style={{ background: "#251c0d", borderRadius: "9px", padding: "12px 13px" }}
+                style={{ background: "#fef3c7", borderRadius: "9px", padding: "12px 13px" }}
               >
                 <div
                   style={{
-                    color: "#5a4e3a",
+                    color: "#6b7280",
                     fontSize: "10px",
                     fontWeight: "700",
                     textTransform: "uppercase",
@@ -313,16 +313,16 @@ export default function BranchesPage() {
                 >
                   Orders
                 </div>
-                <div style={{ color: "#ede8db", fontSize: "16px", fontWeight: "800" }}>
+                <div style={{ color: "#111827", fontSize: "16px", fontWeight: "800" }}>
                   {branch.orders}
                 </div>
               </div>
               <div
-                style={{ background: "#251c0d", borderRadius: "9px", padding: "12px 13px" }}
+                style={{ background: "#fef3c7", borderRadius: "9px", padding: "12px 13px" }}
               >
                 <div
                   style={{
-                    color: "#5a4e3a",
+                    color: "#6b7280",
                     fontSize: "10px",
                     fontWeight: "700",
                     textTransform: "uppercase",
@@ -344,15 +344,15 @@ export default function BranchesPage() {
                 justifyContent: "space-between",
               }}
             >
-              <span style={{ color: "#5a4e3a", fontSize: "12px" }}>
+              <span style={{ color: "#6b7280", fontSize: "12px" }}>
                 {branch.items} active SKUs
               </span>
               <button
                 style={{
                   background: "transparent",
-                  border: "1px solid #3d3118",
+                  border: "1px solid #e5e7eb",
                   borderRadius: "7px",
-                  color: "#FAC775",
+                  color: "#f59e0b",
                   fontSize: "12px",
                   fontWeight: "600",
                   padding: "5px 13px",
