@@ -3,17 +3,17 @@ import { useState } from "react";
 import { Popcorn, Flame, CupSoda, GlassWater, Droplet, Utensils, ShoppingBag, Search, Plus, Minus, CreditCard, Landmark, Banknote } from "lucide-react";
 
 const posItems = [
-  { id: 1, name: "Butter Popcorn", price: 1.5, icon: <Popcorn size={26} color="#f59e0b" />, category: "Popcorn" },
-  { id: 2, name: "Caramel Crunch", price: 2.0, icon: <Popcorn size={26} color="#d97706" />, category: "Popcorn" },
+  { id: 1, name: "Butter Popcorn", price: 1.5, icon: <Popcorn size={26} color="#f97316" />, category: "Popcorn" },
+  { id: 2, name: "Caramel Crunch", price: 2.0, icon: <Popcorn size={26} color="#ea580c" />, category: "Popcorn" },
   { id: 3, name: "Cheese Blast", price: 1.8, icon: <Popcorn size={26} color="#eab308" />, category: "Popcorn" },
   { id: 4, name: "Saffron Caramel", price: 1.6, icon: <Flame size={26} color="#ef4444" />, category: "Popcorn" },
   { id: 5, name: "Choco Drizzle", price: 2.2, icon: <Popcorn size={26} color="#78350f" />, category: "Popcorn" },
-  { id: 6, name: "Caramel + Cheese", price: 2.0, icon: <Popcorn size={26} color="#f59e0b" />, category: "Popcorn" },
+  { id: 6, name: "Caramel + Cheese", price: 2.0, icon: <Popcorn size={26} color="#f97316" />, category: "Popcorn" },
   { id: 7, name: "Cola Large", price: 1.5, icon: <CupSoda size={26} color="#ef4444" />, category: "Beverage" },
   { id: 8, name: "Lemonade", price: 1.2, icon: <GlassWater size={26} color="#eab308" />, category: "Beverage" },
   { id: 9, name: "Mineral Water", price: 0.5, icon: <Droplet size={26} color="#3b82f6" />, category: "Beverage" },
-  { id: 10, name: "Nachos Basket", price: 3.5, icon: <Utensils size={26} color="#f59e0b" />, category: "Snack" },
-  { id: 11, name: "Combo Bucket", price: 7.5, icon: <ShoppingBag size={26} color="#f59e0b" />, category: "Combo" },
+  { id: 10, name: "Nachos Basket", price: 3.5, icon: <Utensils size={26} color="#f97316" />, category: "Snack" },
+  { id: 11, name: "Combo Bucket", price: 7.5, icon: <ShoppingBag size={26} color="#f97316" />, category: "Combo" },
   { id: 12, name: "Spicy Chili", price: 1.6, icon: <Popcorn size={26} color="#dc2626" />, category: "Popcorn" },
 ];
 
@@ -46,133 +46,62 @@ export default function POSPage() {
   const cartTotal = cartSubtotal + gst;
 
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#f8f6f2", overflow: "hidden" }}>
-      {/* ── Item Grid ── */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "32px 32px 32px", display: "flex", flexDirection: "column" }}>
-        {/* Header */}
-        <div style={{ marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+    <div style={{ display: "flex", height: "100vh", background: "var(--bg)", overflow: "hidden" }}>
+      {/* Item Grid */}
+      <div style={{ flex: 1, overflowY: "auto", padding: "36px 40px", display: "flex", flexDirection: "column" }}>
+        <div style={{ marginBottom: "32px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: "20px" }}>
           <div>
-            <h1 style={{ color: "var(--text)",
-                fontFamily: "var(--font-display)",
-                fontSize: "28px",
-                fontWeight: "800",
-                letterSpacing: "-0.6px",
-              }}
-            >
-              Point of Sale
-            </h1>
-            <p style={{ color: "var(--muted)", fontSize: "14px", marginTop: "4px", fontWeight: "500" }}>
-              Salmiya Branch · <span style={{ color: "#f59e0b", fontWeight: "600" }}>Order #1042</span>
+            <h1 className="page-title">Point of Sale</h1>
+            <p className="page-subtitle">
+              Salmiya Branch · <span style={{ color: "var(--amber-light)", fontWeight: "600" }}>Order #1042</span>
             </p>
           </div>
-          <div
-            style={{
-              background: "rgba(245, 158, 11, 0.1)",
-              border: "1px solid rgba(245, 158, 11, 0.2)",
-              borderRadius: "8px",
-              padding: "6px 12px",
-              color: "#f59e0b",
-              fontSize: "12px",
-              fontWeight: "700",
-            }}
-          >
-            ● POS SESSION ACTIVE
-          </div>
+          <span className="status-chip status-chip-active">POS Session Active</span>
         </div>
 
-        {/* Search & Filter Bar */}
-        <div style={{ display: "flex", gap: "16px", marginBottom: "24px", alignItems: "center" }}>
-          {/* Search */}
-          <div style={{ position: "relative", flex: 1 }}>
+        <div style={{ display: "flex", gap: "20px", marginBottom: "28px", alignItems: "center", flexWrap: "wrap" }}>
+          <div style={{ position: "relative", flex: 1, minWidth: "280px" }}>
             <input
               type="text"
+              className="search-input"
               placeholder="Search cinematic snacks, beverages..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "12px 16px 12px 42px",
-                background: "#ffffff",
-                border: "1px solid var(--border)",
-                borderRadius: "12px",
-                color: "var(--text-secondary)",
-                fontSize: "14px",
-                outline: "none",
-                transition: "all 0.2s ease",
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = "rgba(245, 158, 11, 0.4)";
-                e.target.style.background = "var(--surface-hover)";
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = "rgba(255, 255, 255, 0.06)";
-                e.target.style.background = "var(--surface)";
-              }}
             />
             <span
               style={{
                 position: "absolute",
-                left: "14px",
+                left: "18px",
                 top: "50%",
                 transform: "translateY(-50%)",
                 color: "var(--muted)",
                 display: "flex",
                 alignItems: "center",
+                pointerEvents: "none",
               }}
             >
-              <Search size={16} />
+              <Search size={18} />
             </span>
           </div>
 
-          {/* Category filters */}
-          <div style={{ display: "flex", gap: "8px", flexWrap: "nowrap", overflowX: "auto" }}>
-            {["All", "Popcorn", "Beverage", "Snack", "Combo"].map((cat) => {
-              const isActive = selectedCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  style={{
-                    padding: "10px 18px",
-                    background: isActive ? "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)" : "rgba(28, 25, 23, 0.04)",
-                    border: isActive ? "none" : "1px solid var(--border)",
-                    borderRadius: "10px",
-                    color: isActive ? "#ffffff" : "var(--muted)",
-                    fontSize: "13px",
-                    fontWeight: isActive ? "700" : "500",
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
-                    whiteSpace: "nowrap",
-                    boxShadow: isActive ? "0 4px 15px rgba(245, 158, 11, 0.25)" : "none",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isActive) {
-                      e.currentTarget.style.background = "rgba(255, 255, 255, 0.06)";
-                      e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.12)";
-                      e.currentTarget.style.color = "#ffffff";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isActive) {
-                      e.currentTarget.style.background = "rgba(28, 25, 23, 0.04)";
-                      e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.06)";
-                      e.currentTarget.style.color = "var(--muted)";
-                    }
-                  }}
-                >
-                  {cat}
-                </button>
-              );
-            })}
+          <div style={{ display: "flex", gap: "8px", flexWrap: "nowrap", overflowX: "auto", paddingBottom: "2px" }}>
+            {["All", "Popcorn", "Beverage", "Snack", "Combo"].map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`pill ${selectedCategory === cat ? "pill-active" : ""}`}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* 3×4 grid */}
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-            gap: "16px",
+            gap: "20px",
             flex: 1,
             alignContent: "start",
           }}
@@ -180,6 +109,7 @@ export default function POSPage() {
           {filteredItems.map((item) => (
             <div
               key={item.id}
+              className="product-card"
               onClick={() => {
                 const existingIndex = cart.findIndex((c) => c.name === item.name);
                 if (existingIndex > -1) {
@@ -188,45 +118,19 @@ export default function POSPage() {
                   setCart([...cart, { name: item.name, price: item.price, qty: 1 }]);
                 }
               }}
-              style={{
-                background: "#ffffff",
-                border: "1px solid var(--border)",
-                borderRadius: "16px",
-                padding: "20px",
-                cursor: "pointer",
-                transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                position: "relative",
-                overflow: "hidden",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.borderColor = "rgba(245, 158, 11, 0.3)";
-                e.currentTarget.style.boxShadow = "0 8px 24px rgba(245, 158, 11, 0.12)";
-                e.currentTarget.style.background = "var(--surface-hover)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.06)";
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.background = "var(--surface)";
-              }}
             >
               <div>
-                {/* Icon Backdrop */}
                 <div
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    width: "48px",
-                    height: "48px",
-                    background: "rgba(28, 25, 23, 0.03)",
-                    border: "1px solid var(--border-subtle)",
-                    borderRadius: "12px",
-                    marginBottom: "16px",
+                    width: "52px",
+                    height: "52px",
+                    background: "linear-gradient(135deg, var(--surface-muted) 0%, var(--surface) 100%)",
+                    borderRadius: "14px",
+                    marginBottom: "18px",
+                    boxShadow: "var(--shadow-xs)",
                   }}
                 >
                   {item.icon}
@@ -235,220 +139,128 @@ export default function POSPage() {
                   style={{
                     color: "var(--text)",
                     fontFamily: "var(--font-display)",
-                    fontSize: "15px",
+                    fontSize: "16px",
                     fontWeight: "700",
-                    marginBottom: "12px",
-                    lineHeight: 1.3,
+                    marginBottom: "4px",
+                    lineHeight: 1.35,
+                    letterSpacing: "-0.2px",
                   }}
                 >
                   {item.name}
                 </div>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "8px",
-                }}
-              >
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "16px" }}>
                 <span
                   style={{
-                    color: "#f59e0b",
+                    color: "var(--amber)",
                     fontFamily: "var(--font-display)",
                     fontWeight: "800",
-                    fontSize: "17px",
+                    fontSize: "18px",
+                    letterSpacing: "-0.3px",
                   }}
                 >
                   KD {item.price.toFixed(3)}
                 </span>
-                <span
-                  style={{
-                    background: "rgba(28, 25, 23, 0.05)",
-                    color: "var(--muted)",
-                    fontSize: "10px",
-                    fontWeight: "700",
-                    padding: "3px 8px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--border-subtle)",
-                    letterSpacing: "0.2px",
-                  }}
-                >
-                  {item.category}
-                </span>
+                <span style={categoryBadgeStyle}>{item.category}</span>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* ── Cart Panel ── */}
+      {/* Cart Panel */}
       <div
         style={{
-          width: "360px",
-          background: "#ffffff",
-          borderLeft: "1px solid var(--border)",
-          boxShadow: "-4px 0 24px rgba(28, 25, 23, 0.06)",
+          width: "380px",
+          background: "var(--surface)",
+          boxShadow: "var(--shadow-lg)",
           display: "flex",
           flexDirection: "column",
           flexShrink: 0,
         }}
       >
-        {/* Cart header */}
-        <div
-          style={{
-            padding: "24px 24px 20px",
-            borderBottom: "1px solid var(--border)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: "6px",
-            }}
-          >
-            <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "800" }}>Cart</h2>
+        <div style={{ padding: "28px 28px 24px", borderBottom: "1px solid var(--border-subtle)" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
+            <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: "800", margin: 0, letterSpacing: "-0.4px" }}>
+              Cart
+            </h2>
             <span
               style={{
-                background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                background: "var(--amber-gradient)",
                 color: "#ffffff",
                 fontSize: "11px",
                 fontWeight: "800",
-                padding: "3px 10px",
-                borderRadius: "999px",
-                boxShadow: "0 2px 8px rgba(245, 158, 11, 0.2)",
+                padding: "5px 12px",
+                borderRadius: "var(--radius-pill)",
+                boxShadow: "var(--shadow-glow)",
               }}
             >
               {cart.reduce((s, i) => s + i.qty, 0)} items
             </span>
           </div>
-          <p style={{ color: "var(--muted)", fontSize: "13px", fontWeight: "500" }}>Order #1042 · Table 4</p>
+          <p style={{ color: "var(--muted)", fontSize: "14px", fontWeight: "500", margin: 0 }}>Order #1042 · Table 4</p>
         </div>
 
-        {/* Cart items */}
-        <div style={{ flex: 1, padding: "20px 16px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "10px" }}>
+        <div style={{ flex: 1, padding: "20px 20px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "12px" }}>
           {cart.length === 0 ? (
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", opacity: 0.4 }}>
-              <ShoppingBag size={48} color="var(--muted)" style={{ marginBottom: "12px" }} />
-              <p style={{ color: "var(--muted)", fontSize: "14px", fontWeight: "600" }}>Cart is empty</p>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", opacity: 0.5 }}>
+              <ShoppingBag size={48} color="var(--muted)" style={{ marginBottom: "14px" }} />
+              <p style={{ color: "var(--muted)", fontSize: "15px", fontWeight: "600" }}>Cart is empty</p>
             </div>
           ) : (
             cart.map((item, i) => (
               <div
                 key={i}
                 style={{
-                  background: "rgba(28, 25, 23, 0.03)",
-                  border: "1px solid var(--border-subtle)",
-                  borderRadius: "12px",
-                  padding: "16px",
-                  transition: "all 0.2s ease",
+                  background: "var(--surface-muted)",
+                  borderRadius: "var(--radius-md)",
+                  padding: "18px",
+                  transition: "background 0.2s ease",
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    marginBottom: "12px",
-                  }}
-                >
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
                   <div style={{ color: "var(--text)", fontSize: "14px", fontWeight: "700", letterSpacing: "-0.1px" }}>
                     {item.name}
                   </div>
-                  <div style={{ color: "#f59e0b", fontFamily: "var(--font-display)", fontSize: "15px", fontWeight: "800" }}>
+                  <div style={{ color: "var(--amber)", fontFamily: "var(--font-display)", fontSize: "16px", fontWeight: "800" }}>
                     KD {(item.price * item.qty).toFixed(3)}
                   </div>
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <button
-                      onClick={() => updateQty(i, -1)}
-                      style={{
-                        width: "28px",
-                        height: "28px",
-                        borderRadius: "8px",
-                        background: "rgba(28, 25, 23, 0.05)",
-                        border: "1px solid var(--border)",
-                        color: "var(--text)",
-                        cursor: "pointer",
-                        fontSize: "14px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        transition: "all 0.15s ease",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "var(--surface-muted)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "rgba(28, 25, 23, 0.05)";
-                      }}
-                    >
-                      <Minus size={12} />
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <button className="qty-btn" onClick={() => updateQty(i, -1)}>
+                      <Minus size={14} />
                     </button>
-                    <span
-                      style={{ color: "var(--text)", fontWeight: "700", fontSize: "14px", minWidth: "20px", textAlign: "center" }}
-                    >
+                    <span style={{ color: "var(--text)", fontWeight: "700", fontSize: "15px", minWidth: "24px", textAlign: "center" }}>
                       {item.qty}
                     </span>
-                    <button
-                      onClick={() => updateQty(i, 1)}
-                      style={{
-                        width: "28px",
-                        height: "28px",
-                        borderRadius: "8px",
-                        background: "rgba(28, 25, 23, 0.05)",
-                        border: "1px solid var(--border)",
-                        color: "var(--text)",
-                        cursor: "pointer",
-                        fontSize: "14px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        transition: "all 0.15s ease",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "var(--surface-muted)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "rgba(28, 25, 23, 0.05)";
-                      }}
-                    >
-                      <Plus size={12} />
+                    <button className="qty-btn" onClick={() => updateQty(i, 1)}>
+                      <Plus size={14} />
                     </button>
                   </div>
-                  <span style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "500" }}>@ KD {item.price.toFixed(3)}</span>
+                  <span style={{ color: "var(--muted)", fontSize: "12px", fontWeight: "500" }}>@ KD {item.price.toFixed(3)}</span>
                 </div>
               </div>
             ))
           )}
         </div>
 
-        {/* Totals + Payment */}
-        <div style={{ padding: "20px 24px 24px", borderTop: "1px solid var(--border)" }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" }}>
+        <div
+          style={{
+            padding: "24px 28px 28px",
+            borderTop: "1px solid var(--border-subtle)",
+            background: "var(--surface)",
+            boxShadow: "0 -8px 24px rgba(15, 23, 42, 0.04)",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "22px" }}>
             {[
               { label: "Subtotal", value: `KD ${cartSubtotal.toFixed(3)}` },
               { label: "VAT (0%)", value: `KD ${gst.toFixed(3)}` },
             ].map((row) => (
-              <div
-                key={row.label}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <span style={{ color: "var(--muted)", fontSize: "13px", fontWeight: "500" }}>{row.label}</span>
-                <span style={{ color: "var(--text)", fontSize: "13px", fontWeight: "600" }}>{row.value}</span>
+              <div key={row.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ color: "var(--muted)", fontSize: "14px", fontWeight: "500" }}>{row.label}</span>
+                <span style={{ color: "var(--text-secondary)", fontSize: "14px", fontWeight: "600" }}>{row.value}</span>
               </div>
             ))}
             <div
@@ -456,20 +268,20 @@ export default function POSPage() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                paddingTop: "12px",
-                borderTop: "1px solid var(--border)",
+                paddingTop: "16px",
+                marginTop: "4px",
+                borderTop: "1px solid var(--border-subtle)",
               }}
             >
-              <span style={{ color: "var(--text)", fontSize: "15px", fontWeight: "700" }}>Total</span>
-              <span style={{ color: "#f59e0b", fontFamily: "var(--font-display)", fontSize: "24px", fontWeight: "900" }}>
+              <span style={{ color: "var(--text)", fontSize: "16px", fontWeight: "700" }}>Total</span>
+              <span style={{ color: "var(--amber)", fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: "800", letterSpacing: "-0.5px" }}>
                 KD {cartTotal.toFixed(3)}
               </span>
             </div>
           </div>
 
-          {/* Charge button */}
           <button
-            className="glowing-btn-active"
+            className="btn-primary glowing-btn-active"
             onClick={() => {
               if (cartTotal > 0) {
                 alert(`Order processed via ${paymentMethod}! Total: KD ${cartTotal.toFixed(3)}`);
@@ -478,77 +290,44 @@ export default function POSPage() {
             }}
             style={{
               width: "100%",
-              padding: "14px",
-              background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
-              border: "none",
-              borderRadius: "12px",
-              color: "#ffffff",
-              fontSize: "15px",
+              padding: "16px",
+              fontSize: "16px",
               fontWeight: "800",
-              cursor: "pointer",
-              marginBottom: "14px",
-              boxShadow: "0 4px 15px rgba(245, 158, 11, 0.3)",
-              transition: "all 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.filter = "brightness(1.1)";
-              e.currentTarget.style.transform = "scale(1.01)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.filter = "none";
-              e.currentTarget.style.transform = "scale(1)";
+              borderRadius: "var(--radius-md)",
+              marginBottom: "16px",
+              letterSpacing: "-0.2px",
             }}
           >
             Charge KD {cartTotal.toFixed(3)} →
           </button>
-          {/* Payment methods */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "10px" }}>
             {[
-              { id: "Cash", icon: <Banknote size={14} /> },
-              { id: "K-Net", icon: <Landmark size={14} /> },
-              { id: "Card", icon: <CreditCard size={14} /> },
-            ].map((m) => {
-              const isSelected = paymentMethod === m.id;
-              return (
-                <button
-                  key={m.id}
-                  onClick={() => setPaymentMethod(m.id)}
-                  style={{
-                    padding: "8px 4px",
-                    background: isSelected ? "rgba(245, 158, 11, 0.12)" : "rgba(28, 25, 23, 0.03)",
-                    border: isSelected ? "1px solid rgba(245, 158, 11, 0.3)" : "1px solid var(--border-subtle)",
-                    borderRadius: "8px",
-                    color: isSelected ? "#f59e0b" : "var(--muted)",
-                    fontSize: "12px",
-                    fontWeight: "700",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "6px",
-                    transition: "all 0.2s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isSelected) {
-                      e.currentTarget.style.background = "rgba(28, 25, 23, 0.06)";
-                      e.currentTarget.style.color = "#ffffff";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isSelected) {
-                      e.currentTarget.style.background = "rgba(28, 25, 23, 0.03)";
-                      e.currentTarget.style.color = "var(--muted)";
-                    }
-                  }}
-                >
-                  {m.icon}
-                  {m.id}
-                </button>
-              );
-            })}
+              { id: "Cash", icon: <Banknote size={15} /> },
+              { id: "K-Net", icon: <Landmark size={15} /> },
+              { id: "Card", icon: <CreditCard size={15} /> },
+            ].map((m) => (
+              <button
+                key={m.id}
+                onClick={() => setPaymentMethod(m.id)}
+                className={`pay-btn ${paymentMethod === m.id ? "pay-btn-active" : ""}`}
+              >
+                {m.icon}
+                {m.id}
+              </button>
+            ))}
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+const categoryBadgeStyle: React.CSSProperties = {
+  background: "var(--surface-muted)",
+  color: "var(--muted)",
+  fontSize: "10px",
+  fontWeight: "700",
+  padding: "4px 10px",
+  borderRadius: "var(--radius-pill)",
+};

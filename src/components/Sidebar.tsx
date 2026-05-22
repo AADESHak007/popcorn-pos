@@ -1,5 +1,6 @@
 "use client";
-import { LayoutDashboard, Monitor, Package, FileText, ArrowRightLeft, Building2, LogOut, Popcorn } from "lucide-react";
+import { LayoutDashboard, Monitor, Package, FileText, ArrowRightLeft, Building2, LogOut, Popcorn, ChevronDown } from "lucide-react";
+import { sidebarWidth } from "@/lib/theme";
 
 export type NavPage =
   | "dashboard"
@@ -41,12 +42,13 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
   return (
     <aside
       style={{
-        background: "#ffffff",
-        width: "248px",
+        background: "rgba(255, 255, 255, 0.85)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        width: `${sidebarWidth}px`,
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        borderRight: "1px solid var(--border)",
         boxShadow: "var(--shadow-sm)",
         position: "fixed",
         top: 0,
@@ -55,19 +57,19 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
         zIndex: 50,
       }}
     >
-      <div style={{ padding: "22px 20px 18px", borderBottom: "1px solid var(--border)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+      <div style={{ padding: "28px 22px 20px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
           <div
             style={{
-              background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
-              borderRadius: "12px",
-              width: "42px",
-              height: "42px",
+              background: "var(--amber-gradient)",
+              borderRadius: "14px",
+              width: "44px",
+              height: "44px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
-              boxShadow: "0 4px 12px rgba(217, 119, 6, 0.25)",
+              boxShadow: "var(--shadow-glow)",
             }}
           >
             <Popcorn size={22} color="#ffffff" />
@@ -85,30 +87,37 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
             >
               Popcorn Place KW
             </div>
-            <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "600", marginTop: "2px" }}>
+            <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "600", marginTop: "3px" }}>
               POS System
             </div>
           </div>
         </div>
       </div>
 
-      <div style={{ padding: "14px 14px 6px" }}>
+      <div style={{ padding: "0 18px 8px" }}>
         <div
           style={{
             background: "var(--surface-muted)",
-            borderRadius: "10px",
-            padding: "10px 13px",
-            border: "1px solid var(--border-subtle)",
+            borderRadius: "var(--radius-md)",
+            padding: "12px 16px",
+            cursor: "pointer",
+            transition: "background 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "var(--surface-hover)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "var(--surface-muted)";
           }}
         >
           <div
             style={{
               color: "var(--muted)",
-              fontSize: "9px",
+              fontSize: "10px",
               fontWeight: "700",
               textTransform: "uppercase",
-              letterSpacing: "0.8px",
-              marginBottom: "3px",
+              letterSpacing: "0.06em",
+              marginBottom: "4px",
             }}
           >
             Location
@@ -124,20 +133,20 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
             }}
           >
             {user?.location || "Head Office"}
-            <span style={{ color: "var(--amber-light)", fontSize: "11px" }}>▾</span>
+            <ChevronDown size={14} color="var(--muted)" />
           </div>
         </div>
       </div>
 
-      <nav style={{ padding: "10px 12px", flex: 1, overflowY: "auto" }}>
+      <nav style={{ padding: "16px 14px", flex: 1, overflowY: "auto" }}>
         <div
           style={{
             color: "var(--muted)",
             fontSize: "10px",
             fontWeight: "700",
             textTransform: "uppercase",
-            letterSpacing: "0.8px",
-            padding: "4px 8px 8px",
+            letterSpacing: "0.06em",
+            padding: "0 12px 12px",
           }}
         >
           Navigation
@@ -152,26 +161,24 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
                 width: "100%",
                 display: "flex",
                 alignItems: "center",
-                gap: "10px",
-                padding: "10px 12px",
-                borderRadius: "10px",
-                marginBottom: "4px",
+                gap: "12px",
+                padding: "11px 14px",
+                borderRadius: "var(--radius-pill)",
+                marginBottom: "6px",
                 border: "none",
                 cursor: "pointer",
-                background: isActive
-                  ? "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
-                  : "transparent",
-                color: isActive ? "#ffffff" : "var(--muted)",
-                fontWeight: isActive ? "600" : "500",
-                fontSize: "13.5px",
+                background: isActive ? "var(--amber-soft)" : "transparent",
+                color: isActive ? "var(--amber)" : "var(--muted)",
+                fontWeight: isActive ? "700" : "500",
+                fontSize: "14px",
                 textAlign: "left",
-                transition: "all 0.2s ease",
-                boxShadow: isActive ? "0 4px 12px rgba(217, 119, 6, 0.22)" : "none",
+                transition: "all 0.22s cubic-bezier(0.4, 0, 0.2, 1)",
+                boxShadow: isActive ? "var(--shadow-xs)" : "none",
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
                   e.currentTarget.style.background = "var(--surface-muted)";
-                  e.currentTarget.style.color = "var(--text)";
+                  e.currentTarget.style.color = "var(--text-secondary)";
                 }
               }}
               onMouseLeave={(e) => {
@@ -181,21 +188,20 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
                 }
               }}
             >
-              <span style={{ opacity: isActive ? 1 : 0.85, flexShrink: 0 }}>
-                <Icon size={17} color={isActive ? "#ffffff" : "var(--muted)"} />
+              <span style={{ flexShrink: 0, display: "flex" }}>
+                <Icon size={18} color={isActive ? "var(--amber)" : "var(--muted)"} strokeWidth={isActive ? 2.5 : 2} />
               </span>
               <span style={{ flex: 1 }}>{label}</span>
               {badge && (
                 <span
                   style={{
-                    background: isActive ? "rgba(255,255,255,0.25)" : "rgba(245, 158, 11, 0.12)",
-                    color: isActive ? "#ffffff" : "var(--amber)",
+                    background: isActive ? "rgba(249, 115, 22, 0.2)" : "var(--amber-soft)",
+                    color: isActive ? "var(--amber)" : "var(--amber-light)",
                     fontSize: "9px",
                     fontWeight: "800",
-                    padding: "2px 6px",
-                    borderRadius: "5px",
-                    letterSpacing: "0.5px",
-                    border: isActive ? "none" : "1px solid rgba(245, 158, 11, 0.25)",
+                    padding: "3px 8px",
+                    borderRadius: "var(--radius-pill)",
+                    letterSpacing: "0.04em",
                   }}
                 >
                   {badge}
@@ -206,75 +212,72 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
         })}
       </nav>
 
-      <div
-        style={{
-          padding: "14px 16px",
-          borderTop: "1px solid var(--border)",
-          background: "var(--surface-muted)",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
-          <div
-            style={{
-              width: "36px",
-              height: "36px",
-              borderRadius: "10px",
-              background: user?.color || "#d97706",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#ffffff",
-              fontWeight: "800",
-              fontSize: "13px",
-              flexShrink: 0,
-            }}
-          >
-            {user?.initials || "SA"}
-          </div>
-          <div style={{ minWidth: 0, overflow: "hidden" }}>
+      <div style={{ padding: "18px 18px 22px" }}>
+        <div
+          style={{
+            background: "var(--surface-muted)",
+            borderRadius: "var(--radius-md)",
+            padding: "14px",
+            marginBottom: "12px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div
               style={{
-                color: "var(--text)",
+                width: "40px",
+                height: "40px",
+                borderRadius: "12px",
+                background: user?.color || "var(--amber)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#ffffff",
+                fontWeight: "800",
                 fontSize: "13px",
-                fontWeight: "700",
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-                overflow: "hidden",
+                flexShrink: 0,
+                boxShadow: "var(--shadow-sm)",
               }}
             >
-              {user?.name || "Super Admin"}
+              {user?.initials || "SA"}
             </div>
-            <div style={{ color: "var(--muted)", fontSize: "10px", fontWeight: "600" }}>
-              {user?.role || "SUPER ADMIN"}
+            <div style={{ minWidth: 0, overflow: "hidden" }}>
+              <div
+                style={{
+                  color: "var(--text)",
+                  fontSize: "13px",
+                  fontWeight: "700",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                }}
+              >
+                {user?.name || "Super Admin"}
+              </div>
+              <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "600", marginTop: "2px" }}>
+                {user?.role || "SUPER ADMIN"}
+              </div>
             </div>
           </div>
         </div>
         <button
           onClick={() => onNavigate("login")}
+          className="btn-secondary"
           style={{
             width: "100%",
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
             gap: "8px",
-            padding: "9px 10px",
-            borderRadius: "8px",
-            border: "1px solid var(--border)",
-            cursor: "pointer",
-            background: "#ffffff",
-            color: "var(--muted)",
+            padding: "11px",
             fontSize: "13px",
-            fontWeight: "600",
-            transition: "all 0.2s ease",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.background = "#fef2f2";
-            e.currentTarget.style.borderColor = "#fecaca";
             e.currentTarget.style.color = "#dc2626";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = "var(--surface)";
-            e.currentTarget.style.borderColor = "var(--border)";
-            e.currentTarget.style.color = "var(--muted)";
+            e.currentTarget.style.background = "";
+            e.currentTarget.style.color = "";
           }}
         >
           <LogOut size={16} />
