@@ -16,11 +16,11 @@ import {
 } from "recharts";
 
 const branchData = [
-  { branch: "Andheri E", sales: 24500 },
-  { branch: "Bandra W", sales: 19800 },
-  { branch: "Dadar", sales: 16200 },
-  { branch: "Thane", sales: 13700 },
-  { branch: "Juhu", sales: 10000 },
+  { branch: "Salmiya", sales: 840 },
+  { branch: "Hawally", sales: 670 },
+  { branch: "Farwaniya", sales: 540 },
+  { branch: "Fahaheel", sales: 460 },
+  { branch: "Jabriya", sales: 335 },
 ];
 
 const categoryData = [
@@ -43,10 +43,10 @@ const dailySales = [
 ];
 
 const reportMetrics = [
-  { label: "Total Revenue", value: "Rs 84,200", icon: <CircleDollarSign size={22} color="#f59e0b" />, amber: false },
+  { label: "Total Revenue", value: "KD 2,840", icon: <CircleDollarSign size={22} color="#f59e0b" />, amber: false },
   { label: "Total Orders", value: "1,248", icon: <Package size={22} color="#8b5cf6" />, amber: false },
-  { label: "Avg Order Value", value: "Rs 67.5", icon: <BarChart3 size={22} color="#3b82f6" />, amber: false },
-  { label: "Best Branch", value: "Andheri E", icon: <Trophy size={22} color="#f59e0b" />, amber: true },
+  { label: "Avg Order Value", value: "KD 2.28", icon: <BarChart3 size={22} color="#3b82f6" />, amber: false },
+  { label: "Best Branch", value: "Salmiya", icon: <Trophy size={22} color="#f59e0b" />, amber: true },
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,7 +63,7 @@ const BranchTooltip = ({ active, payload, label }: any) => {
       >
         <div style={{ color: "#6b7280", fontSize: "12px", marginBottom: "3px" }}>{label}</div>
         <div style={{ color: "#f59e0b", fontSize: "17px", fontWeight: "700" }}>
-          Rs {payload[0].value.toLocaleString()}
+          KD {payload[0].value.toLocaleString()}
         </div>
       </div>
     );
@@ -284,10 +284,10 @@ export default function ReportsPage() {
                   {row.orders}
                 </td>
                 <td style={{ padding: "13px 22px", color: "#f59e0b", fontSize: "14px", fontWeight: "700" }}>
-                  Rs {row.revenue.toLocaleString()}
+                  KD {row.revenue.toLocaleString()}
                 </td>
                 <td style={{ padding: "13px 22px", color: "#6b7280", fontSize: "14px" }}>
-                  Rs {row.avg}
+                  KD {row.avg}
                 </td>
               </tr>
             ))}

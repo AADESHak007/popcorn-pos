@@ -3,8 +3,8 @@
 const stnRecords = [
   {
     id: "STN-001",
-    from: "Andheri East",
-    to: "Bandra West",
+    from: "Commissary",
+    to: "Salmiya",
     item: "Caramel Sauce",
     qty: "5 bottles",
     date: "22 May 2026",
@@ -12,8 +12,8 @@ const stnRecords = [
   },
   {
     id: "STN-002",
-    from: "Dadar",
-    to: "Thane",
+    from: "Commissary",
+    to: "Hawally",
     item: "Popcorn Kernels",
     qty: "10 kg",
     date: "21 May 2026",
@@ -21,8 +21,8 @@ const stnRecords = [
   },
   {
     id: "STN-003",
-    from: "Juhu",
-    to: "Andheri East",
+    from: "Jabriya",
+    to: "Fahaheel",
     item: "Paper Bags (L)",
     qty: "200 pcs",
     date: "20 May 2026",
@@ -30,8 +30,8 @@ const stnRecords = [
   },
   {
     id: "STN-004",
-    from: "Bandra West",
-    to: "Dadar",
+    from: "Hawally",
+    to: "Farwaniya",
     item: "Cola Syrup",
     qty: "3 litres",
     date: "19 May 2026",

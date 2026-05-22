@@ -2,28 +2,28 @@
 import { Popcorn, Flame, CupSoda, GlassWater, Droplet, Utensils, ShoppingBag, Search } from "lucide-react";
 
 const posItems = [
-  { id: 1, name: "Butter Popcorn", price: 50, icon: <Popcorn size={30} color="#f59e0b" />, category: "Popcorn" },
-  { id: 2, name: "Caramel Crunch", price: 65, icon: <Popcorn size={30} color="#d97706" />, category: "Popcorn" },
-  { id: 3, name: "Cheese Blast", price: 60, icon: <Popcorn size={30} color="#eab308" />, category: "Popcorn" },
-  { id: 4, name: "Masala Magic", price: 55, icon: <Flame size={30} color="#ef4444" />, category: "Popcorn" },
-  { id: 5, name: "Choco Drizzle", price: 75, icon: <Popcorn size={30} color="#78350f" />, category: "Popcorn" },
-  { id: 6, name: "Caramel + Cheese", price: 70, icon: <Popcorn size={30} color="#f59e0b" />, category: "Popcorn" },
-  { id: 7, name: "Cola Large", price: 50, icon: <CupSoda size={30} color="#ef4444" />, category: "Beverage" },
-  { id: 8, name: "Lemonade", price: 40, icon: <GlassWater size={30} color="#eab308" />, category: "Beverage" },
-  { id: 9, name: "Mineral Water", price: 20, icon: <Droplet size={30} color="#3b82f6" />, category: "Beverage" },
-  { id: 10, name: "Nachos Basket", price: 120, icon: <Utensils size={30} color="#f59e0b" />, category: "Snack" },
-  { id: 11, name: "Combo Bucket", price: 250, icon: <ShoppingBag size={30} color="#f59e0b" />, category: "Combo" },
-  { id: 12, name: "Tangy Tomato", price: 55, icon: <Popcorn size={30} color="#dc2626" />, category: "Popcorn" },
+  { id: 1, name: "Butter Popcorn", price: 1.5, icon: <Popcorn size={30} color="#f59e0b" />, category: "Popcorn" },
+  { id: 2, name: "Caramel Crunch", price: 2.0, icon: <Popcorn size={30} color="#d97706" />, category: "Popcorn" },
+  { id: 3, name: "Cheese Blast", price: 1.8, icon: <Popcorn size={30} color="#eab308" />, category: "Popcorn" },
+  { id: 4, name: "Saffron Caramel", price: 1.6, icon: <Flame size={30} color="#ef4444" />, category: "Popcorn" },
+  { id: 5, name: "Choco Drizzle", price: 2.2, icon: <Popcorn size={30} color="#78350f" />, category: "Popcorn" },
+  { id: 6, name: "Caramel + Cheese", price: 2.0, icon: <Popcorn size={30} color="#f59e0b" />, category: "Popcorn" },
+  { id: 7, name: "Cola Large", price: 1.5, icon: <CupSoda size={30} color="#ef4444" />, category: "Beverage" },
+  { id: 8, name: "Lemonade", price: 1.2, icon: <GlassWater size={30} color="#eab308" />, category: "Beverage" },
+  { id: 9, name: "Mineral Water", price: 0.5, icon: <Droplet size={30} color="#3b82f6" />, category: "Beverage" },
+  { id: 10, name: "Nachos Basket", price: 3.5, icon: <Utensils size={30} color="#f59e0b" />, category: "Snack" },
+  { id: 11, name: "Combo Bucket", price: 7.5, icon: <ShoppingBag size={30} color="#f59e0b" />, category: "Combo" },
+  { id: 12, name: "Spicy Chili", price: 1.6, icon: <Popcorn size={30} color="#dc2626" />, category: "Popcorn" },
 ];
 
 const cartItems = [
-  { name: "Combo Bucket", price: 250, qty: 3 },
-  { name: "Cola Large", price: 50, qty: 2 },
+  { name: "Combo Bucket", price: 7.5, qty: 3 },
+  { name: "Cola Large", price: 1.5, qty: 2 },
 ];
 
-const cartSubtotal = 850;
-const gst = Math.round(cartSubtotal * 0.05); // 43
-const cartTotal = cartSubtotal + gst; // 893
+const cartSubtotal = 25.5;
+const gst = 0; // No VAT/GST in Kuwait typically, or 0 for now
+const cartTotal = cartSubtotal + gst;
 
 export default function POSPage() {
   return (
@@ -43,7 +43,7 @@ export default function POSPage() {
             Point of Sale
           </h1>
           <p style={{ color: "#6b7280", fontSize: "14px", marginTop: "2px" }}>
-            Andheri East · Order #1042
+            Salmiya · Order #1042
           </p>
         </div>
 
@@ -142,7 +142,7 @@ export default function POSPage() {
                 <span
                   style={{ color: "#f59e0b", fontWeight: "800", fontSize: "16px" }}
                 >
-                  Rs {item.price}
+                  KD {item.price.toFixed(3)}
                 </span>
                 <span
                   style={{
@@ -230,7 +230,7 @@ export default function POSPage() {
                   {item.name}
                 </div>
                 <div style={{ color: "#f59e0b", fontSize: "14px", fontWeight: "800" }}>
-                  Rs {item.price * item.qty}
+                  KD {(item.price * item.qty).toFixed(3)}
                 </div>
               </div>
               <div
@@ -281,7 +281,7 @@ export default function POSPage() {
                     +
                   </button>
                 </div>
-                <span style={{ color: "#6b7280", fontSize: "11px" }}>@ Rs {item.price}</span>
+                <span style={{ color: "#6b7280", fontSize: "11px" }}>@ KD {item.price.toFixed(3)}</span>
               </div>
             </div>
           ))}
@@ -291,8 +291,8 @@ export default function POSPage() {
         <div style={{ padding: "16px 18px 20px", borderTop: "1px solid #e5e7eb" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
             {[
-              { label: "Subtotal", value: `Rs ${cartSubtotal}`, highlight: false },
-              { label: "GST (5%)", value: `Rs ${gst}`, highlight: false },
+              { label: "Subtotal", value: `KD ${cartSubtotal.toFixed(3)}`, highlight: false },
+              { label: "VAT (0%)", value: `KD ${gst.toFixed(3)}`, highlight: false },
             ].map((row) => (
               <div
                 key={row.label}
@@ -317,7 +317,7 @@ export default function POSPage() {
             >
               <span style={{ color: "#111827", fontSize: "16px", fontWeight: "700" }}>Total</span>
               <span style={{ color: "#f59e0b", fontSize: "22px", fontWeight: "800" }}>
-                Rs {cartTotal}
+                KD {cartTotal.toFixed(3)}
               </span>
             </div>
           </div>
@@ -337,11 +337,11 @@ export default function POSPage() {
               marginBottom: "10px",
             }}
           >
-            Charge Rs {cartTotal}
+            Charge KD {cartTotal.toFixed(3)}
           </button>
           {/* Payment methods */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "7px" }}>
-            {["Cash", "UPI", "Card"].map((m) => (
+            {["Cash", "K-Net", "Card"].map((m) => (
               <button
                 key={m}
                 style={{

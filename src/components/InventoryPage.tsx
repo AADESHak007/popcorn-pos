@@ -2,14 +2,14 @@
 import { Package, AlertTriangle, Ban } from "lucide-react";
 
 const inventoryItems = [
-  { item: "Butter Salt", branch: "Andheri East", category: "Ingredient", stock: 2, unit: "kg", min: 5, status: "Low" },
-  { item: "Caramel Sauce", branch: "Bandra West", category: "Ingredient", stock: 1, unit: "bottle", min: 3, status: "Warning" },
-  { item: "Cheese Powder", branch: "Dadar", category: "Ingredient", stock: 3, unit: "kg", min: 5, status: "Low" },
-  { item: "Paper Bags (L)", branch: "Thane", category: "Packaging", stock: 45, unit: "pcs", min: 100, status: "Low" },
-  { item: "Popcorn Kernels", branch: "Andheri East", category: "Ingredient", stock: 25, unit: "kg", min: 10, status: "OK" },
-  { item: "Cola Syrup", branch: "Bandra West", category: "Beverage", stock: 8, unit: "litre", min: 5, status: "OK" },
-  { item: "Paper Cups (M)", branch: "Juhu", category: "Packaging", stock: 320, unit: "pcs", min: 200, status: "OK" },
-  { item: "Nachos", branch: "Thane", category: "Snack", stock: 0, unit: "kg", min: 5, status: "Warning" },
+  { item: "Butter Salt", branch: "Salmiya", category: "Ingredient", stock: 2, unit: "kg", min: 5, status: "Low" },
+  { item: "Caramel Sauce", branch: "Hawally", category: "Ingredient", stock: 1, unit: "bottle", min: 3, status: "Warning" },
+  { item: "Cheese Powder", branch: "Farwaniya", category: "Ingredient", stock: 3, unit: "kg", min: 5, status: "Low" },
+  { item: "Paper Bags (L)", branch: "Fahaheel", category: "Packaging", stock: 45, unit: "pcs", min: 100, status: "Low" },
+  { item: "Popcorn Kernels", branch: "Salmiya", category: "Ingredient", stock: 25, unit: "kg", min: 10, status: "OK" },
+  { item: "Cola Syrup", branch: "Hawally", category: "Beverage", stock: 8, unit: "litre", min: 5, status: "OK" },
+  { item: "Paper Cups (M)", branch: "Jabriya", category: "Packaging", stock: 320, unit: "pcs", min: 200, status: "OK" },
+  { item: "Nachos", branch: "Fahaheel", category: "Snack", stock: 0, unit: "kg", min: 5, status: "Warning" },
 ];
 
 const statusStyle: Record<string, { bg: string; color: string }> = {
@@ -70,7 +70,7 @@ export default function InventoryPage() {
         {[
           { label: "Total SKUs", value: "48", icon: <Package size={24} color="#f59e0b" />, sub: "Across 5 branches" },
           { label: "Low Stock Items", value: "5", icon: <AlertTriangle size={24} color="#f59e0b" />, sub: "Needs reorder" },
-          { label: "Out of Stock", value: "1", icon: <Ban size={24} color="#ef4444" />, sub: "Nachos · Thane" },
+          { label: "Out of Stock", value: "1", icon: <Ban size={24} color="#ef4444" />, sub: "Nachos · Fahaheel" },
         ].map((s, i) => (
           <div
             key={i}

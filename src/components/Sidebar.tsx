@@ -12,6 +12,8 @@ export type NavPage =
 interface SidebarProps {
   currentPage: NavPage;
   onNavigate: (page: NavPage | "login") => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  user: any;
 }
 
 /* ── Inline SVG icons ── */
@@ -25,7 +27,17 @@ const navItems: { id: NavPage; label: string; Icon: React.ElementType; badge?: s
   { id: "branches", label: "Branches", Icon: Building2 },
 ];
 
-export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
+export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps) {
+  const role = user?.role || "SUPER ADMIN";
+
+  const allowedNavItems = navItems.filter(item => {
+    if (role === "SUPER ADMIN") return true;
+    if (role === "HEAD OFFICE ADMIN") return item.id !== "pos";
+    if (role === "BRANCH MANAGER") return item.id !== "branches";
+    if (role === "BRANCH STAFF") return item.id === "pos";
+    if (role === "COMMISSARY MANAGER") return item.id === "inventory" || item.id === "stock-transfer" || item.id === "reports";
+    return true;
+  });
   return (
     <aside
       style={{
@@ -62,7 +74,7 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
           </div>
           <div>
             <div style={{ color: "#f59e0b", fontWeight: "800", fontSize: "15px", letterSpacing: "-0.3px", lineHeight: 1.2 }}>
-              Popcorn Place
+              Popcorn Place KW
             </div>
             <div style={{ color: "#6b7280", fontSize: "11px", fontWeight: "500", marginTop: "1px" }}>
               POS System
@@ -82,10 +94,10 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
           }}
         >
           <div style={{ color: "#6b7280", fontSize: "10px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "2px" }}>
-            Active Branch
+            Location
           </div>
           <div style={{ color: "#111827", fontSize: "13px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            Andheri East
+            {user?.location || "Head Office"}
             <span style={{ color: "#6b7280", fontSize: "11px" }}>▾</span>
           </div>
         </div>
@@ -96,7 +108,7 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
         <div style={{ color: "#6b7280", fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.8px", padding: "4px 8px 8px" }}>
           Navigation
         </div>
-        {navItems.map(({ id, label, Icon, badge }) => {
+        {allowedNavItems.map(({ id, label, Icon, badge }) => {
           const isActive = currentPage === id;
           return (
             <button
@@ -153,22 +165,26 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
               width: "34px",
               height: "34px",
               borderRadius: "8px",
-              background: "#e5e7eb",
+              background: user?.color || "#e5e7eb",
               border: "1px solid #e5e7eb",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#f59e0b",
+              color: user?.color ? "#ffffff" : "#f59e0b",
               fontWeight: "800",
               fontSize: "14px",
               flexShrink: 0,
             }}
           >
-            R
+            {user?.initials || "SA"}
           </div>
-          <div style={{ minWidth: 0 }}>
-            <div style={{ color: "#111827", fontSize: "13px", fontWeight: "600" }}>Raj Kumar</div>
-            <div style={{ color: "#6b7280", fontSize: "11px" }}>Branch Manager</div>
+          <div style={{ minWidth: 0, overflow: "hidden" }}>
+            <div style={{ color: "#111827", fontSize: "13px", fontWeight: "600", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden" }}>
+              {user?.name || "Super Admin"}
+            </div>
+            <div style={{ color: "#6b7280", fontSize: "10px", fontWeight: "600", letterSpacing: "0.2px" }}>
+              {user?.role || "SUPER ADMIN"}
+            </div>
           </div>
         </div>
         {/* Sign out */}

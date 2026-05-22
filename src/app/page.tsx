@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Sidebar, { type NavPage } from "@/components/Sidebar";
-import LoginPage from "@/components/LoginPage";
+import LoginPage, { demoAccounts } from "@/components/LoginPage";
 import DashboardPage from "@/components/DashboardPage";
 import POSPage from "@/components/POSPage";
 import InventoryPage from "@/components/InventoryPage";
@@ -14,8 +14,15 @@ type Page = "login" | NavPage;
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState<Page>("login");
+  const [activeUser, setActiveUser] = useState<typeof demoAccounts[0] | null>(null);
 
-  const handleLogin = () => setCurrentPage("dashboard");
+  const handleLogin = (role?: string) => {
+    const user = demoAccounts.find(a => a.role === role) || demoAccounts[0];
+    setActiveUser(user);
+    if (user.role === "BRANCH STAFF") setCurrentPage("pos");
+    else if (user.role === "COMMISSARY MANAGER") setCurrentPage("inventory");
+    else setCurrentPage("dashboard");
+  };
 
   const handleNavigate = (page: NavPage | "login") => {
     setCurrentPage(page);
@@ -32,6 +39,7 @@ export default function Home() {
       <Sidebar
         currentPage={currentPage as NavPage}
         onNavigate={handleNavigate}
+        user={activeUser}
       />
       <main
         style={{
@@ -41,7 +49,7 @@ export default function Home() {
           overflowX: "hidden",
         }}
       >
-        {currentPage === "dashboard" && <DashboardPage />}
+        {currentPage === "dashboard" && <DashboardPage user={activeUser} />}
         {currentPage === "pos" && <POSPage />}
         {currentPage === "inventory" && <InventoryPage />}
         {currentPage === "reports" && <ReportsPage />}

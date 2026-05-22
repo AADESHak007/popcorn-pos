@@ -2,50 +2,50 @@
 
 const branches = [
   {
-    name: "Andheri East",
-    manager: "Raj Kumar",
-    city: "Mumbai",
-    sales: 24500,
+    name: "Salmiya",
+    manager: "Yousef Al-Anjari",
+    city: "Kuwait City",
+    sales: 840,
     orders: 342,
     stock: "OK",
     items: 45,
     rank: 1,
   },
   {
-    name: "Bandra West",
-    manager: "Priya Shah",
-    city: "Mumbai",
-    sales: 19800,
+    name: "Hawally",
+    manager: "Khaled Al-Rashidi",
+    city: "Hawally",
+    sales: 670,
     orders: 287,
     stock: "Low",
     items: 38,
     rank: 2,
   },
   {
-    name: "Dadar",
-    manager: "Amit Patil",
-    city: "Mumbai",
-    sales: 16200,
+    name: "Farwaniya",
+    manager: "Bader Al-Otaibi",
+    city: "Farwaniya",
+    sales: 540,
     orders: 231,
     stock: "OK",
     items: 42,
     rank: 3,
   },
   {
-    name: "Thane",
-    manager: "Sunita Rao",
-    city: "Thane",
-    sales: 13700,
+    name: "Fahaheel",
+    manager: "Tariq Al-Enezy",
+    city: "Al-Ahmadi",
+    sales: 460,
     orders: 195,
     stock: "Warning",
     items: 36,
     rank: 4,
   },
   {
-    name: "Juhu",
-    manager: "Kiran Mehta",
-    city: "Mumbai",
-    sales: 10000,
+    name: "Jabriya",
+    manager: "Sara Al-Sabah",
+    city: "Hawally",
+    sales: 335,
     orders: 193,
     stock: "OK",
     items: 40,
@@ -102,7 +102,7 @@ export default function BranchesPage() {
           Branches
         </h1>
         <p style={{ color: "#6b7280", fontSize: "14px", marginTop: "3px" }}>
-          Overview of all 5 Popcorn Place locations
+          Overview of all 5 Popcorn Place Kuwait locations
         </p>
       </div>
 
@@ -119,7 +119,7 @@ export default function BranchesPage() {
           { label: "Total Branches", value: "5 / 5", icon: "🏪", sub: "All operational" },
           {
             label: "Combined Revenue",
-            value: `Rs ${(totalSales / 1000).toFixed(1)}k`,
+            value: `KD ${totalSales.toLocaleString()}`,
             icon: "💰",
             sub: "Today",
           },
@@ -179,7 +179,7 @@ export default function BranchesPage() {
         ))}
       </div>
 
-      {/* Branch Cards — auto-fill 2-column grid */}
+      {/* Branch Cards — 2-column grid */}
       <div
         style={{
           display: "grid",
@@ -279,9 +279,7 @@ export default function BranchesPage() {
                 marginBottom: "16px",
               }}
             >
-              <div
-                style={{ background: "#fef3c7", borderRadius: "9px", padding: "12px 13px" }}
-              >
+              <div style={{ background: "#fef3c7", borderRadius: "9px", padding: "12px 13px" }}>
                 <div
                   style={{
                     color: "#6b7280",
@@ -295,12 +293,10 @@ export default function BranchesPage() {
                   Sales
                 </div>
                 <div style={{ color: "#f59e0b", fontSize: "16px", fontWeight: "800" }}>
-                  Rs {(branch.sales / 1000).toFixed(1)}k
+                  KD {branch.sales}
                 </div>
               </div>
-              <div
-                style={{ background: "#fef3c7", borderRadius: "9px", padding: "12px 13px" }}
-              >
+              <div style={{ background: "#fef3c7", borderRadius: "9px", padding: "12px 13px" }}>
                 <div
                   style={{
                     color: "#6b7280",
@@ -317,9 +313,7 @@ export default function BranchesPage() {
                   {branch.orders}
                 </div>
               </div>
-              <div
-                style={{ background: "#fef3c7", borderRadius: "9px", padding: "12px 13px" }}
-              >
+              <div style={{ background: "#fef3c7", borderRadius: "9px", padding: "12px 13px" }}>
                 <div
                   style={{
                     color: "#6b7280",
