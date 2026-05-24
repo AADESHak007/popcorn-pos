@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { Popcorn, Copy, LogIn, Sparkles, Check } from "lucide-react";
 import { colors, shadows } from "@/lib/theme";
+import { useTranslation } from "@/contexts/LocaleContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 interface LoginPageProps {
   onLogin: (role?: string) => void;
@@ -152,10 +154,27 @@ function RoleBadge({ role }: { role: string }) {
 }
 
 export default function LoginPage({ onLogin }: LoginPageProps) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabFilter>("all");
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
 
   const filtered = activeTab === "all" ? demoAccounts : demoAccounts.filter((a) => a.tab === activeTab);
+
+  const roleDescKey: Record<string, string> = {
+    "SUPER ADMIN": "login.descriptions.superAdmin",
+    "HEAD OFFICE ADMIN": "login.descriptions.headOfficeAdmin",
+    "BRANCH MANAGER": "login.descriptions.branchManager",
+    "BRANCH STAFF": "login.descriptions.branchStaff",
+    "COMMISSARY MANAGER": "login.descriptions.commissaryManager",
+  };
+
+  const locationKey: Record<string, string> = {
+    "Head Office": "login.locations.headOffice",
+    "Salmiya Branch": "login.locations.salmiya",
+    "Hawally Branch": "login.locations.hawally",
+    "Farwaniya Branch": "login.locations.farwaniya",
+    "Commissary / Production": "login.locations.commissary",
+  };
 
   const handleCopy = (email: string) => {
     navigator.clipboard.writeText(email).catch(() => {});
@@ -183,7 +202,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
         style={{
           position: "absolute",
           top: "-10%",
-          right: "-5%",
+          insetInlineEnd: "-5%",
           width: "560px",
           height: "560px",
           background: "radial-gradient(circle, rgba(249, 115, 22, 0.1) 0%, transparent 65%)",
@@ -194,7 +213,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
         style={{
           position: "absolute",
           bottom: "-15%",
-          left: "-8%",
+          insetInlineStart: "-8%",
           width: "480px",
           height: "480px",
           background: "radial-gradient(circle, rgba(234, 88, 12, 0.06) 0%, transparent 65%)",
@@ -203,6 +222,9 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
       />
 
       <div style={{ textAlign: "center", marginBottom: "36px", zIndex: 10 }}>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "14px" }}>
+          <LanguageSwitcher />
+        </div>
         <div
           style={{
             display: "inline-flex",
@@ -219,9 +241,9 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           <Popcorn size={34} color="#f97316" />
         </div>
         <h1 style={{ color: colors.text, fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: "800", letterSpacing: "-0.8px", marginBottom: "6px" }}>
-          Popcorn Place Kuwait
+          {t("brand.fullName")}
         </h1>
-        <p style={{ color: colors.muted, fontSize: "15px", fontWeight: "500" }}>Multi-Branch POS System</p>
+        <p style={{ color: colors.muted, fontSize: "15px", fontWeight: "500" }}>{t("login.subtitle")}</p>
       </div>
 
       <div
@@ -237,31 +259,35 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
         }}
       >
         <h2 style={{ color: colors.text, fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", marginBottom: "4px" }}>
-          Welcome back
+          {t("login.welcome")}
         </h2>
         <p style={{ color: colors.muted, fontSize: "14px", marginBottom: "26px", fontWeight: "500" }}>
-          Sign in to access your POS dashboard
+          {t("login.signInPrompt")}
         </p>
 
-        {["Role", "Username", "Password"].map((label, idx) => (
-          <div key={label} style={{ marginBottom: idx < 2 ? "18px" : "26px" }}>
+        {([
+          { id: "role", label: t("login.role") },
+          { id: "username", label: t("login.username") },
+          { id: "password", label: t("login.password") },
+        ] as const).map((field, idx) => (
+          <div key={field.id} style={{ marginBottom: idx < 2 ? "18px" : "26px" }}>
             <label style={{ display: "block", color: colors.muted, fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "8px" }}>
-              {label}
+              {field.label}
             </label>
-            {label === "Role" ? (
-              <select className="input-field" defaultValue="Branch Manager" style={{ cursor: "pointer" }}>
-                <option>Branch Manager</option>
-                <option>Cashier / Branch Staff</option>
-                <option>Inventory Staff</option>
-                <option>Head Office Admin</option>
-                <option>Super Admin</option>
-                <option>Commissary Manager</option>
+            {field.id === "role" ? (
+              <select className="input-field" defaultValue={t("login.roleOptions.branchManager")} style={{ cursor: "pointer" }}>
+                <option>{t("login.roleOptions.branchManager")}</option>
+                <option>{t("login.roleOptions.branchStaff")}</option>
+                <option>{t("login.roleOptions.inventoryStaff")}</option>
+                <option>{t("login.roleOptions.headOfficeAdmin")}</option>
+                <option>{t("login.roleOptions.superAdmin")}</option>
+                <option>{t("login.roleOptions.commissaryManager")}</option>
               </select>
             ) : (
               <input
                 className="input-field"
-                type={label === "Password" ? "password" : "text"}
-                defaultValue={label === "Username" ? "yousef.anjari" : "password"}
+                type={field.id === "password" ? "password" : "text"}
+                defaultValue={field.id === "username" ? "yousef.anjari" : "password"}
               />
             )}
           </div>
@@ -273,7 +299,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           className="btn-primary glowing-btn-active"
           style={{ width: "100%", padding: "15px", fontSize: "15px", borderRadius: "var(--radius-md)" }}
         >
-          Sign In to Dashboard →
+          {t("login.signInButton")}
         </button>
       </div>
 
@@ -292,11 +318,9 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               }}
             >
               <Sparkles size={14} color="#f97316" />
-              <span style={{ color: "var(--amber)", fontSize: "11px", fontWeight: "800", letterSpacing: "0.04em" }}>TRY THE DEMO</span>
+              <span style={{ color: "var(--amber)", fontSize: "11px", fontWeight: "800", letterSpacing: "0.04em" }}>{t("login.tryDemo")}</span>
             </div>
-            <p style={{ color: colors.textSecondary, fontSize: "15px", fontWeight: "500", margin: 0, lineHeight: 1.5 }}>
-              Pick a demo account below to explore different workspace perspectives with realistic data.
-            </p>
+            <p style={{ color: colors.textSecondary, fontSize: "15px", fontWeight: "500", margin: 0, lineHeight: 1.5 }}>{t("login.demoDescription")}</p>
           </div>
 
           <div
@@ -311,18 +335,24 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               flexWrap: "wrap",
             }}
           >
-            {tabs.map((t) => (
+            {tabs.map((tab) => (
               <button
-                key={t.id}
-                onClick={() => setActiveTab(t.id)}
-                className={activeTab === t.id ? "pill pill-active" : "pill"}
-                style={{ padding: "8px 16px", fontSize: "13px", boxShadow: activeTab === t.id ? undefined : "none", background: activeTab === t.id ? undefined : "transparent" }}
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={activeTab === tab.id ? "pill pill-active" : "pill"}
+                style={{ padding: "8px 16px", fontSize: "13px", boxShadow: activeTab === tab.id ? undefined : "none", background: activeTab === tab.id ? undefined : "transparent" }}
               >
-                {t.label}
+                {tab.id === "all"
+                  ? t("login.tabs.all")
+                  : tab.id === "head-office"
+                    ? t("login.tabs.headOffice")
+                    : tab.id === "branches"
+                      ? t("login.tabs.branches")
+                      : t("login.tabs.commissary")}
                 <span
                   style={{
-                    background: activeTab === t.id ? "rgba(255,255,255,0.25)" : "var(--surface)",
-                    color: activeTab === t.id ? "#fff" : "var(--muted)",
+                    background: activeTab === tab.id ? "rgba(255,255,255,0.25)" : "var(--surface)",
+                    color: activeTab === tab.id ? "#fff" : "var(--muted)",
                     fontSize: "11px",
                     fontWeight: "700",
                     padding: "2px 7px",
@@ -330,7 +360,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                     marginLeft: "6px",
                   }}
                 >
-                  {t.count}
+                  {tab.count}
                 </span>
               </button>
             ))}
@@ -352,9 +382,9 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                     </div>
                     <div style={{ color: "var(--muted)", fontSize: "12px", marginTop: "4px", fontWeight: "500" }}>{acc.email}</div>
                     <div style={{ color: "var(--muted)", fontSize: "12px", marginTop: "6px", lineHeight: 1.45 }}>
-                      <span style={{ color: "var(--amber-light)", fontWeight: "600" }}>{acc.location}</span>
+                      <span style={{ color: "var(--amber-light)", fontWeight: "600" }}>{t(locationKey[acc.location] ?? acc.location)}</span>
                       {" · "}
-                      {acc.description}
+                      {t(roleDescKey[acc.role] ?? acc.description)}
                     </div>
                   </div>
                 </div>
@@ -373,7 +403,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                     }}
                   >
                     {copiedEmail === acc.email ? <Check size={13} /> : <Copy size={13} />}
-                    {copiedEmail === acc.email ? "Copied!" : "Copy"}
+                    {copiedEmail === acc.email ? t("common.copied") : t("common.copy")}
                   </button>
                   <button
                     id={`demo-login-${acc.initials.toLowerCase()}`}
@@ -382,7 +412,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                     style={{ display: "flex", alignItems: "center", gap: "5px", padding: "8px 16px", fontSize: "12px", borderRadius: "var(--radius-md)" }}
                   >
                     <LogIn size={13} />
-                    Sign in
+                    {t("common.signIn")}
                   </button>
                 </div>
               </div>
@@ -391,7 +421,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
         </div>
 
         <p style={{ textAlign: "center", color: colors.muted, fontSize: "13px", marginTop: "24px", fontWeight: "500" }}>
-          Popcorn Place Kuwait · POS v2.0 · Multi-Branch Edition
+          {t("brand.fullName")} · {t("brand.version")} · {t("brand.edition")}
         </p>
       </div>
     </div>

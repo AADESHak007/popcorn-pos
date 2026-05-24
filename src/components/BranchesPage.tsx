@@ -1,4 +1,5 @@
 "use client";
+import { useTranslation } from "@/contexts/LocaleContext";
 
 const branches = [
   { name: "Salmiya", manager: "Yousef Al-Anjari", city: "Kuwait City", sales: 840, orders: 342, stock: "OK", items: 45, rank: 1 },
@@ -44,21 +45,29 @@ function StockBadge({ status }: { status: string }) {
 }
 
 export default function BranchesPage() {
+  const { t } = useTranslation();
   const totalSales = branches.reduce((s, b) => s + b.sales, 0);
   const totalOrders = branches.reduce((s, b) => s + b.orders, 0);
+
+  const cityKey: Record<string, string> = {
+    "Kuwait City": "branchesNames.kuwaitCity",
+    Hawally: "branchesNames.hawally",
+    Farwaniya: "branchesNames.farwaniya",
+    "Al-Ahmadi": "branchesNames.alAhmadi",
+  };
 
   return (
     <div className="page-wrap">
       <div style={{ marginBottom: "32px" }}>
-        <h1 className="page-title">Branch Management</h1>
-        <p className="page-subtitle">Performance analytics and status overview of all 5 Popcorn Place Kuwait locations</p>
+        <h1 className="page-title">{t("branches.title")}</h1>
+        <p className="page-subtitle">{t("branches.subtitle")}</p>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px", marginBottom: "32px" }}>
         {[
-          { label: "Total Branches", value: "5 / 5 Active", icon: "🏪", sub: "All operational" },
-          { label: "Combined Revenue", value: `KD ${totalSales.toFixed(3)}`, icon: "💰", sub: "Today global aggregate" },
-          { label: "Combined Orders", value: totalOrders.toString(), icon: "📦", sub: "Today global sales count" },
+          { label: t("branches.totalBranches"), value: t("branches.activeCount"), icon: "🏪", sub: t("branches.allOperational") },
+          { label: t("branches.combinedRevenue"), value: `${t("common.currency")} ${totalSales.toFixed(3)}`, icon: "💰", sub: t("branches.todayAggregate") },
+          { label: t("branches.combinedOrders"), value: totalOrders.toString(), icon: "📦", sub: t("branches.todaySalesCount") },
         ].map((s, i) => (
           <div key={i} className="metric-card" style={{ display: "flex", alignItems: "center", gap: "18px" }}>
             <span
@@ -127,38 +136,39 @@ export default function BranchesPage() {
                 </div>
                 <div>
                   <div style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700", letterSpacing: "-0.3px" }}>
-                    {branch.name}
+                    {t(`branchesNames.${branch.name.toLowerCase()}` as any) ?? branch.name}
                   </div>
                   <div style={{ color: "var(--muted)", fontSize: "13px", marginTop: "4px", fontWeight: "500" }}>
-                    {branch.city} · <span style={{ color: "var(--text-secondary)", fontWeight: "600" }}>{branch.manager}</span>
+                    {t(cityKey[branch.city] ?? "branchesNames.kuwaitCity")} ·{" "}
+                    <span style={{ color: "var(--text-secondary)", fontWeight: "600" }}>{branch.manager}</span>
                   </div>
                 </div>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                 <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#10b981", boxShadow: "0 0 8px #10b981" }} />
-                <span style={{ color: "#10b981", fontSize: "12px", fontWeight: "700" }}>OPEN</span>
+                <span style={{ color: "#10b981", fontSize: "12px", fontWeight: "700" }}>{t("common.open")}</span>
               </div>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "14px", marginBottom: "22px" }}>
               <div style={{ background: "var(--surface-muted)", borderRadius: "var(--radius-md)", padding: "14px" }}>
-                <div style={{ color: "var(--muted)", fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "8px" }}>Sales</div>
-                <div style={{ color: "var(--amber)", fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: "800" }}>KD {branch.sales.toFixed(3)}</div>
+                <div style={{ color: "var(--muted)", fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "8px" }}>{t("branches.sales")}</div>
+                <div style={{ color: "var(--amber)", fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: "800" }}>{t("common.currency")} {branch.sales.toFixed(3)}</div>
               </div>
               <div style={{ background: "var(--surface-muted)", borderRadius: "var(--radius-md)", padding: "14px" }}>
-                <div style={{ color: "var(--muted)", fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "8px" }}>Orders</div>
+                <div style={{ color: "var(--muted)", fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "8px" }}>{t("branches.orders")}</div>
                 <div style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: "800" }}>{branch.orders}</div>
               </div>
               <div style={{ background: "var(--surface-muted)", borderRadius: "var(--radius-md)", padding: "14px" }}>
-                <div style={{ color: "var(--muted)", fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "8px" }}>Stock</div>
+                <div style={{ color: "var(--muted)", fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "8px" }}>{t("branches.stock")}</div>
                 <StockBadge status={branch.stock} />
               </div>
             </div>
 
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ color: "var(--muted)", fontSize: "13px", fontWeight: "500" }}>{branch.items} active SKUs</span>
+              <span style={{ color: "var(--muted)", fontSize: "13px", fontWeight: "500" }}>{t("branches.activeSkus", { count: branch.items })}</span>
               <button className="btn-secondary" style={{ padding: "8px 16px", fontSize: "12px", fontWeight: "700", color: "var(--amber)" }}>
-                View Live feed →
+                {t("branches.viewFeed")}
               </button>
             </div>
           </div>

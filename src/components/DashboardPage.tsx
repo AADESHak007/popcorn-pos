@@ -1,6 +1,7 @@
 "use client";
 import { CircleDollarSign, Package, AlertTriangle, FileText, ArrowRightLeft, CreditCard, Percent, Calendar, RefreshCw, ChevronDown, TrendingUp, BarChart3, Users, Receipt, ArrowUp, ArrowDown } from "lucide-react";
 import { cardStyles } from "@/lib/ui";
+import { useTranslation } from "@/contexts/LocaleContext";
 import {
   BarChart,
   Bar,
@@ -83,23 +84,39 @@ const recentTransfers = [
   { id: "STN-002", from: "Commissary", item: "Popcorn Kernels", status: "In Transit" },
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ChartTooltip = ({ active, payload, label }: any) => {
-  if (active && payload?.length) {
-    return (
-      <div style={{ ...cardStyles.base, padding: "12px 16px", boxShadow: "var(--shadow-lg)" }}>
-        <div style={{ color: "var(--muted)", fontSize: "12px", marginBottom: "4px", fontWeight: "600" }}>{label}</div>
-        <div style={{ color: "var(--amber)", fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: "800" }}>
-          KD {payload[0].value.toFixed(3)}
-        </div>
-      </div>
-    );
-  }
-  return null;
+const branchNameKey: Record<string, string> = {
+  Salmiya: "branchesNames.salmiya",
+  "Al Rai": "branchesNames.alRai",
+  Fahaheel: "branchesNames.fahaheel",
+  Avenues: "branchesNames.avenues",
+  "Sabah Al Salem": "branchesNames.sabahAlSalem",
+  Hawally: "branchesNames.hawally",
+  Farwaniya: "branchesNames.farwaniya",
+  Jabriya: "branchesNames.jabriya",
+};
+
+const categoryNameKey: Record<string, string> = {
+  Popcorn: "categories.popcorn",
+  Combos: "categories.combos",
+  Beverages: "categories.beverages",
+  Confections: "categories.confections",
+  Beverage: "categories.beverage",
+  Snack: "categories.snack",
+  Ingredient: "categories.ingredient",
+  Packaging: "categories.packaging",
+};
+
+const transferStatusKey: Record<string, string> = {
+  Delivered: "status.delivered",
+  "In Transit": "status.inTransit",
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function DashboardPage({ user }: { user?: any }) {
+  const { t } = useTranslation();
+
+  const branchLabel = (name: string) => t(branchNameKey[name] ?? name);
+  const categoryLabel = (name: string) => t(categoryNameKey[name] ?? name);
   const isBranch = user?.role === "BRANCH MANAGER" || user?.role === "BRANCH STAFF";
   const locationName = user?.location || "Head Office";
   const branchShortName = locationName.split(" ")[0];
@@ -111,31 +128,45 @@ export default function DashboardPage({ user }: { user?: any }) {
 
   const metrics = isBranch
     ? [
-      { label: "Today's Sales", value: "KD 196.000", sub: "+5.2% vs yesterday", up: true, icon: <CircleDollarSign size={20} />, color: "#f97316", bg: "var(--amber-soft)" },
-      { label: "Today's Orders", value: "42", sub: "+2.1% vs yesterday", up: true, icon: <Package size={20} />, color: "#3b82f6", bg: "rgba(59, 130, 246, 0.1)" },
-      { label: "Stock Alerts", value: displayedAlerts.length.toString(), sub: "Requires attention", up: false, icon: <AlertTriangle size={20} />, color: "#ef4444", bg: "rgba(239, 68, 68, 0.1)" },
-      { label: "Cash in Drawer", value: "KD 85.500", sub: "Expected cash", up: true, icon: <CreditCard size={20} />, color: "#10b981", bg: "rgba(16, 185, 129, 0.1)" },
+      { label: t("dashboard.metrics.todaySales"), value: "KD 196.000", sub: t("dashboard.metrics.vsYesterdayUp", { pct: 5.2 }), up: true, icon: <CircleDollarSign size={20} />, color: "#f97316", bg: "var(--amber-soft)" },
+      { label: t("dashboard.metrics.todayOrders"), value: "42", sub: t("dashboard.metrics.vsYesterdayOrders", { pct: 2.1 }), up: true, icon: <Package size={20} />, color: "#3b82f6", bg: "rgba(59, 130, 246, 0.1)" },
+      { label: t("dashboard.metrics.stockAlerts"), value: displayedAlerts.length.toString(), sub: t("dashboard.metrics.needsAttention"), up: false, icon: <AlertTriangle size={20} />, color: "#ef4444", bg: "rgba(239, 68, 68, 0.1)" },
+      { label: t("dashboard.metrics.cashDrawer"), value: "KD 85.500", sub: t("dashboard.metrics.expectedCash"), up: true, icon: <CreditCard size={20} />, color: "#10b981", bg: "rgba(16, 185, 129, 0.1)" },
     ]
     : [
-      { label: "Total Sales (MTD)", value: "KWD 312,540.200", sub: "+8.4% vs Last Month", up: true, icon: <BarChart3 size={20} />, color: "#3b82f6", bg: "rgba(59, 130, 246, 0.1)" },
-      { label: "Total Sales (YTD)", value: "KWD 1,785,620.750", sub: "+15.2% vs Last Year", up: true, icon: <CircleDollarSign size={20} />, color: "#10b981", bg: "rgba(16, 185, 129, 0.1)" },
-      { label: "Gross Profit (MTD)", value: "KWD 98,765.300", sub: "+6.9% vs Last Month", up: true, icon: <Percent size={20} />, color: "#f97316", bg: "rgba(249, 115, 22, 0.1)" },
-      { label: "Total Transactions (MTD)", value: "2,350", sub: "+9.1% vs Last Month", up: true, icon: <Receipt size={20} />, color: "#ef4444", bg: "rgba(239, 68, 68, 0.1)" },
-      { label: "Avg. Order Value (MTD)", value: "KWD 5.47", sub: "+3.2% vs Last Month", up: true, icon: <FileText size={20} />, color: "#3b82f6", bg: "rgba(59, 130, 246, 0.1)" },
+      { label: t("dashboard.metrics.totalSalesMtd"), value: "KWD 312,540.200", sub: t("dashboard.metrics.vsLastMonth", { pct: 8.4 }), up: true, icon: <BarChart3 size={20} />, color: "#3b82f6", bg: "rgba(59, 130, 246, 0.1)" },
+      { label: t("dashboard.metrics.totalSalesYtd"), value: "KWD 1,785,620.750", sub: t("dashboard.metrics.vsLastYear", { pct: 15.2 }), up: true, icon: <CircleDollarSign size={20} />, color: "#10b981", bg: "rgba(16, 185, 129, 0.1)" },
+      { label: t("dashboard.metrics.grossProfitMtd"), value: "KWD 98,765.300", sub: t("dashboard.metrics.vsLastMonth", { pct: 6.9 }), up: true, icon: <Percent size={20} />, color: "#f97316", bg: "rgba(249, 115, 22, 0.1)" },
+      { label: t("dashboard.metrics.totalTransactionsMtd"), value: "2,350", sub: t("dashboard.metrics.vsLastMonth", { pct: 9.1 }), up: true, icon: <Receipt size={20} />, color: "#ef4444", bg: "rgba(239, 68, 68, 0.1)" },
+      { label: t("dashboard.metrics.avgOrderValueMtd"), value: "KWD 5.47", sub: t("dashboard.metrics.vsLastMonth", { pct: 3.2 }), up: true, icon: <FileText size={20} />, color: "#3b82f6", bg: "rgba(59, 130, 246, 0.1)" },
     ];
 
-  const chartData = isBranch ? branchWeeklyData : salesOverviewData;
-  const chartTitle = isBranch ? "Branch Weekly Sales" : "Sales Overview";
-  const chartSubtitle = isBranch ? "Revenue for this location · This week" : "Comparing actual sales against previous periods";
+  const chartTitle = isBranch ? t("dashboard.chart.branchWeekly") : t("dashboard.chart.salesOverview");
+  const chartSubtitle = isBranch ? t("dashboard.chart.branchSub") : t("dashboard.chart.salesOverviewSub");
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ChartTooltip = ({ active, payload, label }: any) => {
+    if (active && payload?.length) {
+      return (
+        <div style={{ ...cardStyles.base, padding: "12px 16px", boxShadow: "var(--shadow-lg)" }}>
+          <div style={{ color: "var(--muted)", fontSize: "12px", marginBottom: "4px", fontWeight: "600" }}>{label}</div>
+          <div style={{ color: "var(--amber)", fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: "800" }}>
+            {t("common.currency")} {payload[0].value.toFixed(3)}
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <div className="page-wrap">
       <div className="page-header" style={{ alignItems: "center" }}>
         <div>
-          <h1 className="page-title">{isBranch ? `${branchShortName} Branch Dashboard` : "Owner Dashboard"}</h1>
-          <p className="page-subtitle">
-            Live overview of your business
-          </p>
+          <h1 className="page-title">
+            {isBranch ? t("dashboard.branchTitle", { branch: branchShortName }) : t("dashboard.ownerTitle")}
+          </h1>
+          <p className="page-subtitle">{t("dashboard.liveOverview")}</p>
         </div>
 
         {!isBranch && (
@@ -143,9 +174,9 @@ export default function DashboardPage({ user }: { user?: any }) {
             <div style={{ display: "flex", alignItems: "center", gap: "8px", background: "var(--surface)", padding: "8px 16px", borderRadius: "var(--radius-md)", boxShadow: "var(--shadow-sm)" }}>
               <Calendar size={16} color="var(--muted)" />
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <span style={{ fontSize: "10px", color: "var(--muted)", fontWeight: "600", textTransform: "uppercase" }}>Time Period</span>
+                <span style={{ fontSize: "10px", color: "var(--muted)", fontWeight: "600", textTransform: "uppercase" }}>{t("dashboard.filters.timePeriod")}</span>
                 <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "14px", fontWeight: "700" }}>
-                  MTD <ChevronDown size={14} />
+                  {t("common.mtd")} <ChevronDown size={14} />
                 </div>
               </div>
             </div>
@@ -153,9 +184,9 @@ export default function DashboardPage({ user }: { user?: any }) {
             <div style={{ display: "flex", alignItems: "center", gap: "8px", background: "var(--surface)", padding: "8px 16px", borderRadius: "var(--radius-md)", boxShadow: "var(--shadow-sm)" }}>
               <ArrowRightLeft size={16} color="var(--muted)" />
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <span style={{ fontSize: "10px", color: "var(--muted)", fontWeight: "600", textTransform: "uppercase" }}>Compare With</span>
+                <span style={{ fontSize: "10px", color: "var(--muted)", fontWeight: "600", textTransform: "uppercase" }}>{t("dashboard.filters.compareWith")}</span>
                 <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "14px", fontWeight: "700" }}>
-                  Last Month <ChevronDown size={14} />
+                  {t("dashboard.filters.lastMonth")} <ChevronDown size={14} />
                 </div>
               </div>
             </div>
@@ -163,16 +194,16 @@ export default function DashboardPage({ user }: { user?: any }) {
             <div style={{ display: "flex", alignItems: "center", gap: "8px", background: "var(--surface)", padding: "8px 16px", borderRadius: "var(--radius-md)", boxShadow: "var(--shadow-sm)" }}>
               <Calendar size={16} color="var(--muted)" />
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <span style={{ fontSize: "10px", color: "var(--muted)", fontWeight: "600", textTransform: "uppercase" }}>Date Range</span>
+                <span style={{ fontSize: "10px", color: "var(--muted)", fontWeight: "600", textTransform: "uppercase" }}>{t("dashboard.filters.dateRange")}</span>
                 <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "14px", fontWeight: "700" }}>
-                  01 May 2026 - 18 May 2026 <ChevronDown size={14} />
+                  {t("dashboard.dateRangeValue")} <ChevronDown size={14} />
                 </div>
               </div>
             </div>
 
             <button className="btn-secondary" style={{ display: "flex", alignItems: "center", gap: "8px", padding: "12px 16px" }}>
               <RefreshCw size={16} />
-              Refresh
+              {t("common.refresh")}
             </button>
           </div>
         )}
@@ -256,10 +287,10 @@ export default function DashboardPage({ user }: { user?: any }) {
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(15, 23, 42, 0.04)" vertical={false} />
                 <XAxis dataKey="day" tick={{ fill: "var(--muted)", fontSize: 11, fontWeight: "600" }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill: "var(--muted)", fontSize: 11, fontWeight: "600" }} axisLine={false} tickLine={false} />
-                <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', fontWeight: '600' }} />
-                <Line type="monotone" dataKey="thisMonth" name="This Month" stroke="#4f46e5" strokeWidth={3} dot={{ r: 4, strokeWidth: 2 }} activeDot={{ r: 6 }} />
-                <Line type="monotone" dataKey="lastMonth" name="Last Month" stroke="#94a3b8" strokeWidth={2} dot={{ r: 3 }} strokeDasharray="5 5" />
+                <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+                <Legend iconType="circle" wrapperStyle={{ fontSize: "12px", fontWeight: "600" }} />
+                <Line type="monotone" dataKey="thisMonth" name={t("dashboard.chart.thisMonth")} stroke="#4f46e5" strokeWidth={3} dot={{ r: 4, strokeWidth: 2 }} activeDot={{ r: 6 }} />
+                <Line type="monotone" dataKey="lastMonth" name={t("dashboard.chart.lastMonth")} stroke="#94a3b8" strokeWidth={2} dot={{ r: 3 }} strokeDasharray="5 5" />
               </LineChart>
             )}
           </ResponsiveContainer>
@@ -283,7 +314,7 @@ export default function DashboardPage({ user }: { user?: any }) {
                         <div style={{ color: "var(--text)", fontSize: "14px", fontWeight: "700" }}>{a.item}</div>
                         <div style={{ color: "var(--muted)", fontSize: "12px", marginTop: "4px", fontWeight: "500" }}>
                           {!isBranch && a.branch}
-                          {isBranch && "Current Branch"}
+                          {isBranch && t("dashboard.currentBranch")}
                         </div>
                       </div>
                       <span
@@ -313,25 +344,25 @@ export default function DashboardPage({ user }: { user?: any }) {
           <div className="card" style={{ padding: "28px", display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "20px" }}>
               <div>
-                <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0 }}>Sales by Branch (MTD)</h2>
+                <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0 }}>{t("dashboard.salesByBranch.title")}</h2>
               </div>
             </div>
             <div className="table-wrap" style={{ flex: 1 }}>
               <table className="data-table">
                 <thead>
                   <tr>
-                    <th>Branch</th>
-                    <th>Actual Sales</th>
-                    <th>vs Last Month</th>
-                    <th>vs Budget</th>
-                    <th>Txns</th>
+                    <th>{t("dashboard.salesByBranch.branch")}</th>
+                    <th>{t("dashboard.salesByBranch.actualSales")}</th>
+                    <th>{t("dashboard.salesByBranch.vsLastMonth")}</th>
+                    <th>{t("dashboard.salesByBranch.vsBudget")}</th>
+                    <th>{t("dashboard.salesByBranch.txns")}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {salesByBranchData.map((b, i) => (
                     <tr key={i}>
-                      <td style={{ color: "var(--text)", fontWeight: "600" }}>{b.branch}</td>
-                      <td style={{ fontWeight: "700" }}>{b.sales.toFixed(3)}</td>
+                      <td style={{ color: "var(--text)", fontWeight: "600" }}>{branchLabel(b.branch)}</td>
+                      <td style={{ fontWeight: "700" }}>{t("common.currency")} {b.sales.toFixed(3)}</td>
                       <td>
                         <span style={{ color: b.vsLastMonth >= 0 ? "#10b981" : "#ef4444", fontWeight: "600", fontSize: "13px", display: "flex", alignItems: "center", gap: "2px" }}>
                           {b.vsLastMonth >= 0 ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
@@ -348,8 +379,8 @@ export default function DashboardPage({ user }: { user?: any }) {
                     </tr>
                   ))}
                   <tr style={{ background: "var(--surface-muted)" }}>
-                    <td style={{ fontWeight: "800" }}>Total</td>
-                    <td style={{ fontWeight: "800" }}>195,604.700</td>
+                    <td style={{ fontWeight: "800" }}>{t("common.total")}</td>
+                    <td style={{ fontWeight: "800" }}>{t("common.currency")} 195,604.700</td>
                     <td><span style={{ color: "#10b981", fontWeight: "700", fontSize: "13px" }}>+8.4%</span></td>
                     <td><span style={{ color: "#10b981", fontWeight: "700", fontSize: "13px" }}>+3.6%</span></td>
                     <td style={{ fontWeight: "700" }}>2,350</td>
@@ -362,21 +393,21 @@ export default function DashboardPage({ user }: { user?: any }) {
           <div className="card" style={{ padding: "28px", display: "flex", flexDirection: "column" }}>
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "20px" }}>
                 <div>
-                  <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0, whiteSpace: "nowrap" }}>Sales Summary (MTD)</h2>
+                  <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0, whiteSpace: "nowrap" }}>{t("dashboard.salesSummary.title")}</h2>
                 </div>
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "24px", marginBottom: "32px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ color: "var(--text)", fontWeight: "600", fontSize: "13px", whiteSpace: "nowrap" }}>Actual Sales</span>
+                  <span style={{ color: "var(--text)", fontWeight: "600", fontSize: "13px", whiteSpace: "nowrap" }}>{t("dashboard.salesSummary.actualSales")}</span>
                   <span style={{ fontWeight: "800", fontSize: "14px", whiteSpace: "nowrap" }}>KWD 312,540.200</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ color: "var(--text)", fontWeight: "600", fontSize: "13px" }}>Budget</span>
+                  <span style={{ color: "var(--text)", fontWeight: "600", fontSize: "13px" }}>{t("dashboard.salesSummary.budget")}</span>
                   <span style={{ fontWeight: "800", fontSize: "14px", whiteSpace: "nowrap" }}>KWD 340,000.000</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "4px" }}>
-                  <span style={{ color: "var(--text)", fontWeight: "600", fontSize: "13px" }}>Variance</span>
+                  <span style={{ color: "var(--text)", fontWeight: "600", fontSize: "13px" }}>{t("dashboard.salesSummary.variance")}</span>
                   <span style={{ color: "#ef4444", fontWeight: "800", fontSize: "13px", display: "flex", alignItems: "center", gap: "2px", whiteSpace: "nowrap" }}>
                     <ArrowDown size={14} /> KWD 27,459.800 (-8.1%)
                   </span>
@@ -385,7 +416,7 @@ export default function DashboardPage({ user }: { user?: any }) {
 
               <div style={{ marginTop: "auto" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                  <span style={{ color: "var(--text)", fontWeight: "700", fontSize: "13px", whiteSpace: "nowrap" }}>Budget Achieved</span>
+                  <span style={{ color: "var(--text)", fontWeight: "700", fontSize: "13px", whiteSpace: "nowrap" }}>{t("dashboard.salesSummary.budgetAchieved")}</span>
                   <span style={{ fontWeight: "800", fontSize: "13px" }}>91.9%</span>
                 </div>
                 <div style={{ width: "100%", height: "8px", background: "var(--surface-muted)", borderRadius: "99px", overflow: "hidden" }}>
@@ -402,18 +433,18 @@ export default function DashboardPage({ user }: { user?: any }) {
           {/* Top 5 Products */}
           <div className="card" style={{ overflow: "hidden" }}>
             <div style={cardStyles.sectionHeader}>
-              <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700", margin: 0 }}>Product Performance (MTD)</h2>
-              <p style={{ color: "var(--muted)", fontSize: "13px", marginTop: "4px", fontWeight: "500" }}>Top 5 selling products</p>
+              <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700", margin: 0 }}>{t("dashboard.productPerformance.title")}</h2>
+              <p style={{ color: "var(--muted)", fontSize: "13px", marginTop: "4px", fontWeight: "500" }}>{t("dashboard.productPerformance.subtitle")}</p>
             </div>
             <div className="table-wrap">
               <table className="data-table">
                 <thead>
                   <tr>
-                    <th>Product</th>
-                    <th>Category</th>
-                    <th>Sales (KWD)</th>
-                    <th>vs LM</th>
-                    <th>vs Budget</th>
+                    <th>{t("common.product")}</th>
+                    <th>{t("dashboard.table.category")}</th>
+                    <th>{t("dashboard.productPerformance.salesKwd")}</th>
+                    <th>{t("dashboard.productPerformance.vsLm")}</th>
+                    <th>{t("dashboard.productPerformance.vsBudget")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -422,7 +453,7 @@ export default function DashboardPage({ user }: { user?: any }) {
                       <td style={{ color: "var(--text)", fontWeight: "600", fontSize: "13px" }}>{item.name}</td>
                       <td>
                         <span style={{ background: "var(--amber-soft)", color: "var(--amber)", fontSize: "10px", fontWeight: "700", padding: "3px 8px", borderRadius: "var(--radius-pill)", whiteSpace: "nowrap" }}>
-                          {item.category}
+                          {categoryLabel(item.category)}
                         </span>
                       </td>
                       <td style={{ fontWeight: "700", fontSize: "13px" }}>{(item.revenue / 1000).toFixed(3)}</td>
@@ -442,15 +473,15 @@ export default function DashboardPage({ user }: { user?: any }) {
               </table>
             </div>
             <div style={{ borderTop: "1px solid var(--border)", padding: "14px 24px" }}>
-              <p style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "12px" }}>Slow Moving Products (Bottom 5)</p>
+              <p style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "12px" }}>{t("dashboard.productPerformance.slowMoving")}</p>
               <div className="table-wrap">
                 <table className="data-table">
                   <thead>
                     <tr>
-                      <th>Product</th>
-                      <th>Category</th>
-                      <th>Sales (KWD)</th>
-                      <th>vs LM</th>
+                      <th>{t("common.product")}</th>
+                      <th>{t("dashboard.table.category")}</th>
+                      <th>{t("dashboard.productPerformance.salesKwd")}</th>
+                      <th>{t("dashboard.productPerformance.vsLm")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -459,7 +490,7 @@ export default function DashboardPage({ user }: { user?: any }) {
                         <td style={{ color: "var(--text)", fontWeight: "600", fontSize: "13px" }}>{item.name}</td>
                         <td>
                           <span style={{ background: "rgba(239,68,68,0.08)", color: "#ef4444", fontSize: "10px", fontWeight: "700", padding: "3px 8px", borderRadius: "var(--radius-pill)", whiteSpace: "nowrap" }}>
-                            {item.category}
+                            {categoryLabel(item.category)}
                           </span>
                         </td>
                         <td style={{ fontWeight: "700", fontSize: "13px" }}>{(item.revenue / 1000).toFixed(3)}</td>
@@ -480,8 +511,8 @@ export default function DashboardPage({ user }: { user?: any }) {
           <div className="card" style={{ padding: "28px", display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "20px" }}>
               <div>
-                <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700", margin: 0 }}>Hourly Sales Trend (MTD)</h2>
-                <p style={{ color: "var(--muted)", fontSize: "13px", marginTop: "4px", fontWeight: "500" }}>Average sales volume by hour of day</p>
+                <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700", margin: 0 }}>{t("dashboard.hourly.title")}</h2>
+                <p style={{ color: "var(--muted)", fontSize: "13px", marginTop: "4px", fontWeight: "500" }}>{t("dashboard.hourly.subtitle")}</p>
               </div>
               <div style={{ display: "flex", gap: "8px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "var(--surface-muted)", padding: "6px 12px", borderRadius: "var(--radius-md)", fontSize: "12px", fontWeight: "600", cursor: "pointer" }}>
@@ -507,9 +538,9 @@ export default function DashboardPage({ user }: { user?: any }) {
                   <XAxis dataKey="hour" tick={{ fill: "var(--muted)", fontSize: 10, fontWeight: "600" }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fill: "var(--muted)", fontSize: 10, fontWeight: "600" }} axisLine={false} tickLine={false} />
                   <Tooltip />
-                  <Legend iconType="circle" wrapperStyle={{ fontSize: '11px', fontWeight: '600' }} />
-                  <Bar dataKey="thisMonth" name="This Month" fill="url(#hourGrad)" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="lastMonth" name="Last Month" fill="url(#hourGradLast)" radius={[6, 6, 0, 0]} />
+                  <Legend iconType="circle" wrapperStyle={{ fontSize: "11px", fontWeight: "600" }} />
+                  <Bar dataKey="thisMonth" name={t("dashboard.chart.thisMonth")} fill="url(#hourGrad)" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="lastMonth" name={t("dashboard.chart.lastMonth")} fill="url(#hourGradLast)" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -520,8 +551,8 @@ export default function DashboardPage({ user }: { user?: any }) {
                   <TrendingUp size={18} color="#4f46e5" />
                 </div>
                 <div>
-                  <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "600", textTransform: "uppercase" }}>Peak Hour</div>
-                  <div style={{ color: "var(--text)", fontWeight: "800", fontSize: "15px" }}>7 PM – 9 PM</div>
+                  <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "600", textTransform: "uppercase" }}>{t("dashboard.hourly.peakHour")}</div>
+                  <div style={{ color: "var(--text)", fontWeight: "800", fontSize: "15px" }}>{t("dashboard.hourly.peakHourValue")}</div>
                 </div>
               </div>
               <div style={{ flex: 1, background: "var(--surface-muted)", borderRadius: "var(--radius-md)", padding: "16px 20px", display: "flex", alignItems: "center", gap: "14px" }}>
@@ -529,8 +560,8 @@ export default function DashboardPage({ user }: { user?: any }) {
                   <BarChart3 size={18} color="var(--amber)" />
                 </div>
                 <div>
-                  <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "600", textTransform: "uppercase" }}>Peak Sales (MTD)</div>
-                  <div style={{ color: "var(--text)", fontWeight: "800", fontSize: "15px" }}>KWD 38,750</div>
+                  <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "600", textTransform: "uppercase" }}>{t("dashboard.hourly.peakSalesMtd")}</div>
+                  <div style={{ color: "var(--text)", fontWeight: "800", fontSize: "15px" }}>{t("dashboard.hourly.peakSalesValue")}</div>
                 </div>
               </div>
             </div>
@@ -541,16 +572,17 @@ export default function DashboardPage({ user }: { user?: any }) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "28px", flex: 1 }}>
           <div className="card" style={{ overflow: "hidden", display: "flex", flexDirection: "column" }}>
             <div style={cardStyles.sectionHeader}>
-              <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0 }}>Branch Top Items</h2>
-              <p style={{ color: "var(--muted)", fontSize: "14px", marginTop: "4px", fontWeight: "500" }}>Best performers this week</p>
+              <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0 }}>{t("dashboard.branchTopItems")}</h2>
+              <p style={{ color: "var(--muted)", fontSize: "14px", marginTop: "4px", fontWeight: "500" }}>{t("dashboard.topItemsSub")}</p>
             </div>
             <div className="table-wrap" style={{ flex: 1 }}>
               <table className="data-table">
                 <thead>
                   <tr>
-                    {["Rank", "Item Name", "Category", "Orders"].map((h) => (
-                      <th key={h}>{h}</th>
-                    ))}
+                    <th>{t("common.rank")}</th>
+                    <th>{t("dashboard.table.itemName")}</th>
+                    <th>{t("dashboard.table.category")}</th>
+                    <th>{t("dashboard.table.orders")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -560,7 +592,7 @@ export default function DashboardPage({ user }: { user?: any }) {
                       <td style={{ color: "var(--text)", fontWeight: "600" }}>{item.name}</td>
                       <td>
                         <span style={{ background: "var(--amber-soft)", color: "var(--amber)", fontSize: "11px", fontWeight: "700", padding: "4px 10px", borderRadius: "var(--radius-pill)" }}>
-                          {item.category}
+                          {categoryLabel(item.category)}
                         </span>
                       </td>
                       <td style={{ color: "var(--text-secondary)", fontWeight: "500" }}>{Math.floor(item.orders / 5)}</td>
@@ -574,8 +606,8 @@ export default function DashboardPage({ user }: { user?: any }) {
           <div className="card" style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ ...cardStyles.sectionHeader, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
-                <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0 }}>Stock Transfers</h2>
-                <p style={{ color: "var(--muted)", fontSize: "14px", marginTop: "4px", fontWeight: "500" }}>Recent STNs for this branch</p>
+                <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0 }}>{t("dashboard.stockTransfers")}</h2>
+                <p style={{ color: "var(--muted)", fontSize: "14px", marginTop: "4px", fontWeight: "500" }}>{t("dashboard.stockTransfersSub")}</p>
               </div>
               <ArrowRightLeft size={22} color="var(--amber)" />
             </div>
@@ -585,10 +617,10 @@ export default function DashboardPage({ user }: { user?: any }) {
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
                     <span style={{ fontWeight: "700", color: "var(--text)", fontSize: "14px" }}>{stn.id}</span>
                     <span style={{ color: stn.status === "Delivered" ? "#10b981" : "#3b82f6", fontWeight: "800", fontSize: "10px", background: stn.status === "Delivered" ? "rgba(16, 185, 129, 0.1)" : "rgba(59, 130, 246, 0.1)", padding: "4px 10px", borderRadius: "var(--radius-pill)" }}>
-                      {stn.status.toUpperCase()}
+                      {t(transferStatusKey[stn.status] ?? stn.status).toUpperCase()}
                     </span>
                   </div>
-                  <div style={{ color: "var(--muted)", fontSize: "13px", marginBottom: "6px", fontWeight: "500" }}>From: {stn.from}</div>
+                  <div style={{ color: "var(--muted)", fontSize: "13px", marginBottom: "6px", fontWeight: "500" }}>{t("dashboard.poFrom", { from: stn.from })}</div>
                   <div style={{ color: "var(--text)", fontSize: "14px", fontWeight: "700" }}>{stn.item}</div>
                 </div>
               ))}
@@ -601,16 +633,16 @@ export default function DashboardPage({ user }: { user?: any }) {
       {!isBranch && (
         <div className="card" style={{ padding: "28px", marginBottom: "8px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
-            <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700", margin: 0 }}>Alerts &amp; Notifications</h2>
-            <button className="btn-ghost" style={{ fontSize: "13px", fontWeight: "700", color: "var(--amber)", padding: "6px 14px" }}>View All Alerts →</button>
+            <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700", margin: 0 }}>{t("dashboard.alerts.title")}</h2>
+            <button className="btn-ghost" style={{ fontSize: "13px", fontWeight: "700", color: "var(--amber)", padding: "6px 14px" }}>{t("dashboard.alerts.viewAll")}</button>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "16px" }}>
             {[
-              { label: "Low Stock Items", count: 23, sub: "23 items", color: "#f97316", bg: "rgba(249,115,22,0.1)", icon: <AlertTriangle size={22} color="#f97316" /> },
-              { label: "Out of Stock Items", count: 7, sub: "7 items", color: "#ef4444", bg: "rgba(239,68,68,0.1)", icon: <Package size={22} color="#ef4444" /> },
-              { label: "Price Changes", count: 3, sub: "3 items", color: "#10b981", bg: "rgba(16,185,129,0.1)", icon: <Receipt size={22} color="#10b981" /> },
-              { label: "Branch Transfers", count: 2, sub: "2 in transit", color: "#3b82f6", bg: "rgba(59,130,246,0.1)", icon: <ArrowRightLeft size={22} color="#3b82f6" /> },
-              { label: "B2B Payments Due", count: 1, sub: "1 payment", color: "#8b5cf6", bg: "rgba(139,92,246,0.1)", icon: <CreditCard size={22} color="#8b5cf6" /> },
+              { label: t("dashboard.alerts.lowStockItems"), count: 23, sub: t("dashboard.alerts.itemsCount", { count: 23 }), color: "#f97316", bg: "rgba(249,115,22,0.1)", icon: <AlertTriangle size={22} color="#f97316" /> },
+              { label: t("dashboard.alerts.outOfStockItems"), count: 7, sub: t("dashboard.alerts.itemsCount", { count: 7 }), color: "#ef4444", bg: "rgba(239,68,68,0.1)", icon: <Package size={22} color="#ef4444" /> },
+              { label: t("dashboard.alerts.priceChanges"), count: 3, sub: t("dashboard.alerts.itemsCount", { count: 3 }), color: "#10b981", bg: "rgba(16,185,129,0.1)", icon: <Receipt size={22} color="#10b981" /> },
+              { label: t("dashboard.alerts.branchTransfers"), count: 2, sub: t("dashboard.alerts.inTransit", { count: 2 }), color: "#3b82f6", bg: "rgba(59,130,246,0.1)", icon: <ArrowRightLeft size={22} color="#3b82f6" /> },
+              { label: t("dashboard.alerts.b2bPaymentsDue"), count: 1, sub: t("dashboard.alerts.paymentCount", { count: 1 }), color: "#8b5cf6", bg: "rgba(139,92,246,0.1)", icon: <CreditCard size={22} color="#8b5cf6" /> },
             ].map((alert, i) => (
               <div key={i} style={{ background: "var(--surface-muted)", borderRadius: "var(--radius-md)", padding: "20px", display: "flex", flexDirection: "column", gap: "12px" }}>
                 <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: alert.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -621,7 +653,7 @@ export default function DashboardPage({ user }: { user?: any }) {
                   <div style={{ color: "var(--text)", fontWeight: "600", fontSize: "14px", marginTop: "4px" }}>{alert.label}</div>
                   <div style={{ color: "var(--muted)", fontSize: "12px", marginTop: "2px" }}>{alert.sub}</div>
                 </div>
-                <button className="btn-ghost" style={{ fontSize: "12px", fontWeight: "700", color: alert.color, padding: "4px 0", textAlign: "left" }}>View Details</button>
+                <button className="btn-ghost" style={{ fontSize: "12px", fontWeight: "700", color: alert.color, padding: "4px 0", textAlign: "start" }}>{t("common.viewDetails")}</button>
               </div>
             ))}
           </div>

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Package, AlertTriangle, Ban } from "lucide-react";
+import { useTranslation } from "@/contexts/LocaleContext";
 
 const inventoryItems = [
   { item: "Butter Salt", branch: "Salmiya", category: "Ingredient", stock: 2, unit: "kg", min: 5, status: "Low" },
@@ -44,6 +45,7 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function InventoryPage() {
+  const { t } = useTranslation();
   const [selectedFilter, setSelectedFilter] = useState("All");
 
   const filteredItems = inventoryItems.filter((item) => selectedFilter === "All" || item.category === selectedFilter);
@@ -51,15 +53,15 @@ export default function InventoryPage() {
   return (
     <div className="page-wrap">
       <div style={{ marginBottom: "32px" }}>
-        <h1 className="page-title">Inventory System</h1>
-        <p className="page-subtitle">Real-time stock ledger and levels across all branches</p>
+        <h1 className="page-title">{t("inventory.title")}</h1>
+        <p className="page-subtitle">{t("inventory.subtitle")}</p>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px", marginBottom: "28px" }}>
         {[
-          { label: "Total SKUs", value: "48", icon: <Package size={22} color="#f97316" />, sub: "Across 5 branches", bg: "var(--amber-soft)" },
-          { label: "Low Stock Items", value: "5", icon: <AlertTriangle size={22} color="#eab308" />, sub: "Needs replenishment", bg: "rgba(234, 179, 8, 0.1)" },
-          { label: "Out of Stock", value: "1", icon: <Ban size={22} color="#ef4444" />, sub: "Nachos · Fahaheel", bg: "rgba(239, 68, 68, 0.1)" },
+          { label: t("inventory.totalSkus"), value: "48", icon: <Package size={22} color="#f97316" />, sub: t("inventory.acrossBranches"), bg: "var(--amber-soft)" },
+          { label: t("inventory.lowStock"), value: "5", icon: <AlertTriangle size={22} color="#eab308" />, sub: t("inventory.needsReplenishment"), bg: "rgba(234, 179, 8, 0.1)" },
+          { label: t("inventory.outOfStock"), value: "1", icon: <Ban size={22} color="#ef4444" />, sub: t("inventory.outOfStockSub"), bg: "rgba(239, 68, 68, 0.1)" },
         ].map((s, i) => (
           <div key={i} className="metric-card" style={{ display: "flex", alignItems: "center", gap: "18px" }}>
             <span
@@ -99,11 +101,11 @@ export default function InventoryPage() {
             gap: "12px",
           }}
         >
-          <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0 }}>Stock Ledger</h2>
+          <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0 }}>{t("inventory.stockLedger")}</h2>
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
             {["All", "Ingredient", "Packaging", "Beverage", "Snack"].map((f) => (
               <button key={f} onClick={() => setSelectedFilter(f)} className={`pill ${selectedFilter === f ? "pill-active" : ""}`} style={{ padding: "8px 16px", fontSize: "12px" }}>
-                {f}
+                {f === "All" ? t("categories.all") : t(`categories.${f.toLowerCase()}`)}
               </button>
             ))}
           </div>
@@ -113,9 +115,12 @@ export default function InventoryPage() {
           <table className="data-table">
             <thead>
               <tr>
-                {["Item Name", "Branch", "Category", "Current Stock", "Min Level", "Status"].map((h) => (
-                  <th key={h}>{h}</th>
-                ))}
+                <th>{t("inventory.table.itemName")}</th>
+                <th>{t("inventory.table.branch")}</th>
+                <th>{t("inventory.table.category")}</th>
+                <th>{t("inventory.table.currentStock")}</th>
+                <th>{t("inventory.table.minLevel")}</th>
+                <th>{t("inventory.table.status")}</th>
               </tr>
             </thead>
             <tbody>

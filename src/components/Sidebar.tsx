@@ -1,6 +1,8 @@
 "use client";
 import { LayoutDashboard, Monitor, Package, FileText, ArrowRightLeft, Building2, LogOut, Popcorn, ChevronDown } from "lucide-react";
 import { sidebarWidth } from "@/lib/theme";
+import { useTranslation } from "@/contexts/LocaleContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export type NavPage =
   | "dashboard"
@@ -17,16 +19,17 @@ interface SidebarProps {
   user: any;
 }
 
-const navItems: { id: NavPage; label: string; Icon: React.ElementType; badge?: string }[] = [
-  { id: "dashboard", label: "Dashboard", Icon: LayoutDashboard },
-  { id: "pos", label: "Point of Sale", Icon: Monitor, badge: "LIVE" },
-  { id: "inventory", label: "Inventory", Icon: Package },
-  { id: "reports", label: "Reports", Icon: FileText },
-  { id: "stock-transfer", label: "Stock Transfer", Icon: ArrowRightLeft },
-  { id: "branches", label: "Branches", Icon: Building2 },
+const navItems: { id: NavPage; labelKey: string; Icon: React.ElementType; badgeKey?: string }[] = [
+  { id: "dashboard", labelKey: "nav.dashboard", Icon: LayoutDashboard },
+  { id: "pos", labelKey: "nav.pos", Icon: Monitor, badgeKey: "nav.live" },
+  { id: "inventory", labelKey: "nav.inventory", Icon: Package },
+  { id: "reports", labelKey: "nav.reports", Icon: FileText },
+  { id: "stock-transfer", labelKey: "nav.stockTransfer", Icon: ArrowRightLeft },
+  { id: "branches", labelKey: "nav.branches", Icon: Building2 },
 ];
 
 export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps) {
+  const { t } = useTranslation();
   const role = user?.role || "SUPER ADMIN";
 
   const allowedNavItems = navItems.filter((item) => {
@@ -41,6 +44,7 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
 
   return (
     <aside
+      className="app-sidebar"
       style={{
         background: "rgba(255, 255, 255, 0.85)",
         backdropFilter: "blur(20px)",
@@ -50,11 +54,6 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
         display: "flex",
         flexDirection: "column",
         boxShadow: "var(--shadow-sm)",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        bottom: 0,
-        zIndex: 50,
       }}
     >
       <div style={{ padding: "28px 22px 20px" }}>
@@ -85,10 +84,10 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
                 lineHeight: 1.2,
               }}
             >
-              Popcorn Place KW
+              {t("brand.name")}
             </div>
             <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "600", marginTop: "3px" }}>
-              POS System
+              {t("brand.tagline")}
             </div>
           </div>
         </div>
@@ -103,12 +102,6 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
             cursor: "pointer",
             transition: "background 0.2s ease",
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "var(--surface-hover)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "var(--surface-muted)";
-          }}
         >
           <div
             style={{
@@ -120,7 +113,7 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
               marginBottom: "4px",
             }}
           >
-            Location
+            {t("nav.location")}
           </div>
           <div
             style={{
@@ -132,7 +125,7 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
               justifyContent: "space-between",
             }}
           >
-            {user?.location || "Head Office"}
+            {user?.location || t("nav.headOffice")}
             <ChevronDown size={14} color="var(--muted)" />
           </div>
         </div>
@@ -149,9 +142,9 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
             padding: "0 12px 12px",
           }}
         >
-          Navigation
+          {t("nav.navigation")}
         </div>
-        {allowedNavItems.map(({ id, label, Icon, badge }) => {
+        {allowedNavItems.map(({ id, labelKey, Icon, badgeKey }) => {
           const isActive = currentPage === id;
           return (
             <button
@@ -171,7 +164,7 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
                 color: isActive ? "var(--amber)" : "var(--muted)",
                 fontWeight: isActive ? "700" : "500",
                 fontSize: "14px",
-                textAlign: "left",
+                textAlign: "start",
                 transition: "all 0.22s cubic-bezier(0.4, 0, 0.2, 1)",
                 boxShadow: isActive ? "var(--shadow-xs)" : "none",
               }}
@@ -191,8 +184,8 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
               <span style={{ flexShrink: 0, display: "flex" }}>
                 <Icon size={18} color={isActive ? "var(--amber)" : "var(--muted)"} strokeWidth={isActive ? 2.5 : 2} />
               </span>
-              <span style={{ flex: 1 }}>{label}</span>
-              {badge && (
+              <span style={{ flex: 1 }}>{t(labelKey)}</span>
+              {badgeKey && (
                 <span
                   style={{
                     background: isActive ? "rgba(249, 115, 22, 0.2)" : "var(--amber-soft)",
@@ -204,7 +197,7 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
                     letterSpacing: "0.04em",
                   }}
                 >
-                  {badge}
+                  {t(badgeKey)}
                 </span>
               )}
             </button>
@@ -213,6 +206,9 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
       </nav>
 
       <div style={{ padding: "18px 18px 22px" }}>
+        <div style={{ marginBottom: "12px", display: "flex", justifyContent: "center" }}>
+          <LanguageSwitcher compact />
+        </div>
         <div
           style={{
             background: "var(--surface-muted)",
@@ -254,7 +250,7 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
                 {user?.name || "Super Admin"}
               </div>
               <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "600", marginTop: "2px" }}>
-                {user?.role || "SUPER ADMIN"}
+                {user?.roleLabel || role}
               </div>
             </div>
           </div>
@@ -281,7 +277,7 @@ export default function Sidebar({ currentPage, onNavigate, user }: SidebarProps)
           }}
         >
           <LogOut size={16} />
-          Sign Out
+          {t("common.signOut")}
         </button>
       </div>
     </aside>

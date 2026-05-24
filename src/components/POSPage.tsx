@@ -1,34 +1,36 @@
 "use client";
 import { useState } from "react";
 import { Popcorn, Flame, CupSoda, GlassWater, Droplet, Utensils, ShoppingBag, Search, Plus, Minus, CreditCard, Landmark, Banknote } from "lucide-react";
+import { useTranslation } from "@/contexts/LocaleContext";
 
 const posItems = [
-  { id: 1, name: "Butter Popcorn", price: 1.5, icon: <Popcorn size={26} color="#f97316" />, category: "Popcorn" },
-  { id: 2, name: "Caramel Crunch", price: 2.0, icon: <Popcorn size={26} color="#ea580c" />, category: "Popcorn" },
-  { id: 3, name: "Cheese Blast", price: 1.8, icon: <Popcorn size={26} color="#eab308" />, category: "Popcorn" },
-  { id: 4, name: "Saffron Caramel", price: 1.6, icon: <Flame size={26} color="#ef4444" />, category: "Popcorn" },
-  { id: 5, name: "Choco Drizzle", price: 2.2, icon: <Popcorn size={26} color="#78350f" />, category: "Popcorn" },
-  { id: 6, name: "Caramel + Cheese", price: 2.0, icon: <Popcorn size={26} color="#f97316" />, category: "Popcorn" },
-  { id: 7, name: "Cola Large", price: 1.5, icon: <CupSoda size={26} color="#ef4444" />, category: "Beverage" },
-  { id: 8, name: "Lemonade", price: 1.2, icon: <GlassWater size={26} color="#eab308" />, category: "Beverage" },
-  { id: 9, name: "Mineral Water", price: 0.5, icon: <Droplet size={26} color="#3b82f6" />, category: "Beverage" },
-  { id: 10, name: "Nachos Basket", price: 3.5, icon: <Utensils size={26} color="#f97316" />, category: "Snack" },
-  { id: 11, name: "Combo Bucket", price: 7.5, icon: <ShoppingBag size={26} color="#f97316" />, category: "Combo" },
-  { id: 12, name: "Spicy Chili", price: 1.6, icon: <Popcorn size={26} color="#dc2626" />, category: "Popcorn" },
+  { id: 1, nameKey: "products.butterPopcorn", price: 1.5, icon: <Popcorn size={26} color="#f97316" />, category: "popcorn" },
+  { id: 2, nameKey: "products.caramelCrunch", price: 2.0, icon: <Popcorn size={26} color="#ea580c" />, category: "popcorn" },
+  { id: 3, nameKey: "products.cheeseBlast", price: 1.8, icon: <Popcorn size={26} color="#eab308" />, category: "popcorn" },
+  { id: 4, nameKey: "products.saffronCaramel", price: 1.6, icon: <Flame size={26} color="#ef4444" />, category: "popcorn" },
+  { id: 5, nameKey: "products.chocoDrizzle", price: 2.2, icon: <Popcorn size={26} color="#78350f" />, category: "popcorn" },
+  { id: 6, nameKey: "products.caramelCheese", price: 2.0, icon: <Popcorn size={26} color="#f97316" />, category: "popcorn" },
+  { id: 7, nameKey: "products.colaLarge", price: 1.5, icon: <CupSoda size={26} color="#ef4444" />, category: "beverage" },
+  { id: 8, nameKey: "products.lemonade", price: 1.2, icon: <GlassWater size={26} color="#eab308" />, category: "beverage" },
+  { id: 9, nameKey: "products.mineralWater", price: 0.5, icon: <Droplet size={26} color="#3b82f6" />, category: "beverage" },
+  { id: 10, nameKey: "products.nachosBasket", price: 3.5, icon: <Utensils size={26} color="#f97316" />, category: "snack" },
+  { id: 11, nameKey: "products.comboBucket", price: 7.5, icon: <ShoppingBag size={26} color="#f97316" />, category: "combo" },
+  { id: 12, nameKey: "products.spicyChili", price: 1.6, icon: <Popcorn size={26} color="#dc2626" />, category: "popcorn" },
 ];
 
 export default function POSPage() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const { t } = useTranslation();
+  const [selectedCategory, setSelectedCategory] = useState<"all" | "popcorn" | "beverage" | "snack" | "combo">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [cart, setCart] = useState([
-    { name: "Combo Bucket", price: 7.5, qty: 3 },
-    { name: "Cola Large", price: 1.5, qty: 2 },
+    { nameKey: "products.comboBucket", price: 7.5, qty: 3 },
+    { nameKey: "products.colaLarge", price: 1.5, qty: 2 },
   ]);
-  const [paymentMethod, setPaymentMethod] = useState("Cash");
+  const [paymentMethod, setPaymentMethod] = useState<"cash" | "knet" | "card">("cash");
 
   const filteredItems = posItems.filter((item) => {
-    const matchesCategory = selectedCategory === "All" || item.category === selectedCategory;
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === "all" || item.category === selectedCategory;
+    const matchesSearch = t(item.nameKey).toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -51,47 +53,42 @@ export default function POSPage() {
       <div style={{ flex: 1, overflowY: "auto", padding: "36px 40px", display: "flex", flexDirection: "column" }}>
         <div style={{ marginBottom: "32px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: "20px" }}>
           <div>
-            <h1 className="page-title">Point of Sale</h1>
+            <h1 className="page-title">{t("pos.title")}</h1>
             <p className="page-subtitle">
-              Salmiya Branch · <span style={{ color: "var(--amber-light)", fontWeight: "600" }}>Order #1042</span>
+              {t("pos.branchOrder", { branch: t("login.locations.salmiya"), order: 1042 })}
             </p>
           </div>
-          <span className="status-chip status-chip-active">POS Session Active</span>
+          <span className="status-chip status-chip-active">{t("pos.sessionActive")}</span>
         </div>
 
         <div style={{ display: "flex", gap: "20px", marginBottom: "28px", alignItems: "center", flexWrap: "wrap" }}>
-          <div style={{ position: "relative", flex: 1, minWidth: "280px" }}>
+          <div className="search-input-wrap">
             <input
               type="text"
               className="search-input"
-              placeholder="Search cinematic snacks, beverages..."
+              placeholder={t("pos.searchPlaceholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <span
-              style={{
-                position: "absolute",
-                left: "18px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                color: "var(--muted)",
-                display: "flex",
-                alignItems: "center",
-                pointerEvents: "none",
-              }}
-            >
+            <span className="search-input-icon">
               <Search size={18} />
             </span>
           </div>
 
           <div style={{ display: "flex", gap: "8px", flexWrap: "nowrap", overflowX: "auto", paddingBottom: "2px" }}>
-            {["All", "Popcorn", "Beverage", "Snack", "Combo"].map((cat) => (
+            {([
+              { id: "all", labelKey: "categories.all" },
+              { id: "popcorn", labelKey: "categories.popcorn" },
+              { id: "beverage", labelKey: "categories.beverage" },
+              { id: "snack", labelKey: "categories.snack" },
+              { id: "combo", labelKey: "categories.combo" },
+            ] as const).map((cat) => (
               <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`pill ${selectedCategory === cat ? "pill-active" : ""}`}
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`pill ${selectedCategory === cat.id ? "pill-active" : ""}`}
               >
-                {cat}
+                {t(cat.labelKey)}
               </button>
             ))}
           </div>
@@ -111,11 +108,11 @@ export default function POSPage() {
               key={item.id}
               className="product-card"
               onClick={() => {
-                const existingIndex = cart.findIndex((c) => c.name === item.name);
+                const existingIndex = cart.findIndex((c) => c.nameKey === item.nameKey);
                 if (existingIndex > -1) {
                   updateQty(existingIndex, 1);
                 } else {
-                  setCart([...cart, { name: item.name, price: item.price, qty: 1 }]);
+                  setCart([...cart, { nameKey: item.nameKey, price: item.price, qty: 1 }]);
                 }
               }}
             >
@@ -146,7 +143,7 @@ export default function POSPage() {
                     letterSpacing: "-0.2px",
                   }}
                 >
-                  {item.name}
+                  {t(item.nameKey)}
                 </div>
               </div>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "16px" }}>
@@ -159,9 +156,9 @@ export default function POSPage() {
                     letterSpacing: "-0.3px",
                   }}
                 >
-                  KD {item.price.toFixed(3)}
+                  {t("common.currency")} {item.price.toFixed(3)}
                 </span>
-                <span style={categoryBadgeStyle}>{item.category}</span>
+                <span style={categoryBadgeStyle}>{t(`categories.${item.category}`)}</span>
               </div>
             </div>
           ))}
@@ -182,7 +179,7 @@ export default function POSPage() {
         <div style={{ padding: "28px 28px 24px", borderBottom: "1px solid var(--border-subtle)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
             <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: "800", margin: 0, letterSpacing: "-0.4px" }}>
-              Cart
+              {t("pos.cart")}
             </h2>
             <span
               style={{
@@ -195,17 +192,17 @@ export default function POSPage() {
                 boxShadow: "var(--shadow-glow)",
               }}
             >
-              {cart.reduce((s, i) => s + i.qty, 0)} items
+              {cart.reduce((s, i) => s + i.qty, 0)} {t("common.items")}
             </span>
           </div>
-          <p style={{ color: "var(--muted)", fontSize: "14px", fontWeight: "500", margin: 0 }}>Order #1042 · Table 4</p>
+          <p style={{ color: "var(--muted)", fontSize: "14px", fontWeight: "500", margin: 0 }}>{t("pos.orderTable", { order: 1042, table: 4 })}</p>
         </div>
 
         <div style={{ flex: 1, padding: "20px 20px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "12px" }}>
           {cart.length === 0 ? (
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", opacity: 0.5 }}>
               <ShoppingBag size={48} color="var(--muted)" style={{ marginBottom: "14px" }} />
-              <p style={{ color: "var(--muted)", fontSize: "15px", fontWeight: "600" }}>Cart is empty</p>
+              <p style={{ color: "var(--muted)", fontSize: "15px", fontWeight: "600" }}>{t("pos.cartEmpty")}</p>
             </div>
           ) : (
             cart.map((item, i) => (
@@ -220,10 +217,10 @@ export default function POSPage() {
               >
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
                   <div style={{ color: "var(--text)", fontSize: "14px", fontWeight: "700", letterSpacing: "-0.1px" }}>
-                    {item.name}
+                    {t(item.nameKey)}
                   </div>
                   <div style={{ color: "var(--amber)", fontFamily: "var(--font-display)", fontSize: "16px", fontWeight: "800" }}>
-                    KD {(item.price * item.qty).toFixed(3)}
+                    {t("common.currency")} {(item.price * item.qty).toFixed(3)}
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -238,7 +235,7 @@ export default function POSPage() {
                       <Plus size={14} />
                     </button>
                   </div>
-                  <span style={{ color: "var(--muted)", fontSize: "12px", fontWeight: "500" }}>@ KD {item.price.toFixed(3)}</span>
+                  <span style={{ color: "var(--muted)", fontSize: "12px", fontWeight: "500" }}>{t("pos.atPrice", { price: item.price.toFixed(3) })}</span>
                 </div>
               </div>
             ))
@@ -255,8 +252,8 @@ export default function POSPage() {
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "22px" }}>
             {[
-              { label: "Subtotal", value: `KD ${cartSubtotal.toFixed(3)}` },
-              { label: "VAT (0%)", value: `KD ${gst.toFixed(3)}` },
+              { label: t("pos.subtotal"), value: `${t("common.currency")} ${cartSubtotal.toFixed(3)}` },
+              { label: t("pos.vat"), value: `${t("common.currency")} ${gst.toFixed(3)}` },
             ].map((row) => (
               <div key={row.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ color: "var(--muted)", fontSize: "14px", fontWeight: "500" }}>{row.label}</span>
@@ -273,9 +270,9 @@ export default function POSPage() {
                 borderTop: "1px solid var(--border-subtle)",
               }}
             >
-              <span style={{ color: "var(--text)", fontSize: "16px", fontWeight: "700" }}>Total</span>
+              <span style={{ color: "var(--text)", fontSize: "16px", fontWeight: "700" }}>{t("pos.total")}</span>
               <span style={{ color: "var(--amber)", fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: "800", letterSpacing: "-0.5px" }}>
-                KD {cartTotal.toFixed(3)}
+                {t("common.currency")} {cartTotal.toFixed(3)}
               </span>
             </div>
           </div>
@@ -284,7 +281,12 @@ export default function POSPage() {
             className="btn-primary glowing-btn-active"
             onClick={() => {
               if (cartTotal > 0) {
-                alert(`Order processed via ${paymentMethod}! Total: KD ${cartTotal.toFixed(3)}`);
+                alert(
+                  t("pos.processed", {
+                    method: t(`payment.${paymentMethod}`),
+                    amount: cartTotal.toFixed(3),
+                  })
+                );
                 setCart([]);
               }
             }}
@@ -298,24 +300,29 @@ export default function POSPage() {
               letterSpacing: "-0.2px",
             }}
           >
-            Charge KD {cartTotal.toFixed(3)} →
+            {t("pos.charge", { amount: cartTotal.toFixed(3) })}
           </button>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "10px" }}>
-            {[
-              { id: "Cash", icon: <Banknote size={15} /> },
-              { id: "K-Net", icon: <Landmark size={15} /> },
-              { id: "Card", icon: <CreditCard size={15} /> },
-            ].map((m) => (
+            {(
+              [
+                { id: "cash", icon: <Banknote size={15} /> },
+                { id: "knet", icon: <Landmark size={15} /> },
+                { id: "card", icon: <CreditCard size={15} /> },
+              ] as const
+            ).map((m) => {
+              const isSelected = paymentMethod === m.id;
+              return (
               <button
                 key={m.id}
                 onClick={() => setPaymentMethod(m.id)}
-                className={`pay-btn ${paymentMethod === m.id ? "pay-btn-active" : ""}`}
+                className={`pay-btn ${isSelected ? "pay-btn-active" : ""}`}
               >
                 {m.icon}
-                {m.id}
+                {t(`payment.${m.id}`)}
               </button>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

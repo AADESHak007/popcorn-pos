@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Providers from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: "Popcorn Place POS",
@@ -12,8 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full" style={{ colorScheme: "light", background: "var(--bg)" }}>
-      <body className="h-full" style={{ background: "var(--bg)", color: "var(--text)" }}>{children}</body>
+    <html lang="en" dir="ltr" className="h-full" suppressHydrationWarning style={{ colorScheme: "light", background: "var(--bg)" }}>
+      <body className="h-full" style={{ background: "var(--bg)", color: "var(--text)" }}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

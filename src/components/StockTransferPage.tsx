@@ -1,6 +1,7 @@
 "use client";
 import { ArrowRightLeft } from "lucide-react";
 import { cardStyles } from "@/lib/ui";
+import { useTranslation } from "@/contexts/LocaleContext";
 
 const stnRecords = [
   { id: "STN-001", from: "Commissary", to: "Salmiya", item: "Caramel Sauce", qty: "5 bottles", date: "22 May 2026", status: "Delivered" },
@@ -16,7 +17,14 @@ const statusCfg: Record<string, { bg: string; color: string; glow: string }> = {
   Cancelled: { bg: "rgba(239, 68, 68, 0.1)", color: "#ef4444", glow: "#ef4444" },
 };
 
-function StatusBadge({ status }: { status: string }) {
+const statusKey: Record<string, string> = {
+  Delivered: "status.delivered",
+  "In Transit": "status.inTransit",
+  Pending: "status.pending",
+  Cancelled: "status.cancelled",
+};
+
+function StatusBadge({ status, label }: { status: string; label: string }) {
   const cfg = statusCfg[status] || { bg: "var(--surface-muted)", color: "var(--muted)", glow: "var(--muted)" };
   return (
     <span
@@ -35,27 +43,28 @@ function StatusBadge({ status }: { status: string }) {
       }}
     >
       <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: cfg.glow, boxShadow: `0 0 6px ${cfg.glow}` }} />
-      {status}
+      {label}
     </span>
   );
 }
 
 const summaryStats = [
-  { label: "Delivered", value: 1, color: "#10b981", bg: "rgba(16, 185, 129, 0.1)" },
-  { label: "In Transit", value: 1, color: "#3b82f6", bg: "rgba(59, 130, 246, 0.1)" },
-  { label: "Pending", value: 1, color: "var(--amber)", bg: "var(--amber-soft)" },
-  { label: "Cancelled", value: 1, color: "#ef4444", bg: "rgba(239, 68, 68, 0.1)" },
+  { id: "Delivered", value: 1, color: "#10b981", bg: "rgba(16, 185, 129, 0.1)" },
+  { id: "In Transit", value: 1, color: "#3b82f6", bg: "rgba(59, 130, 246, 0.1)" },
+  { id: "Pending", value: 1, color: "var(--amber)", bg: "var(--amber-soft)" },
+  { id: "Cancelled", value: 1, color: "#ef4444", bg: "rgba(239, 68, 68, 0.1)" },
 ];
 
 export default function StockTransferPage() {
+  const { t } = useTranslation();
   return (
     <div className="page-wrap">
       <div className="page-header">
         <div>
-          <h1 className="page-title">Stock Transfers</h1>
-          <p className="page-subtitle">Inter-branch stock transfer notes (STN) and logistics status</p>
+          <h1 className="page-title">{t("stockTransfer.title")}</h1>
+          <p className="page-subtitle">{t("stockTransfer.subtitle")}</p>
         </div>
-        <span className="status-chip status-chip-active">Logistics Active</span>
+        <span className="status-chip status-chip-active">{t("stockTransfer.logisticsActive")}</span>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px", marginBottom: "28px" }}>
@@ -77,7 +86,7 @@ export default function StockTransferPage() {
             </div>
             <div>
               <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>
-                {s.label}
+                {t(statusKey[s.id] ?? s.id)}
               </div>
               <div style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "26px", fontWeight: "800" }}>{s.value}</div>
             </div>
@@ -97,18 +106,22 @@ export default function StockTransferPage() {
             gap: "12px",
           }}
         >
-          <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0 }}>Transfer Records</h2>
+          <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0 }}>{t("stockTransfer.transferRecords")}</h2>
           <button className="btn-primary" style={{ padding: "11px 20px", fontSize: "13px", fontWeight: "800", borderRadius: "var(--radius-md)" }}>
-            + New Transfer Request
+            {t("stockTransfer.newTransfer")}
           </button>
         </div>
         <div className="table-wrap">
           <table className="data-table">
             <thead>
               <tr>
-                {["STN ID", "From Branch", "To Branch", "Item", "Quantity", "Date", "Status"].map((h) => (
-                  <th key={h}>{h}</th>
-                ))}
+                <th>{t("stockTransfer.table.stnId")}</th>
+                <th>{t("stockTransfer.table.fromBranch")}</th>
+                <th>{t("stockTransfer.table.toBranch")}</th>
+                <th>{t("stockTransfer.table.item")}</th>
+                <th>{t("stockTransfer.table.quantity")}</th>
+                <th>{t("stockTransfer.table.date")}</th>
+                <th>{t("stockTransfer.table.status")}</th>
               </tr>
             </thead>
             <tbody>
@@ -121,7 +134,7 @@ export default function StockTransferPage() {
                   <td style={{ color: "var(--text)", fontWeight: "600" }}>{rec.qty}</td>
                   <td style={{ color: "var(--muted)", fontWeight: "500" }}>{rec.date}</td>
                   <td>
-                    <StatusBadge status={rec.status} />
+                    <StatusBadge status={rec.status} label={t(statusKey[rec.status] ?? rec.status)} />
                   </td>
                 </tr>
               ))}

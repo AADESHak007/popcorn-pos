@@ -1,6 +1,7 @@
 "use client";
 import { CircleDollarSign, Package, BarChart3, Trophy } from "lucide-react";
 import { cardStyles } from "@/lib/ui";
+import { useTranslation } from "@/contexts/LocaleContext";
 import {
   BarChart,
   Bar,
@@ -43,10 +44,10 @@ const dailySales = [
 ];
 
 const reportMetrics = [
-  { label: "Total Revenue", value: "KD 2,840.000", icon: <CircleDollarSign size={20} color="#f97316" />, bg: "var(--amber-soft)" },
-  { label: "Total Orders", value: "1,248", icon: <Package size={20} color="#8b5cf6" />, bg: "rgba(139, 92, 246, 0.1)" },
-  { label: "Avg Order Value", value: "KD 2.280", icon: <BarChart3 size={20} color="#3b82f6" />, bg: "rgba(59, 130, 246, 0.1)" },
-  { label: "Best Branch", value: "Salmiya", icon: <Trophy size={20} color="#f97316" />, bg: "var(--amber-soft)", highlight: true },
+  { labelKey: "reports.totalRevenue", value: "2,840.000", icon: <CircleDollarSign size={20} color="#f97316" />, bg: "var(--amber-soft)", isMoney: true },
+  { labelKey: "reports.totalOrders", value: "1,248", icon: <Package size={20} color="#8b5cf6" />, bg: "rgba(139, 92, 246, 0.1)" },
+  { labelKey: "reports.avgOrderValue", value: "2.280", icon: <BarChart3 size={20} color="#3b82f6" />, bg: "rgba(59, 130, 246, 0.1)", isMoney: true },
+  { labelKey: "reports.bestBranch", valueKey: "branchesNames.salmiya", icon: <Trophy size={20} color="#f97316" />, bg: "var(--amber-soft)", highlight: true },
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -65,11 +66,12 @@ const BranchTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function ReportsPage() {
+  const { t } = useTranslation();
   return (
     <div className="page-wrap">
       <div style={{ marginBottom: "32px" }}>
-        <h1 className="page-title">Sales Reports</h1>
-        <p className="page-subtitle">Sales analytics and business intelligence across all branches · May 2026</p>
+        <h1 className="page-title">{t("reports.title")}</h1>
+        <p className="page-subtitle">{t("reports.subtitle")}</p>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px", marginBottom: "28px" }}>
@@ -77,7 +79,7 @@ export default function ReportsPage() {
           <div key={i} className="metric-card">
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
               <div style={{ fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)" }}>
-                {m.label}
+                {t(m.labelKey)}
               </div>
               <div style={{ background: m.bg, borderRadius: "12px", width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 {m.icon}
@@ -92,7 +94,7 @@ export default function ReportsPage() {
                 letterSpacing: "-0.5px",
               }}
             >
-              {m.value}
+              {"valueKey" in m ? t((m as any).valueKey) : m.isMoney ? `${t("common.currency")} ${m.value}` : m.value}
             </div>
           </div>
         ))}
@@ -100,8 +102,8 @@ export default function ReportsPage() {
 
       <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "20px", marginBottom: "28px" }}>
         <div className="card" style={{ padding: "28px" }}>
-          <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: "0 0 4px" }}>Branch-wise Revenue</h2>
-          <p style={{ color: "var(--muted)", fontSize: "14px", marginBottom: "24px", fontWeight: "500" }}>Total sales by branch this month</p>
+          <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: "0 0 4px" }}>{t("reports.branchRevenue")}</h2>
+          <p style={{ color: "var(--muted)", fontSize: "14px", marginBottom: "24px", fontWeight: "500" }}>{t("reports.branchRevenueSub")}</p>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={branchData} barSize={40} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
               <defs>
@@ -120,8 +122,8 @@ export default function ReportsPage() {
         </div>
 
         <div className="card" style={{ padding: "28px" }}>
-          <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: "0 0 4px" }}>Category Split</h2>
-          <p style={{ color: "var(--muted)", fontSize: "14px", marginBottom: "20px", fontWeight: "500" }}>Revenue share by category</p>
+          <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: "0 0 4px" }}>{t("reports.categorySplit")}</h2>
+          <p style={{ color: "var(--muted)", fontSize: "14px", marginBottom: "20px", fontWeight: "500" }}>{t("reports.categorySplitSub")}</p>
           <ResponsiveContainer width="100%" height={220}>
             <PieChart>
               <Pie data={categoryData} cx="50%" cy="44%" innerRadius={54} outerRadius={78} paddingAngle={3} dataKey="value">
@@ -130,7 +132,7 @@ export default function ReportsPage() {
                 ))}
               </Pie>
               <Tooltip
-                formatter={(value) => [`${value}%`, "Share"]}
+                formatter={(value) => [`${value}%`, t("common.share")]}
                 contentStyle={{
                   background: "var(--surface)",
                   border: "none",
@@ -148,16 +150,17 @@ export default function ReportsPage() {
 
       <div className="card" style={{ overflow: "hidden", display: "flex", flexDirection: "column" }}>
         <div style={cardStyles.sectionHeader}>
-          <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0 }}>Daily Sales Breakdown</h2>
-          <p style={{ color: "var(--muted)", fontSize: "14px", marginTop: "4px", fontWeight: "500" }}>Last 7 days performance across all branches</p>
+          <h2 style={{ color: "var(--text)", fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", margin: 0 }}>{t("reports.dailyBreakdown")}</h2>
+          <p style={{ color: "var(--muted)", fontSize: "14px", marginTop: "4px", fontWeight: "500" }}>{t("reports.dailyBreakdownSub")}</p>
         </div>
         <div className="table-wrap">
           <table className="data-table">
             <thead>
               <tr>
-                {["Date", "Orders", "Revenue", "Avg Order Value"].map((h) => (
-                  <th key={h}>{h}</th>
-                ))}
+                <th>{t("reports.table.date")}</th>
+                <th>{t("reports.table.orders")}</th>
+                <th>{t("reports.table.revenue")}</th>
+                <th>{t("reports.table.avgOrder")}</th>
               </tr>
             </thead>
             <tbody>
@@ -165,8 +168,8 @@ export default function ReportsPage() {
                 <tr key={i}>
                   <td style={{ color: "var(--text)", fontWeight: "600" }}>{row.date}</td>
                   <td style={{ color: "var(--text-secondary)", fontWeight: "500" }}>{row.orders}</td>
-                  <td style={{ color: "var(--amber)", fontFamily: "var(--font-display)", fontWeight: "800" }}>KD {row.revenue.toFixed(3)}</td>
-                  <td style={{ color: "var(--muted)", fontWeight: "500" }}>KD {parseFloat(row.avg).toFixed(3)}</td>
+                  <td style={{ color: "var(--amber)", fontFamily: "var(--font-display)", fontWeight: "800" }}>{t("common.currency")} {row.revenue.toFixed(3)}</td>
+                  <td style={{ color: "var(--muted)", fontWeight: "500" }}>{t("common.currency")} {parseFloat(row.avg).toFixed(3)}</td>
                 </tr>
               ))}
             </tbody>

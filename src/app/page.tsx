@@ -9,8 +9,6 @@ import InventoryPage from "@/components/InventoryPage";
 import ReportsPage from "@/components/ReportsPage";
 import StockTransferPage from "@/components/StockTransferPage";
 import BranchesPage from "@/components/BranchesPage";
-import { sidebarWidth } from "@/lib/theme";
-
 type Page = "login" | NavPage;
 
 export default function Home() {
@@ -42,15 +40,7 @@ export default function Home() {
         onNavigate={handleNavigate}
         user={activeUser}
       />
-      <main
-        style={{
-          marginLeft: `${sidebarWidth}px`,
-          flex: 1,
-          minHeight: "100vh",
-          overflowX: "hidden",
-          background: "var(--bg)",
-        }}
-      >
+      <main className="app-main">
         {currentPage === "dashboard" && <DashboardPage user={activeUser} />}
         {currentPage === "pos" && <POSPage />}
         {currentPage === "inventory" && <InventoryPage />}
